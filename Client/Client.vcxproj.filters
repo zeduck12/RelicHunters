@@ -1,0 +1,292 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="99.Defaults">
+      <UniqueIdentifier>{2acc845a-1298-4b62-89cc-81af80eafa0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="00.MainApp">
+      <UniqueIdentifier>{b8452d7e-e9d0-4e1d-9661-c02773daa5e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Headers">
+      <UniqueIdentifier>{b5ed870c-62a0-4d03-991e-f6391bae6a84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj">
+      <UniqueIdentifier>{99b1ed41-e1f2-4ebe-90c8-4a61508658fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager">
+      <UniqueIdentifier>{71f26829-d07c-474c-9280-d341e64cda3e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.DesignPattern">
+      <UniqueIdentifier>{4c9aafab-ba77-4480-ba32-afd1ca737798}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\010.CObj">
+      <UniqueIdentifier>{554f9f09-c707-46f9-ade2-63dec8be3839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\011.Player">
+      <UniqueIdentifier>{357a963c-dbe6-4977-b2cf-17a53d912e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\013.Moster">
+      <UniqueIdentifier>{44385d66-07a2-4667-b107-f1160c304dc4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\ObjManager">
+      <UniqueIdentifier>{31193f6b-06c1-460f-9498-fac38ebb18d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\CollisionManager">
+      <UniqueIdentifier>{528717e1-6ee6-4d44-b0c9-03a24630bc82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\PlayerManager">
+      <UniqueIdentifier>{a2695ad8-9193-4475-90df-c41d0c703b88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Defaults\Client">
+      <UniqueIdentifier>{cf850a83-4cb0-453a-865b-ccecc613b7bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\SceneManager">
+      <UniqueIdentifier>{8e0f38a2-6f22-4169-aee1-6d4c87668e1b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene">
+      <UniqueIdentifier>{02cc1c29-9a15-4170-b1bc-006de2e759b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\021.Logo">
+      <UniqueIdentifier>{cd9f98ae-b653-4dbf-adba-7c2544066b24}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\022.Intro">
+      <UniqueIdentifier>{fa08abf8-0562-4828-92ac-19775e2cd25d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\023.Lobby">
+      <UniqueIdentifier>{27b788fa-b99e-4cb7-8e89-40cbe8722aa9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\024.Game">
+      <UniqueIdentifier>{564e28f9-dd07-4f64-98c8-2739f5968177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\025.End">
+      <UniqueIdentifier>{a540079a-8cc1-4572-9c19-4e4ca494ef8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\026.Edit">
+      <UniqueIdentifier>{c4d0fca6-e5e2-4f15-89bf-674a2986ad53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\KeyManager">
+      <UniqueIdentifier>{98d01ecf-2239-407f-a043-eea47be85222}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\TimeManager">
+      <UniqueIdentifier>{fd23e4ad-b244-4a9b-a9fc-79104f96d839}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\011.Player\Inventory">
+      <UniqueIdentifier>{06127f55-4f09-4d68-829f-f795393ca4a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\011.Player\Weapon">
+      <UniqueIdentifier>{8f4d4fc0-2dfb-4a30-abdb-7f54b6471022}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\CameraManager">
+      <UniqueIdentifier>{b5dba19a-ae79-422b-b909-e779e1bdb004}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\012.Projectile">
+      <UniqueIdentifier>{3d9b25ba-8924-4f06-923d-34f430293d87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\012.Projectile\Bullet">
+      <UniqueIdentifier>{790f73dc-f39a-490e-8f97-03ca6290a46b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\012.Projectile\Bullet\03.Boomerang">
+      <UniqueIdentifier>{ccf8a9cf-b8ca-47d5-b892-f827fdb19e2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\012.Projectile\Bullet\02.Shotgun">
+      <UniqueIdentifier>{94eb98bd-8c90-4cc2-a706-46acef6213b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\012.Projectile\Bullet\01.Base">
+      <UniqueIdentifier>{e335e9fe-a13e-4e77-9349-533df0d06b87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\012.Projectile\Bullet\04.Casing">
+      <UniqueIdentifier>{1d406795-9f58-4738-996c-508c55e1b4d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\012.Projectile\Grenade">
+      <UniqueIdentifier>{e5f25d64-a44d-4b2a-b99a-219ef9c4d142}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\013.Moster\State">
+      <UniqueIdentifier>{4909bac7-c109-415d-854f-7157985679c6}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="framework.h">
+      <Filter>99.Defaults</Filter>
+    </ClInclude>
+    <ClInclude Include="pch.h">
+      <Filter>99.Defaults</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>99.Defaults</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>99.Defaults</Filter>
+    </ClInclude>
+    <ClInclude Include="CMainApp.h">
+      <Filter>00.MainApp</Filter>
+    </ClInclude>
+    <ClInclude Include="Total.h">
+      <Filter>98.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayer.h">
+      <Filter>01.CObj\011.Player</Filter>
+    </ClInclude>
+    <ClInclude Include="CObj.h">
+      <Filter>01.CObj\010.CObj</Filter>
+    </ClInclude>
+    <ClInclude Include="CAbstractFactory.h">
+      <Filter>99.DesignPattern</Filter>
+    </ClInclude>
+    <ClInclude Include="CBoomerang.h">
+      <Filter>01.CObj\012.Projectile\Bullet\03.Boomerang</Filter>
+    </ClInclude>
+    <ClInclude Include="CShotGun.h">
+      <Filter>01.CObj\012.Projectile\Bullet\02.Shotgun</Filter>
+    </ClInclude>
+    <ClInclude Include="CBullet.h">
+      <Filter>01.CObj\012.Projectile\Bullet\01.Base</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonster.h">
+      <Filter>01.CObj\013.Moster</Filter>
+    </ClInclude>
+    <ClInclude Include="CObjManager.h">
+      <Filter>97.Manager\ObjManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CCollisionManager.h">
+      <Filter>97.Manager\CollisionManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerManager.h">
+      <Filter>97.Manager\PlayerManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>99.Defaults\Client</Filter>
+    </ClInclude>
+    <ClInclude Include="CScene.h">
+      <Filter>02.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="CSceneManager.h">
+      <Filter>97.Manager\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CGame.h">
+      <Filter>02.Scene\024.Game</Filter>
+    </ClInclude>
+    <ClInclude Include="CGrenade.h">
+      <Filter>01.CObj\012.Projectile\Grenade</Filter>
+    </ClInclude>
+    <ClInclude Include="Define.h">
+      <Filter>98.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Struct.h">
+      <Filter>98.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CKeyManager.h">
+      <Filter>97.Manager\KeyManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CTimeManager.h">
+      <Filter>97.Manager\TimeManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Function.h">
+      <Filter>98.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CCasing.h">
+      <Filter>01.CObj\012.Projectile\Bullet\04.Casing</Filter>
+    </ClInclude>
+    <ClInclude Include="Const.h">
+      <Filter>98.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="CInventory.h">
+      <Filter>01.CObj\011.Player\Inventory</Filter>
+    </ClInclude>
+    <ClInclude Include="CWeapon.h">
+      <Filter>01.CObj\011.Player\Weapon</Filter>
+    </ClInclude>
+    <ClInclude Include="CMonsterState.h">
+      <Filter>01.CObj\013.Moster\State</Filter>
+    </ClInclude>
+    <ClInclude Include="CCameraManager.h">
+      <Filter>97.Manager\CameraManager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>99.Defaults</Filter>
+    </ClCompile>
+    <ClCompile Include="CMainApp.cpp">
+      <Filter>00.MainApp</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayer.cpp">
+      <Filter>01.CObj\011.Player</Filter>
+    </ClCompile>
+    <ClCompile Include="CObj.cpp">
+      <Filter>01.CObj\010.CObj</Filter>
+    </ClCompile>
+    <ClCompile Include="CBoomerang.cpp">
+      <Filter>01.CObj\012.Projectile\Bullet\03.Boomerang</Filter>
+    </ClCompile>
+    <ClCompile Include="CShotGun.cpp">
+      <Filter>01.CObj\012.Projectile\Bullet\02.Shotgun</Filter>
+    </ClCompile>
+    <ClCompile Include="CBullet.cpp">
+      <Filter>01.CObj\012.Projectile\Bullet\01.Base</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonster.cpp">
+      <Filter>01.CObj\013.Moster</Filter>
+    </ClCompile>
+    <ClCompile Include="CObjManager.cpp">
+      <Filter>97.Manager\ObjManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CCollisionManager.cpp">
+      <Filter>97.Manager\CollisionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerManager.cpp">
+      <Filter>97.Manager\PlayerManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Client.cpp">
+      <Filter>99.Defaults\Client</Filter>
+    </ClCompile>
+    <ClCompile Include="CScene.cpp">
+      <Filter>02.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="CSceneManager.cpp">
+      <Filter>97.Manager\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CGame.cpp">
+      <Filter>02.Scene\024.Game</Filter>
+    </ClCompile>
+    <ClCompile Include="CGrenade.cpp">
+      <Filter>01.CObj\012.Projectile\Grenade</Filter>
+    </ClCompile>
+    <ClCompile Include="CKeyManager.cpp">
+      <Filter>97.Manager\KeyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CTimeManager.cpp">
+      <Filter>97.Manager\TimeManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Function.cpp">
+      <Filter>98.Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="CCasing.cpp">
+      <Filter>01.CObj\012.Projectile\Bullet\04.Casing</Filter>
+    </ClCompile>
+    <ClCompile Include="CInventory.cpp">
+      <Filter>01.CObj\011.Player\Inventory</Filter>
+    </ClCompile>
+    <ClCompile Include="CWeapon.cpp">
+      <Filter>01.CObj\011.Player\Weapon</Filter>
+    </ClCompile>
+    <ClCompile Include="CMonsterState.cpp">
+      <Filter>01.CObj\013.Moster\State</Filter>
+    </ClCompile>
+    <ClCompile Include="CCameraManager.cpp">
+      <Filter>97.Manager\CameraManager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="small.ico">
+      <Filter>99.Defaults</Filter>
+    </Image>
+    <Image Include="Client.ico">
+      <Filter>99.Defaults\Client</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Client.rc">
+      <Filter>99.Defaults\Client</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>
