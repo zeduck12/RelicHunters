@@ -1,5 +1,6 @@
 #pragma once
 #include "CTexture.h"
+
 class CMultiTexture :
     public CTexture
 {
@@ -12,6 +13,9 @@ public:
     virtual HRESULT Insert(const wstring& wstrFilePath, const wstring& wstrStateKey = L"", const DWORD& rCount = 0) override;
     virtual const TEXINFO* GetTexture(const wstring& wstrStateKey = L"", const DWORD& rIndex = 0) override;
     virtual void Release(void) override;
+
+public:
+    vector<TEXINFO*> GetStateTexture(const wstring& wstrStateKey = L"");
 
 private:
     // StateKey 

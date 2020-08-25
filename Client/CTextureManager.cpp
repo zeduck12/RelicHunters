@@ -27,6 +27,16 @@ const TEXINFO* CTextureManager::GetTextureInfo(const wstring& wstrObjectKey, con
 	return iter_find->second->GetTexture(wstrStateKey, dwImgIndex);
 }
 
+const vector<TEXINFO*> CTextureManager::GetVecTextureInfo(const wstring& wstrObjectKey, const wstring& wstrStateKey)
+{
+	auto iter_find = m_mapTexture.find(wstrObjectKey);
+
+	if (m_mapTexture.end() == iter_find)
+		return vector<TEXINFO*>();
+
+	return dynamic_cast<CMultiTexture*>(iter_find->second)->GetStateTexture(wstrStateKey);
+}
+
 HRESULT CTextureManager::Insert(const TEX_ID& eTexID, const wstring& wstrFilePath, const wstring& wstrObjectKey, const wstring& wstrStateKey, const DWORD& dwImgIndex)
 {
 	auto iter_find = m_mapTexture.find(wstrObjectKey);

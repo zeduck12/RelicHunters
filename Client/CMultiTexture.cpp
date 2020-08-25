@@ -76,3 +76,13 @@ void CMultiTexture::Release(void)
         rPair.second.shrink_to_fit(); 
     }
 }
+
+vector<TEXINFO*> CMultiTexture::GetStateTexture(const wstring& wstrStateKey)
+{
+    // TODO: 여기에 return 문을 삽입합니다.
+    auto iter_Find = m_mapMultiTexture.find(wstrStateKey);
+    if (iter_Find == m_mapMultiTexture.end())
+        return vector<TEXINFO*>();
+
+    return iter_Find->second;
+}

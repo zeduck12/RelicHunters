@@ -16,6 +16,7 @@
 #include "CCameraManager.h"
 #include "CGraphicDevice.h"
 #include "CTextureManager.h"
+#include "CAnimation.h"
 
 CPlayer::CPlayer()
 	:
@@ -67,6 +68,13 @@ void CPlayer::Ready()
 	// 무기 생성
 	m_pWeapon = make_unique<CWeapon>();
 	m_pWeapon->Ready();
+
+	// 애니메이션 생성
+	CAnimation* pAni = CreateAnimation("PlayerAnimation");
+	AddAnimationClip("Idle", ANIMATION::LOOP, 1.2f, 12, 0, 12, 0.f, L"Player", L"Idle", L"../Texture/idle_%d.png");
+	
+	if (pAni)
+		pAni = nullptr; 
 }
 
 int CPlayer::Update(float _fDeltaTime)
@@ -83,6 +91,11 @@ int CPlayer::Update(float _fDeltaTime)
 		Dash();
 
 	m_pWeapon->Update();
+
+	if (m_pAnimation)
+		m_pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
+
+	m_pAnimation->ChangeClip("Idle");
 
 	return 0;
 }
@@ -124,10 +137,16 @@ void CPlayer::Render(const HDC& _hdc)
 		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
 	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
 
-
-	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Player", L"Idle", 0);
-	if (nullptr == pTexInfo)
-		return;
+	
+	// Test Idle 애니메이션
+	int iFrame = 0;
+	if (m_pAnimation)
+	{
+		ANIMATION_CLIP* pClip = m_pAnimation->GetCurrentClip();
+		iFrame = pClip->iFrame; // 인덱스
+	}
+	
+	TEXINFO* pTexInfo = m_pVecTextureInfo[iFrame];
 
 	float fCenterX = float(pTexInfo->tImageInfo.Width  * 0.5f);
 	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
@@ -144,7 +163,8 @@ void CPlayer::Render(const HDC& _hdc)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-	
+
+
 
 	// 무기 그리기
 	m_pWeapon->Render(_hdc);

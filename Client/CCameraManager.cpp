@@ -121,7 +121,7 @@ void CCameraManager::MoveCameraToFreeSpace(void)
 
 void CCameraManager::ToEnlargeScale(void)
 {
-	if (m_fScale >= 1.5f || m_bIsPressing == false)
+	if (m_fScale >= 1.2f || m_bIsPressing == false)
 	{
 		m_bIsEnlargeScale = false;
 		return;

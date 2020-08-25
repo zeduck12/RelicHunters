@@ -18,6 +18,7 @@ public:
 
 public:
 	const TEXINFO* GetTextureInfo(const wstring& wstrObjectKey, const wstring& wstrStateKey = L"", const DWORD& dwImgIndex = 0);
+	const vector<TEXINFO*> GetVecTextureInfo(const wstring& wstrObjectKey, const wstring& wstrStateKey = L"");
 	HRESULT Insert(const TEX_ID& eTexID, const wstring& wstrFilePath, const wstring& wstrObjectKey, const wstring& wstrStateKey = L"", const DWORD& dwImgIndex = 0);
 
 private:

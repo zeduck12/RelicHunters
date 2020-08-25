@@ -124,6 +124,9 @@
     <Filter Include="01.CObj\014.Structure">
       <UniqueIdentifier>{c0f2530b-623d-4302-9039-743b739757e1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="05.Animation">
+      <UniqueIdentifier>{121aee16-aff6-4670-bf31-d4815f7034a0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -243,6 +246,9 @@
     <ClInclude Include="CStructure.h">
       <Filter>01.CObj\014.Structure</Filter>
     </ClInclude>
+    <ClInclude Include="CAnimation.h">
+      <Filter>05.Animation</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -337,6 +343,9 @@
     </ClCompile>
     <ClCompile Include="CStructure.cpp">
       <Filter>01.CObj\014.Structure</Filter>
+    </ClCompile>
+    <ClCompile Include="CAnimation.cpp">
+      <Filter>05.Animation</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

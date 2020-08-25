@@ -1,4 +1,7 @@
 #pragma once
+#include "Struct.h"
+
+class CAnimation;
 class CObj
 {
 public:
@@ -48,11 +51,28 @@ public:
 	D3DXVECTOR3 GetPosVector(void) const { return m_tInfo.vPos; }
 	void SetPosVector(D3DXVECTOR3 _rVecPos) { m_tInfo.vPos = _rVecPos; }
 
+public:
+	CAnimation* CreateAnimation(const string& _strTag);
+	bool AddAnimationClip(const string& strName,
+		ANIMATION::OPTION eOption, float fAnimationLimitTime,
+		int iFrameMax, int iStart,
+		int iLength, float fOptionLimitTime,
+		const wstring& strObjectKey, const wstring& strStateKey, const TCHAR* pFilePath);
+
+	CAnimation* GetAnimation(void) const { return m_pAnimation; }
+
+public:
+	void SetTextureInfo(vector<TEXINFO*> _pVecTexInfo) { m_pVecTextureInfo = _pVecTexInfo; }
+	vector<TEXINFO*> GetTextureInfo(void) const { return m_pVecTextureInfo; }
+
 protected:
 	INFO m_tInfo;
 	bool m_bIsValid;
 	float m_fSpeed;
 	float m_fDegree;
+
+	CAnimation* m_pAnimation    = nullptr;
+	vector<TEXINFO*>    m_pVecTextureInfo ;
 
 };
 
