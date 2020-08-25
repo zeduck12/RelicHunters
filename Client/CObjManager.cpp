@@ -85,6 +85,13 @@ void CObjManager::Render(const HDC& _hdc)
 	GET_SINGLE(CMapManager)->Render();
 	GET_SINGLE(CPlayerManager)->Render(_hdc);
 
+	// 카메라 움직임 결과
+	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();
+	GET_SINGLE(CGraphicDevice)->GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);
+	
+	GET_SINGLE(CGraphicDevice)->RenderEnd();
+
+
 	D3DXVECTOR3 v[2]
 		=
 	{
@@ -92,25 +99,11 @@ void CObjManager::Render(const HDC& _hdc)
 		D3DXVECTOR3(300, 300, 0)
 	};
 
-	D3DXMATRIX matTotal, matView, matPro, matTrans;
-	GET_SINGLE(CGraphicDevice)->GetDevice()->GetTransform(D3DTS_VIEW, &matView);
-	GET_SINGLE(CGraphicDevice)->GetDevice()->GetTransform(D3DTS_PROJECTION, &matPro);
-	D3DXMatrixTranslation(&matTrans, 0.f, 0.f, 1.f);
-	matTotal = matView * matPro /** matTrans*/;
-
 	LPD3DXLINE pLine = nullptr;
 	D3DXCreateLine(GET_SINGLE(CGraphicDevice)->GetDevice(), &pLine);
 	pLine->Begin();
-	pLine->DrawTransform(v, 2, &matTotal, D3DCOLOR_ARGB(255, 255, 0, 0));
+	pLine->DrawTransform(v, 2, &matWorld, D3DCOLOR_ARGB(255, 255, 0, 0));
 	pLine->End();
-	pLine->Release();
-
-
-	// 카메라 움직임 결과
-	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();
-	GET_SINGLE(CGraphicDevice)->GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);
-	
-	GET_SINGLE(CGraphicDevice)->RenderEnd();
 
 	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Render(_hdc); } }
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Render(_hdc); } }

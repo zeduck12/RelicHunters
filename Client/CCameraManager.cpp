@@ -16,13 +16,19 @@ XFORM CCameraManager::GetWorldMatrix(void)
 {
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 
+	RECT rc = {};
+	GetClientRect(g_hWND, &rc);
+	int iCX = rc.right - rc.left;
+	int iCY = rc.bottom - rc.top;
+
 	// 카메라 확대
 	// 확대한 만큼 dx, dy 확대 해주기.
-	D3DXMATRIX matWorld, matScale, matMove;
+	D3DXMATRIX matWorld, matScale, matMove, matParent;
+	D3DXMatrixTranslation(&matMove, -pPlayer->GetX() + (iCX / 2) / m_fScale  + m_fDeltaX, -pPlayer->GetY() + (iCY / 2) / m_fScale + m_fDeltaY, 0.f);
 	D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
-	D3DXMatrixTranslation(&matMove, -pPlayer->GetX() * m_fScale + (WINCX >> 1) + m_fDeltaX, -pPlayer->GetY() * m_fScale + (WINCY >> 1) + m_fDeltaY, 0.f);
+	
 
-	matWorld = matScale * matMove;
+	matWorld = matMove * matScale;
 	m_fxWorld =
 	{
 		matWorld._11, 0,
@@ -39,13 +45,19 @@ D3DXMATRIX CCameraManager::GetWorldD3DMatrix(void)
 {
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 
+	RECT rc = {};
+	GetClientRect(g_hWND, &rc);
+	int iCX = rc.right - rc.left;
+	int iCY = rc.bottom - rc.top;
+
 	// 카메라 확대
 	// 확대한 만큼 dx, dy 확대 해주기.
 	D3DXMATRIX matWorld, matScale, matMove;
+	D3DXMatrixTranslation(&matMove, -pPlayer->GetX() + (iCX / 2) / m_fScale + m_fDeltaX, -pPlayer->GetY() + (iCY / 2) / m_fScale + m_fDeltaY, 0.f);
 	D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
-	D3DXMatrixTranslation(&matMove, -pPlayer->GetX() * m_fScale + (WINCX >> 1) + m_fDeltaX, -pPlayer->GetY() * m_fScale + (WINCY >> 1) + m_fDeltaY, 0.f);
 
-	matWorld = matScale * matMove;
+
+	matWorld = matMove * matScale;
 
 	return matWorld;
 }

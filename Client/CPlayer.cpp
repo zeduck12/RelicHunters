@@ -40,7 +40,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::Ready()
 {
-	m_tInfo.vPos = {200.f, 200.f, 0.f};
+	m_tInfo.vPos = {400.f, 300.f, 0.f};
 	m_tInfo.vDir = {1.0f, 0.f, 0.f};
 	m_tInfo.vSize = { 50.f, 50.f, 0.f };
 	m_tInfo.vLook = {1.f, 0.f, 0.f};
@@ -129,8 +129,8 @@ void CPlayer::Render(const HDC& _hdc)
 	if (nullptr == pTexInfo)
 		return;
 
-	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
-	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+	float fCenterX = float(pTexInfo->tImageInfo.Width  * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
 
 	D3DXMATRIX matScale, matTrans, matWorld;
 	if(m_eDir == DIRECTION::LEFT)
@@ -138,7 +138,7 @@ void CPlayer::Render(const HDC& _hdc)
 	else
 		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
 
-	D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);
+	D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y - 20, 0.f);
 	matWorld = matScale * matTrans ;
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
