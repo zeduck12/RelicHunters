@@ -35,6 +35,21 @@ XFORM CCameraManager::GetWorldMatrix(void)
 	return m_fxWorld;
 }
 
+D3DXMATRIX CCameraManager::GetWorldD3DMatrix(void)
+{
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+
+	// 카메라 확대
+	// 확대한 만큼 dx, dy 확대 해주기.
+	D3DXMATRIX matWorld, matScale, matMove;
+	D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
+	D3DXMatrixTranslation(&matMove, -pPlayer->GetX() * m_fScale + (WINCX >> 1) + m_fDeltaX, -pPlayer->GetY() * m_fScale + (WINCY >> 1) + m_fDeltaY, 0.f);
+
+	matWorld = matScale * matMove;
+
+	return matWorld;
+}
+
 void CCameraManager::Update(void)
 {
 	// 임의의 카메라 사각형을 두고 그 범위에 오면 조금더 카메라 움직이게 하기.

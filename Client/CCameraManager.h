@@ -10,6 +10,7 @@ public:
 	void  LateUpdate(void);
 
 	XFORM GetWorldMatrix(void); // 모든 카메라 움직임 Matrix 반환
+	D3DXMATRIX GetWorldD3DMatrix(void);
 
 public:
 	bool IsPressing(void) const { return m_bIsPressing; }

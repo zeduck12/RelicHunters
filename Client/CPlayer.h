@@ -61,10 +61,10 @@ public:
 	void ShootBoomerang(void);
 
 public:
+	void UpdatePosinInfo(void);
 	void TrackMousePos(void);
 	void CheckKeyState(void);
 	void DetectDirection(void);
-	void UpdatePosinInfo(void);
 	void Dash(void);
 	void ShowSpectrum(const HDC& _hdc);
 
@@ -90,5 +90,7 @@ private:
 	// 현재 보유하고 있는 무기
 	unique_ptr<CWeapon> m_pWeapon;
 
+
+	int  i = 0;
 };
 

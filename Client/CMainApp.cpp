@@ -7,6 +7,8 @@
 #include "CMonster.h"
 #include "CSceneManager.h"
 #include "CKeyManager.h"
+#include "CGraphicDevice.h"
+#include "CTextureManager.h"
 
 CMainApp::CMainApp()
 	:
@@ -21,6 +23,21 @@ CMainApp::~CMainApp()
 
 void CMainApp::Ready()
 {
+	// 장치 초기화
+	if (E_FAIL == GET_SINGLE(CGraphicDevice)->Ready())
+		return;
+
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/Tile%d.png", L"Terrain", L"Tile", 3))
+		return;
+
+	// Tileset
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/tileset%d.png", L"Terrain", L"Tileset", 5))
+		return;
+
+	// Player Test Image
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/idle_%d.png", L"Player", L"Idle", 12))
+		return;
+
 	m_hDC = GetDC(g_hWND);
 	SetGraphicsMode(m_hDC, GM_ADVANCED);
 
@@ -44,7 +61,6 @@ void CMainApp::LateUpdate()
 
 void CMainApp::Render()
 {
-	ClearScreen();
 	GET_SINGLE(CSceneManager)->Render(m_hDC);
 }
 
@@ -55,9 +71,5 @@ void CMainApp::Release()
 	CSceneManager::Destroy_Instance();
 }
 
-void CMainApp::ClearScreen(void)
-{
-	Rectangle(m_hDC,0,0, 800, 600);
-}
 
 

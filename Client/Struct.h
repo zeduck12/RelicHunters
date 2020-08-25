@@ -27,3 +27,20 @@ typedef struct tagLineInfo
 	LINEPOS tLPoint; 
 	LINEPOS tRPoint; 
 }LINEINFO;
+
+typedef struct tagTile
+{
+	D3DXVECTOR3	vPos;		// 위치
+	D3DXVECTOR3	vSize;		// 크기
+	int	iDrawID;	// 드로우 아이디
+	int	iOption;	// 옵션
+	int		iFrameX;	// 출력 영역 X
+	int		iFrameY;	// 출력 영역 Y
+}TILE;
+
+typedef struct tagTexture
+{
+	LPDIRECT3DTEXTURE9 pTexture; // 이미지 한장을 제어하기 위한 컴객체. 
+	D3DXIMAGE_INFO tImageInfo;   //이미지의 정보를 담아둘 구조체. 
+
+}TEXINFO;

@@ -1,5 +1,11 @@
 #pragma once
 
+#ifdef _AFX
+#define ERR_MSG(Message) AfxMessageBox(Message)
+#else
+#define ERR_MSG(Message) MessageBox(nullptr,Message,L"System_Error",MB_OK)
+#endif
+
 // KEY ฐüทร
 #define		KEY_LBUTTON		0x00000001
 #define		KEY_RBUTTON		0x00000002 

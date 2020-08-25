@@ -14,9 +14,6 @@ public:
 	void Render();
 	void Release();
 
-public:
-	void ClearScreen(void);
-
 private:
 	HDC m_hDC;
 

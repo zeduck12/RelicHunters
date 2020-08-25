@@ -14,6 +14,8 @@
 #include "CWeapon.h"
 #include "CTimeManager.h"
 #include "CCameraManager.h"
+#include "CGraphicDevice.h"
+#include "CTextureManager.h"
 
 CPlayer::CPlayer()
 	:
@@ -40,7 +42,7 @@ void CPlayer::Ready()
 {
 	m_tInfo.vPos = {200.f, 200.f, 0.f};
 	m_tInfo.vDir = {1.0f, 0.f, 0.f};
-	m_tInfo.vSize = { 100.f, 100.f, 0.f };
+	m_tInfo.vSize = { 50.f, 50.f, 0.f };
 	m_tInfo.vLook = {1.f, 0.f, 0.f};
 
 	m_fSpeed = 4.f;
@@ -122,17 +124,53 @@ void CPlayer::Render(const HDC& _hdc)
 		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
 	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
 
+
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Player", L"Idle", 0);
+	if (nullptr == pTexInfo)
+		return;
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	if(m_eDir == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+	D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);
+	matWorld = matScale * matTrans ;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	
+
 	// 무기 그리기
 	m_pWeapon->Render(_hdc);
 
 	if (GET_SINGLE(CCameraManager)->IsPressing() == true)
 	{
+		HPEN myPen, oldPen;
+		HBRUSH myBrush, oldBrush;
+		myPen = CreatePen(PS_DASHDOTDOT, 1, RGB(255, 0, 0));
+		oldPen = (HPEN)SelectObject(_hdc, myPen);
+		myBrush = CreateSolidBrush(RGB(255, 0, 0));
+		oldBrush = (HBRUSH)SelectObject(_hdc, myBrush);
+
 		// 포신그리기
 		MoveToEx(_hdc, (int)m_tPosin.tLPoint.fX, (int)m_tPosin.tLPoint.fY, nullptr);
 		LineTo(_hdc, (int)m_tPosin.tRPoint.fX, (int)m_tPosin.tRPoint.fY);
 		// 포신 머리판
 		Ellipse(_hdc, (int)m_tPosin.tRPoint.fX - 5, (int)m_tPosin.tRPoint.fY - 5,
 			(int)m_tPosin.tRPoint.fX + 5, (int)m_tPosin.tRPoint.fY + 5);
+
+
+		SelectObject(_hdc, oldPen);
+		SelectObject(_hdc, oldBrush);
+		//쓰고난 펜을 삭제해준다.
+		DeleteObject(myPen);
+		DeleteObject(myBrush);
+
 	}
 
 	TCHAR str[10] = {};

@@ -103,6 +103,24 @@
     <Filter Include="01.CObj\013.Moster\State">
       <UniqueIdentifier>{4909bac7-c109-415d-854f-7157985679c6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="03.Texture">
+      <UniqueIdentifier>{6d06e1f4-53e6-4a71-931d-4be085c992da}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Texture\Single">
+      <UniqueIdentifier>{586c1cbb-9717-4f8e-a6df-68fe62acc49e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Texture\Multi">
+      <UniqueIdentifier>{91277170-6344-46b2-9e87-dd2e1407cc87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="04.CGraphicDevice">
+      <UniqueIdentifier>{58b19a43-c958-4cee-8a13-816b47f0b23d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="03.Texture\TextureManager">
+      <UniqueIdentifier>{38515ec4-7885-4c81-81a8-06200274902d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\MapManager">
+      <UniqueIdentifier>{33b16aa7-8a66-4ff6-ba8c-ce41407560f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -201,6 +219,24 @@
     <ClInclude Include="CCameraManager.h">
       <Filter>97.Manager\CameraManager</Filter>
     </ClInclude>
+    <ClInclude Include="CTexture.h">
+      <Filter>03.Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="CSingleTexture.h">
+      <Filter>03.Texture\Single</Filter>
+    </ClInclude>
+    <ClInclude Include="CGraphicDevice.h">
+      <Filter>04.CGraphicDevice</Filter>
+    </ClInclude>
+    <ClInclude Include="CMultiTexture.h">
+      <Filter>03.Texture\Multi</Filter>
+    </ClInclude>
+    <ClInclude Include="CTextureManager.h">
+      <Filter>03.Texture\TextureManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CMapManager.h">
+      <Filter>97.Manager\MapManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -274,6 +310,24 @@
     </ClCompile>
     <ClCompile Include="CCameraManager.cpp">
       <Filter>97.Manager\CameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CTexture.cpp">
+      <Filter>03.Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="CSingleTexture.cpp">
+      <Filter>03.Texture\Single</Filter>
+    </ClCompile>
+    <ClCompile Include="CGraphicDevice.cpp">
+      <Filter>04.CGraphicDevice</Filter>
+    </ClCompile>
+    <ClCompile Include="CMultiTexture.cpp">
+      <Filter>03.Texture\Multi</Filter>
+    </ClCompile>
+    <ClCompile Include="CTextureManager.cpp">
+      <Filter>03.Texture\TextureManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CMapManager.cpp">
+      <Filter>97.Manager\MapManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
