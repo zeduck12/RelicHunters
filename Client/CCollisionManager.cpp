@@ -24,6 +24,31 @@ bool CCollisionManager::CollideBullet(CObj* _pDstObj, CObj* _SrcObj)
 
 	return false;
 }
+bool CCollisionManager::CollideTileBullet(TILE* _pTile, CObj* _SrcObj)
+{
+	DO_IF_IS_NOT_VALID_OBJ(_SrcObj)
+		return false;
+
+	RECT rc = {};
+	RECT rcDst = 
+	{
+		_pTile->vPos.x - (128.f * 0.5f),
+		_pTile->vPos.y - (128.f * 0.5f),
+		_pTile->vPos.x + (128.f * 0.5f),
+		_pTile->vPos.y + (128.f * 0.5f)
+	};
+
+	RECT rcSrc = _SrcObj->GetRect();
+
+	if (IntersectRect(&rc, &rcDst, &rcSrc) == TRUE)
+	{
+		// 데미지 주고 총알은 없어짐.
+		_SrcObj->SetIsValid(false);
+		return true;
+	}
+
+	return false;
+}
 // 플레이어와 몬스터
 bool CCollisionManager::CollidePlayerMonster(CObj* _pDstObj, CObj* _SrcObj)
 {
@@ -169,6 +194,50 @@ bool CCollisionManager::CollideLineToLineReturn(LINEINFO& _DstLine, LINEINFO& _S
 	_pOut->fY = fAP1.fY + fT * (float)(fAP2.fY - fAP1.fY);
 
 	return true;
+}
+
+// 플레이어 타일
+bool CCollisionManager::CollideCharacterTile(CObj* _pDstObj, TILE* _pTile)
+{
+	DO_IF_IS_NOT_VALID_OBJ(_pDstObj)
+		return false;
+
+	RECT rcDst = _pDstObj->GetRect(); // 플레이어
+	RECT rcSrc =					  // Tile
+	{
+		_pTile->vPos.x - (128.f * 0.5f),
+		_pTile->vPos.y - (128.f * 0.5f),
+		_pTile->vPos.x + (128.f * 0.5f),
+		_pTile->vPos.y + (128.f * 0.5f)
+	};
+
+	RECT rc = {};
+	if (IntersectRect(&rc, &rcSrc, &rcDst) == TRUE)
+	{
+		// 충돌했다면 player 밀쳐내기
+		int iVertical = rc.bottom - rc.top;
+		int iHorizontal = rc.right - rc.left;
+
+		if (iHorizontal > iVertical)
+		{
+			if (_pDstObj->GetY() < _pTile->vPos.y)
+				_pDstObj->SetY(_pDstObj->GetY() - iVertical);
+			else if (_pDstObj->GetY() > _pTile->vPos.y)
+				_pDstObj->SetY(_pDstObj->GetY() + iVertical);
+		}
+		else
+		{
+			if (_pDstObj->GetX() > _pTile->vPos.x)
+				_pDstObj->SetX(_pDstObj->GetX() + iHorizontal);
+			else if (_pDstObj->GetX() < _pTile->vPos.x)
+				_pDstObj->SetX(_pDstObj->GetX() - iHorizontal);
+		}
+
+		return true;
+	}
+
+	return false;
+	
 }
 
 CCollisionManager::~CCollisionManager()

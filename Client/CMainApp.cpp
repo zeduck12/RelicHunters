@@ -38,6 +38,10 @@ void CMainApp::Ready()
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/idle_%d.png", L"Player", L"Idle", 12))
 		return;
 
+	// Object
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/structure%d.png", L"Terrain", L"Object", 2)))
+		return;
+
 	m_hDC = GetDC(g_hWND);
 	SetGraphicsMode(m_hDC, GM_ADVANCED);
 
@@ -69,6 +73,9 @@ void CMainApp::Release()
 	ReleaseDC(g_hWND, m_hDC);
 	CKeyManager::Destroy_Instance();
 	CSceneManager::Destroy_Instance();
+	CTextureManager::Destroy_Instance();
+	CGraphicDevice::Destroy_Instance();
+	CCollisionManager::Destroy_Instance();
 }
 
 

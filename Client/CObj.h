@@ -14,6 +14,7 @@ public:
 
 public:
 	INFO* GetInfo(void) { return &m_tInfo ; }
+	void  SetInfo(const INFO& _rOther) { m_tInfo = _rOther; }
 	RECT  GetRect(void) const
 	{ 
 		RECT rc =
@@ -48,9 +49,8 @@ public:
 	void SetPosVector(D3DXVECTOR3 _rVecPos) { m_tInfo.vPos = _rVecPos; }
 
 protected:
-	bool m_bIsValid;
-
 	INFO m_tInfo;
+	bool m_bIsValid;
 	float m_fSpeed;
 	float m_fDegree;
 

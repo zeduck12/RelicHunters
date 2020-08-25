@@ -175,6 +175,7 @@
     <ClInclude Include="CSceneManager.h" />
     <ClInclude Include="CShotGun.h" />
     <ClInclude Include="CSingleTexture.h" />
+    <ClInclude Include="CStructure.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTextureManager.h" />
     <ClInclude Include="CTimeManager.h" />
@@ -213,6 +214,7 @@
     <ClCompile Include="CSceneManager.cpp" />
     <ClCompile Include="CShotGun.cpp" />
     <ClCompile Include="CSingleTexture.cpp" />
+    <ClCompile Include="CStructure.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTextureManager.cpp" />
     <ClCompile Include="CTimeManager.cpp" />

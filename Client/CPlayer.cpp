@@ -138,6 +138,7 @@ void CPlayer::Render(const HDC& _hdc)
 	else
 		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
 
+	// 20은 렉트 중심에 이미지 맞추기 위해.
 	D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y - 20, 0.f);
 	matWorld = matScale * matTrans ;
 

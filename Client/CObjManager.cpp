@@ -55,6 +55,7 @@ void CObjManager::Update(void)
 
 void CObjManager::LateUpdate(void)
 {
+	GET_SINGLE(CMapManager)->LateUpdate();
 	GET_SINGLE(CPlayerManager)->LateUpdate();
 	GET_SINGLE(CCameraManager)->LateUpdate();
 	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->LateUpdate(); } }

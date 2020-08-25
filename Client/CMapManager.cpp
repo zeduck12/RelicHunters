@@ -2,6 +2,10 @@
 #include "CMapManager.h"
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
+#include "CStructure.h"
+#include "CPlayerManager.h"
+#include "CPlayer.h"
+#include "CCollisionManager.h"
 
 DEFINITION_SINGLETON(CMapManager)
 
@@ -17,6 +21,19 @@ bool CMapManager::Ready(void)
 		return false;
 
 	return true;
+}
+
+void CMapManager::LateUpdate(void)
+{
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+
+	for (auto& pTile : m_vecCreateTile)
+	{
+		CCollisionManager::CollideCharacterTile(pPlayer, pTile);
+	}
+
+
+
 }
 
 void CMapManager::Render(void)
@@ -65,12 +82,17 @@ void CMapManager::Render(void)
 
 	}
 
+	// 맵 조형물 
+	for (auto& pObj : m_vecStructure)
+	{
+		pObj->Render();
+	}
+
 }
 
 void CMapManager::Render(D3DXMATRIX _rMat)
 {
 	TCHAR szBuf[MAX_PATH] = L"";
-	int iIndex = 0;
 	for (auto& pTile : m_vecTile)
 	{
 		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tile", pTile->iDrawID);
@@ -115,8 +137,8 @@ void CMapManager::Render(D3DXMATRIX _rMat)
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc,
 			&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
-
 	}
+
 }
 
 void CMapManager::Release(void)
@@ -133,8 +155,16 @@ void CMapManager::Release(void)
 
 	m_vecCreateTile.clear();
 	m_vecCreateTile.shrink_to_fit();
+
+	for (auto& pObj : m_vecStructure)
+		Safe_Delete(pObj);
+
+	m_vecStructure.clear();
+	m_vecStructure.shrink_to_fit();
+
 }
 
+// 나중에 파일 경로 받아서 스테이지마다 다른 맵 생성되게 해주기.
 bool CMapManager::LoadFile(void)
 {
 	// 맵툴에서 작업한 Data파일에 있는 맵 정보 벡터에 넣어주기.
@@ -172,6 +202,39 @@ bool CMapManager::LoadFile(void)
 		ReadFile(hFile, &pTile->iFrameX, sizeof(int), &dwByte, nullptr);
 		ReadFile(hFile, &pTile->iFrameY, sizeof(int), &dwByte, nullptr);
 		m_vecCreateTile.emplace_back(pTile);
+	}
+
+	CStructure* pObj = nullptr;
+	INFO tInfo = {};
+	ZeroMemory(&tInfo, sizeof(INFO));
+	bool  bIsValid = false;
+	float fSpeed   = 0.f;
+	float fDegree  = 0.f;
+	int   iDrawID  = 0;
+	int	  iCurHp   = 0;
+	int	  iMaxHp = 0;
+
+	ReadFile(hFile, &iTileCount, sizeof(int), &dwByte, nullptr);
+	for (int i = 0; i < iTileCount; i++)
+	{
+		pObj = new CStructure;
+		ReadFile(hFile, &tInfo, sizeof(INFO), &dwByte, nullptr);
+		ReadFile(hFile, &bIsValid, sizeof(bool), &dwByte, nullptr);
+		ReadFile(hFile, &fSpeed, sizeof(float), &dwByte, nullptr);
+		ReadFile(hFile, &fDegree, sizeof(float), &dwByte, nullptr);
+		ReadFile(hFile, &iDrawID, sizeof(int), &dwByte, nullptr);
+		ReadFile(hFile, &iCurHp, sizeof(int), &dwByte, nullptr);
+		ReadFile(hFile, &iMaxHp, sizeof(int), &dwByte, nullptr);
+
+		pObj->SetInfo(tInfo);
+		pObj->SetIsValid(bIsValid);
+		pObj->SetSpeed(fSpeed);
+		pObj->SetDegree(fDegree);
+		pObj->SetDrawID(iDrawID);
+		pObj->SetCurHp(iCurHp);
+		pObj->SetMaxHp(iMaxHp);
+
+		m_vecStructure.emplace_back(pObj);
 	}
 
 	CloseHandle(hFile);

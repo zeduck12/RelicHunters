@@ -4,6 +4,8 @@
 #include "CObjManager.h"
 #include "CPlayerManager.h"
 #include "CCameraManager.h"
+#include "CMapManager.h"
+#include "CStructure.h"
 
 CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID)
 	:
@@ -78,7 +80,15 @@ void CBullet::LateUpdate()
 	{
 		CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 		CCollisionManager::CollideBullet(pPlayer, this);
+
 	}
+
+	// °øÅë
+	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
+		CCollisionManager::CollideBullet(pObj, this);
+
+	for(auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
+		CCollisionManager::CollideTileBullet(pTile, this);
 
 
 }

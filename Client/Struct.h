@@ -34,8 +34,8 @@ typedef struct tagTile
 	D3DXVECTOR3	vSize;		// 크기
 	int	iDrawID;	// 드로우 아이디
 	int	iOption;	// 옵션
-	int		iFrameX;	// 출력 영역 X
-	int		iFrameY;	// 출력 영역 Y
+	int	iFrameX;	// 출력 영역 X
+	int	iFrameY;	// 출력 영역 Y
 }TILE;
 
 typedef struct tagTexture

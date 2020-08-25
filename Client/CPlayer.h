@@ -90,7 +90,5 @@ private:
 	// 현재 보유하고 있는 무기
 	unique_ptr<CWeapon> m_pWeapon;
 
-
-	int  i = 0;
 };
 

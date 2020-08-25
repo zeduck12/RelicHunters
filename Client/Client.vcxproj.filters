@@ -121,6 +121,9 @@
     <Filter Include="97.Manager\MapManager">
       <UniqueIdentifier>{33b16aa7-8a66-4ff6-ba8c-ce41407560f6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\014.Structure">
+      <UniqueIdentifier>{c0f2530b-623d-4302-9039-743b739757e1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -237,6 +240,9 @@
     <ClInclude Include="CMapManager.h">
       <Filter>97.Manager\MapManager</Filter>
     </ClInclude>
+    <ClInclude Include="CStructure.h">
+      <Filter>01.CObj\014.Structure</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -328,6 +334,9 @@
     </ClCompile>
     <ClCompile Include="CMapManager.cpp">
       <Filter>97.Manager\MapManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CStructure.cpp">
+      <Filter>01.CObj\014.Structure</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
