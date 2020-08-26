@@ -38,3 +38,16 @@ public:
 	virtual void Update(CPlayer* _pPlayer) override;
 	virtual void Render(CPlayer* _pPlayer) override;
 };
+
+
+class PlayerAttacked : public CPlayerState
+{
+public:
+	DECLARE_SINGLETON(PlayerAttacked)
+
+public:
+	// CPlayerState을(를) 통해 상속됨
+	virtual void Update(CPlayer* _pPlayer) override;
+	virtual void Render(CPlayer* _pPlayer) override;
+
+};

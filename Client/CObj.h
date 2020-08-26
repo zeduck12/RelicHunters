@@ -50,6 +50,7 @@ public:
 	void  SetDegree(float _fDegree) { m_fDegree = _fDegree ; }
 	D3DXVECTOR3 GetPosVector(void) const { return m_tInfo.vPos; }
 	void SetPosVector(D3DXVECTOR3 _rVecPos) { m_tInfo.vPos = _rVecPos; }
+	IMAGE::ID GetImageID(void) const { return m_eImageID; }
 
 public:
 	CAnimation* CreateAnimation(const string& _strTag);
@@ -70,6 +71,9 @@ protected:
 	bool m_bIsValid;
 	float m_fSpeed;
 	float m_fDegree;
+
+	// 이미지 셋팅 ID
+	IMAGE::ID	  m_eImageID;
 
 	CAnimation* m_pAnimation    = nullptr;
 	vector<TEXINFO*>    m_pVecTextureInfo ;

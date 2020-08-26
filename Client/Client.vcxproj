@@ -159,6 +159,7 @@
     <ClInclude Include="CGame.h" />
     <ClInclude Include="CGraphicDevice.h" />
     <ClInclude Include="CGrenade.h" />
+    <ClInclude Include="CImageSetting.h" />
     <ClInclude Include="CInventory.h" />
     <ClInclude Include="CKeyManager.h" />
     <ClInclude Include="Client.h" />
@@ -201,6 +202,7 @@
     <ClCompile Include="CGame.cpp" />
     <ClCompile Include="CGraphicDevice.cpp" />
     <ClCompile Include="CGrenade.cpp" />
+    <ClCompile Include="CImageSetting.cpp" />
     <ClCompile Include="CInventory.cpp" />
     <ClCompile Include="CKeyManager.cpp" />
     <ClCompile Include="Client.cpp" />

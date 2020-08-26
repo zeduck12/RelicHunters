@@ -8,6 +8,10 @@
 #include "CStructure.h"
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
+#include "CPlayer.h"
+#include "CPlayerState.h"
+#include "CMonster.h"
+#include "CMonsterState.h"
 
 CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID)
 	:
@@ -75,14 +79,25 @@ void CBullet::LateUpdate()
 	if (m_eObjID == OBJ::PLAYER)
 	{
 		for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
-			CCollisionManager::CollideBullet(pMonster.get(), this);
+		{
+			if (CCollisionManager::CollideBullet(pMonster.get(), this) == true)
+			{
+				CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
+				pMonst->SetState(new AttackedState());
+			}
+		}
 	}
 	
 	if (m_eObjID == OBJ::MONSTER)
 	{
-		CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
-		CCollisionManager::CollideBullet(pPlayer, this);
-
+		CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
+		if (CCollisionManager::CollideBullet(pObj, this) == true)
+		{
+			// 피격 애니메이션
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+			pPlayer->SetState(GET_SINGLE(PlayerAttacked));
+			pPlayer->SetIsAttacked(true);
+		}
 	}
 
 	// 공통

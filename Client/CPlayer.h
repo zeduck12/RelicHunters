@@ -2,6 +2,7 @@
 #include "CObj.h"
 #include "CWeapon.h"
 
+class CImageSetting;
 class CPlayerState;
 class CPlayer
 	: public CObj
@@ -18,6 +19,8 @@ public:
 	virtual void Release()						override;
 
 public:
+	bool IsAttacked(void) const { return m_bIsAttacked; }
+	void SetIsAttacked(bool _bIsAttacked) { m_bIsAttacked = _bIsAttacked; }
 	float GetShootingDegree(void) const { return m_fShootingDegree; }
 	const D3DXVECTOR3& GetDirectionVector(void) const { return (const D3DXVECTOR3&)m_tInfo.vDir; }
 	DIRECTION::ID GetDirection(void) const { return m_eDir; }
@@ -73,6 +76,8 @@ public:
 	void ShowSpectrum(const HDC& _hdc);
 
 private:
+	bool m_bIsAttacked;
+
 	float m_fStackTime; // 누적시간 담는 용도의 변수.
 
 	// 현재 방향
@@ -91,8 +96,8 @@ private:
 	bool m_bIsDash;
 	float m_fAddSpeed;
 
-	// 현재 보유하고 있는 무기
-	unique_ptr<CWeapon> m_pWeapon;
+	unique_ptr<CWeapon> m_pWeapon;				// 현재 보유하고 있는 무기
+	unique_ptr<CImageSetting> m_pImageSetting;	// 이미지 셋팅 객체
 private:
 	// 현재 플레이어 상태
 	CPlayerState* m_pCurState = nullptr;

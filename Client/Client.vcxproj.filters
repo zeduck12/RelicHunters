@@ -130,6 +130,9 @@
     <Filter Include="01.CObj\011.Player\StatePattern">
       <UniqueIdentifier>{6452066d-13d7-43ad-9c6e-b2740c2adfa4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="06.ImageSetting">
+      <UniqueIdentifier>{44d5fbf0-a4e5-4db7-b6a5-57c71de3094b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -255,6 +258,9 @@
     <ClInclude Include="CPlayerState.h">
       <Filter>01.CObj\011.Player\StatePattern</Filter>
     </ClInclude>
+    <ClInclude Include="CImageSetting.h">
+      <Filter>06.ImageSetting</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -355,6 +361,9 @@
     </ClCompile>
     <ClCompile Include="CPlayerState.cpp">
       <Filter>01.CObj\011.Player\StatePattern</Filter>
+    </ClCompile>
+    <ClCompile Include="CImageSetting.cpp">
+      <Filter>06.ImageSetting</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

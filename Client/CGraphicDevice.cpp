@@ -77,12 +77,12 @@ HRESULT CGraphicDevice::Ready(void)
 		return E_FAIL;
 	}
 
-
 	return S_OK;
 }
 
 void CGraphicDevice::Release(void)
 {
+
 	Safe_Release(m_pFont);
 	Safe_Release(m_pSprite);
 	Safe_Release(m_pDevice);
@@ -100,7 +100,7 @@ void CGraphicDevice::RenderBegin(void)
 
 void CGraphicDevice::RenderEnd(HWND _hWnd)
 {
-	m_pSprite->End();
+	//m_pSprite->End();
 	m_pDevice->EndScene();
 	m_pDevice->Present(nullptr, nullptr, _hWnd, nullptr);
 }

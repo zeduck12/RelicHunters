@@ -7,6 +7,11 @@ namespace OBJ
 	enum ID { MONSTER, PLAYER, BULLET, STRUCTURE, OBJ_UI, OBJ_MOUSE, OBJ_END };
 }
 
+namespace IMAGE
+{
+	enum ID { PLAYER, DUCK, KAMIKAZE, KAMIKAZE_FLY, END};
+}
+
 namespace DIRECTION
 {
 	enum ID { LEFT, RIGHT, UP, DOWN, END };

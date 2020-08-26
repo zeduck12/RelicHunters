@@ -18,6 +18,7 @@
 #include "CTextureManager.h"
 #include "CAnimation.h"
 #include "CPlayerState.h"
+#include "CImageSetting.h"
 
 CPlayer::CPlayer()
 	:
@@ -29,7 +30,9 @@ CPlayer::CPlayer()
 	m_bIsDash{ false },
 	m_pWeapon{ nullptr },
 	m_fStackTime{ 0.f },
-	m_pCurState{ nullptr }
+	m_pCurState{ nullptr },
+	m_bIsAttacked{ false },
+	m_pImageSetting{ nullptr }
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tPosin, sizeof(LINEINFO));
@@ -43,6 +46,8 @@ CPlayer::~CPlayer()
 
 void CPlayer::Ready()
 {
+	m_eImageID =IMAGE::PLAYER;
+
 	m_tInfo.vPos = {200.f, 200.f, 0.f};
 	m_tInfo.vDir = {1.0f, 0.f, 0.f};
 	m_tInfo.vSize = { 50.f, 50.f, 0.f };
@@ -72,12 +77,9 @@ void CPlayer::Ready()
 	m_pWeapon->Ready();
 
 	// 애니메이션 생성
-	CAnimation* pAni = CreateAnimation("PlayerAnimation");
-	AddAnimationClip("Idle", ANIMATION::LOOP, 1.2f, 12, 0, 12, 0.f, L"Player", L"Idle", L"../Texture/Player/Idle/idle_%d.png");
-	AddAnimationClip("Move", ANIMATION::ONCE_RETURN, 0.6f, 6, 0, 6, 0.f, L"Player", L"Move", L"../Texture/Player/Move/move_%d.png");
-	
-	if (pAni)
-		pAni = nullptr; 
+	m_pImageSetting = make_unique<CImageSetting>(this, "PlayerAnimation");
+	if (!m_pImageSetting->Ready())
+		return;
 
 	// 상태초기화
 	if (m_pCurState == nullptr)
@@ -135,8 +137,6 @@ void CPlayer::LateUpdate()
 
 void CPlayer::Render(const HDC& _hdc)
 {
-	if (m_bIsDash)
-		ShowSpectrum(_hdc);
 
 	// Line으로 그리기
 	MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
@@ -144,8 +144,10 @@ void CPlayer::Render(const HDC& _hdc)
 		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
 	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
 
-	// 상태 Render
-	m_pCurState->Render(this);
+	if (m_bIsDash)
+		ShowSpectrum(_hdc);
+	else
+		m_pCurState->Render(this); // 상태 Render
 
 	// 무기 그리기
 	m_pWeapon->Render(_hdc);
@@ -154,7 +156,7 @@ void CPlayer::Render(const HDC& _hdc)
 	{
 		HPEN myPen, oldPen;
 		HBRUSH myBrush, oldBrush;
-		myPen = CreatePen(PS_DASHDOTDOT, 1, RGB(255, 0, 0));
+		myPen = CreatePen(PS_SOLID, 1, RGB(255, 0, 0));
 		oldPen = (HPEN)SelectObject(_hdc, myPen);
 		myBrush = CreateSolidBrush(RGB(255, 0, 0));
 		oldBrush = (HBRUSH)SelectObject(_hdc, myBrush);
@@ -185,6 +187,7 @@ void CPlayer::Release()
 {
 	PlayerIdleState::Destroy_Instance();
 	PlayerMoveState::Destroy_Instance();
+	PlayerAttacked::Destroy_Instance();
 }
 
 void CPlayer::ShootBoomerang(void)
@@ -227,22 +230,27 @@ void CPlayer::CheckKeyState(void)
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_A))
 	{
 		m_tInfo.vPos.x -= m_fSpeed;
-		SetState(GET_SINGLE(PlayerMoveState));
+		if(m_bIsAttacked == false)
+			SetState(GET_SINGLE(PlayerMoveState));
+
 	}
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_D))
 	{
 		m_tInfo.vPos.x += m_fSpeed;
-		SetState(GET_SINGLE(PlayerMoveState));
+		if (m_bIsAttacked == false)
+			SetState(GET_SINGLE(PlayerMoveState));
 	}
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_W))
 	{
 		m_tInfo.vPos.y -= m_fSpeed;
-		SetState(GET_SINGLE(PlayerMoveState));
+		if (m_bIsAttacked == false)
+			SetState(GET_SINGLE(PlayerMoveState));
 	}
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_S))
 	{
 		m_tInfo.vPos.y += m_fSpeed;
-		SetState(GET_SINGLE(PlayerMoveState));
+		if (m_bIsAttacked == false)
+			SetState(GET_SINGLE(PlayerMoveState));
 	}
 
 	// 나중에 크기 * 자전 * 이동 * 공전 * 부모
@@ -350,7 +358,7 @@ void CPlayer::UpdatePosinInfo(void)
 
 void CPlayer::Dash(void)
 {
-	if (m_fAddSpeed >= 20.f)
+	if (m_fAddSpeed >= 18.f)
 	{
 		m_fAddSpeed = 0.f;
 		m_bIsDash = false;
@@ -367,39 +375,96 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 
 	if (m_fAddSpeed >= 5.f && m_fAddSpeed <= 6.f)
 	{
-		if (m_eDir == DIRECTION::RIGHT)
-			Rectangle(_hdc, GetLeft() - 150, GetTop(), GetRight() - 150, GetBottom());
-		else if (m_eDir == DIRECTION::LEFT)
-			Rectangle(_hdc, GetLeft() + 150, GetTop(), GetRight() + 150, GetBottom());
-		else if (m_eDir == DIRECTION::UP)
-			Rectangle(_hdc, GetLeft(), GetTop() - 150, GetRight(), GetBottom() - 150);
-		else if (m_eDir == DIRECTION::DOWN)
-			Rectangle(_hdc, GetLeft(), GetTop() + 150, GetRight(), GetBottom() + 150);
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", L"Dash", 2);
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		if (this->GetDirection() == DIRECTION::LEFT)
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 75.f);
+		vSpectrumPos.y -= 20.f;
+
+		// 20은 렉트 중심에 이미지 맞추기 위해.
+		D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
 	
 	if (m_fAddSpeed >= 3.f && m_fAddSpeed <= 8.f)
 	{
-		if (m_eDir == DIRECTION::RIGHT)
-			Rectangle(_hdc, GetLeft() - 100, GetTop(), GetRight() - 100, GetBottom());
-		else if (m_eDir == DIRECTION::LEFT)
-			Rectangle(_hdc, GetLeft() + 100, GetTop(), GetRight() + 100, GetBottom());
-		else if (m_eDir == DIRECTION::UP)
-			Rectangle(_hdc, GetLeft(), GetTop() - 100, GetRight(), GetBottom() - 100);
-		else if (m_eDir == DIRECTION::DOWN)
-			Rectangle(_hdc, GetLeft(), GetTop() + 100, GetRight(), GetBottom() + 100);
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", L"Dash", 1);
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		if (this->GetDirection() == DIRECTION::LEFT)
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 45.f);
+		vSpectrumPos.y -= 20.f;
+
+		// 20은 렉트 중심에 이미지 맞추기 위해.
+		D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
 
 	if (m_fAddSpeed >= 1.f && m_fAddSpeed <= 10.f)
 	{
-		if (m_eDir == DIRECTION::RIGHT)
-			Rectangle(_hdc, GetLeft() - 50, GetTop(), GetRight() - 50, GetBottom());
-		else if (m_eDir == DIRECTION::LEFT)
-			Rectangle(_hdc, GetLeft() + 50, GetTop(), GetRight() + 50, GetBottom());
-		else if (m_eDir == DIRECTION::UP)
-			Rectangle(_hdc, GetLeft(), GetTop() - 50, GetRight(), GetBottom() - 50);
-		else if (m_eDir == DIRECTION::DOWN)
-			Rectangle(_hdc, GetLeft(), GetTop() + 50, GetRight(), GetBottom() + 50);
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", L"Dash", 0);
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		if (this->GetDirection() == DIRECTION::LEFT)
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 15.f);
+		vSpectrumPos.y -= 20.f;
+
+		// 20은 렉트 중심에 이미지 맞추기 위해.
+		D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
+
+	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", L"Dash", 0);
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	if (this->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+	D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos;
+	vSpectrumPos.y -= 20.f;
+
+	// 20은 렉트 중심에 이미지 맞추기 위해.
+	D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 }
 

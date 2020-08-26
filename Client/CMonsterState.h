@@ -10,7 +10,7 @@ public:
 
 public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  = 0;
-	virtual void Render(CMonster* _pMonster, const HDC& _hdc) = 0;
+	virtual void Render(CMonster* _pMonster)				  = 0;
 
 protected:
 	float m_fCoolTime  = 0.f;
@@ -31,7 +31,7 @@ public:
 public:
 	// CMonsterState을(를) 통해 상속됨
 	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
-	virtual void Render(CMonster* _pMonster, const HDC& _hdc) override;
+	virtual void Render(CMonster* _pMonster)				  override;
 };
 
 class TrackingState : public CMonsterState
@@ -42,7 +42,7 @@ public:
 
 public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
-	virtual void Render(CMonster* _pMonster, const HDC& _hdc) override;
+	virtual void Render(CMonster* _pMonster)				  override;
 };
 
 class AttackState : public CMonsterState
@@ -53,6 +53,18 @@ public:
 
 public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
-	virtual void Render(CMonster* _pMonster, const HDC& _hdc) override;
+	virtual void Render(CMonster* _pMonster)				  override;
+
+};
+
+class AttackedState : public CMonsterState
+{
+public:
+	explicit AttackedState() = default;
+	virtual ~AttackedState() = default;
+
+public:
+	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
+	virtual void Render(CMonster* _pMonster)				  override;
 
 };

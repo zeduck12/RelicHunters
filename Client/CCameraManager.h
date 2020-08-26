@@ -13,6 +13,10 @@ public:
 	D3DXMATRIX GetWorldD3DMatrix(void);
 
 public:
+
+	float GetCameraDeltaX(void) const { return m_fDeltaX; }
+	float GetCameraDeltaY(void) const { return m_fDeltaY; }
+
 	bool IsPressing(void) const { return m_bIsPressing; }
 	bool IsReduceScale(void) const { return m_bIsReduceScale; }
 	bool IsEnlargeScale(void) const { return m_bIsEnlargeScale; }

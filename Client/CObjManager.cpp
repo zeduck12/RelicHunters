@@ -12,10 +12,10 @@ DEFINITION_SINGLETON(CObjManager)
 
 CObjManager::CObjManager()
 	:
-	m_listBullets{ NULL },
-	m_listGrenades{ NULL },
-	m_listCasings{ NULL },
-	m_listMonsters{ NULL }
+	m_listBullets{ },
+	m_listGrenades{ },
+	m_listCasings{ },
+	m_listMonsters{ }
 {
 }
 
@@ -36,7 +36,15 @@ bool CObjManager::Ready(void)
 		return false;
 
 	// TEST 몬스터 생성.
-	shared_ptr<CObj> pMonster = make_shared<CMonster>(500.f, 500.f, 100.f, 100.f);
+	/*float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed = cfMosterDefaultSpeed,
+	float _fHp = cfMosterDefaultHp, IMAGE::ID _eID = IMAGE::DUCK*/
+	shared_ptr<CObj> pMonster = make_shared<CMonster>(500.f, 500.f, 100.f, 100.f,
+		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::DUCK);
+	pMonster->Ready();
+	m_listMonsters.emplace_back(pMonster);
+
+	pMonster = make_shared<CMonster>(800.f, 800.f, 50.f, 50.f,
+		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::KAMIKAZE);
 	pMonster->Ready();
 	m_listMonsters.emplace_back(pMonster);
 
@@ -86,21 +94,22 @@ void CObjManager::Render(const HDC& _hdc)
 	GET_SINGLE(CMapManager)->Render();
 	GET_SINGLE(CPlayerManager)->Render(_hdc);
 	
+	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Render(_hdc); } }
 	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Render(_hdc); } }
+	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Render(_hdc); } }
+	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }
 
 	// 카메라 움직임 결과
 	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();
 	GET_SINGLE(CGraphicDevice)->GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);
 	
+	
+	GET_SINGLE(CGraphicDevice)->GetSprite()->End(); 
 	GET_SINGLE(CGraphicDevice)->RenderEnd();
-
-
-	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Render(_hdc); } }
-	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Render(_hdc); } }
-	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }
-
+	
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);
+
 }
 
 void CObjManager::Release(void)
