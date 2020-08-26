@@ -127,6 +127,9 @@
     <Filter Include="05.Animation">
       <UniqueIdentifier>{121aee16-aff6-4670-bf31-d4815f7034a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\011.Player\StatePattern">
+      <UniqueIdentifier>{6452066d-13d7-43ad-9c6e-b2740c2adfa4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -249,6 +252,9 @@
     <ClInclude Include="CAnimation.h">
       <Filter>05.Animation</Filter>
     </ClInclude>
+    <ClInclude Include="CPlayerState.h">
+      <Filter>01.CObj\011.Player\StatePattern</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -346,6 +352,9 @@
     </ClCompile>
     <ClCompile Include="CAnimation.cpp">
       <Filter>05.Animation</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerState.cpp">
+      <Filter>01.CObj\011.Player\StatePattern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

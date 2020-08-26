@@ -85,6 +85,8 @@ void CObjManager::Render(const HDC& _hdc)
 
 	GET_SINGLE(CMapManager)->Render();
 	GET_SINGLE(CPlayerManager)->Render(_hdc);
+	
+	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Render(_hdc); } }
 
 	// 카메라 움직임 결과
 	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();
@@ -93,20 +95,6 @@ void CObjManager::Render(const HDC& _hdc)
 	GET_SINGLE(CGraphicDevice)->RenderEnd();
 
 
-	D3DXVECTOR3 v[2]
-		=
-	{
-		D3DXVECTOR3(0, 0, 0),
-		D3DXVECTOR3(300, 300, 0)
-	};
-
-	LPD3DXLINE pLine = nullptr;
-	D3DXCreateLine(GET_SINGLE(CGraphicDevice)->GetDevice(), &pLine);
-	pLine->Begin();
-	pLine->DrawTransform(v, 2, &matWorld, D3DCOLOR_ARGB(255, 255, 0, 0));
-	pLine->End();
-
-	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Render(_hdc); } }
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Render(_hdc); } }
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Render(_hdc); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }

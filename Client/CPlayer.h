@@ -2,6 +2,7 @@
 #include "CObj.h"
 #include "CWeapon.h"
 
+class CPlayerState;
 class CPlayer
 	: public CObj
 {
@@ -58,6 +59,9 @@ public:
 	}
 
 public:
+	void SetState(CPlayerState* _pState) { m_pCurState = _pState; }
+
+public:
 	void ShootBoomerang(void);
 
 public:
@@ -89,6 +93,9 @@ private:
 
 	// 현재 보유하고 있는 무기
 	unique_ptr<CWeapon> m_pWeapon;
+private:
+	// 현재 플레이어 상태
+	CPlayerState* m_pCurState = nullptr;
 
 };
 

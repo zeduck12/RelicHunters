@@ -17,6 +17,7 @@
 #include "CGraphicDevice.h"
 #include "CTextureManager.h"
 #include "CAnimation.h"
+#include "CPlayerState.h"
 
 CPlayer::CPlayer()
 	:
@@ -27,7 +28,8 @@ CPlayer::CPlayer()
 	m_fAddSpeed{ 1.f },
 	m_bIsDash{ false },
 	m_pWeapon{ nullptr },
-	m_fStackTime{ 0.f }
+	m_fStackTime{ 0.f },
+	m_pCurState{ nullptr }
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tPosin, sizeof(LINEINFO));
@@ -41,7 +43,7 @@ CPlayer::~CPlayer()
 
 void CPlayer::Ready()
 {
-	m_tInfo.vPos = {400.f, 300.f, 0.f};
+	m_tInfo.vPos = {200.f, 200.f, 0.f};
 	m_tInfo.vDir = {1.0f, 0.f, 0.f};
 	m_tInfo.vSize = { 50.f, 50.f, 0.f };
 	m_tInfo.vLook = {1.f, 0.f, 0.f};
@@ -71,10 +73,18 @@ void CPlayer::Ready()
 
 	// 애니메이션 생성
 	CAnimation* pAni = CreateAnimation("PlayerAnimation");
-	AddAnimationClip("Idle", ANIMATION::LOOP, 1.2f, 12, 0, 12, 0.f, L"Player", L"Idle", L"../Texture/idle_%d.png");
+	AddAnimationClip("Idle", ANIMATION::LOOP, 1.2f, 12, 0, 12, 0.f, L"Player", L"Idle", L"../Texture/Player/Idle/idle_%d.png");
+	AddAnimationClip("Move", ANIMATION::ONCE_RETURN, 0.6f, 6, 0, 6, 0.f, L"Player", L"Move", L"../Texture/Player/Move/move_%d.png");
 	
 	if (pAni)
 		pAni = nullptr; 
+
+	// 상태초기화
+	if (m_pCurState == nullptr)
+	{
+		m_pCurState = GET_SINGLE(PlayerIdleState);
+		m_eDir = DIRECTION::RIGHT;
+	}
 }
 
 int CPlayer::Update(float _fDeltaTime)
@@ -91,11 +101,8 @@ int CPlayer::Update(float _fDeltaTime)
 		Dash();
 
 	m_pWeapon->Update();
+	m_pCurState->Update(this); // 상태 업데이트
 
-	if (m_pAnimation)
-		m_pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
-
-	m_pAnimation->ChangeClip("Idle");
 
 	return 0;
 }
@@ -137,34 +144,8 @@ void CPlayer::Render(const HDC& _hdc)
 		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
 	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
 
-	
-	// Test Idle 애니메이션
-	int iFrame = 0;
-	if (m_pAnimation)
-	{
-		ANIMATION_CLIP* pClip = m_pAnimation->GetCurrentClip();
-		iFrame = pClip->iFrame; // 인덱스
-	}
-	
-	TEXINFO* pTexInfo = m_pVecTextureInfo[iFrame];
-
-	float fCenterX = float(pTexInfo->tImageInfo.Width  * 0.5f);
-	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
-
-	D3DXMATRIX matScale, matTrans, matWorld;
-	if(m_eDir == DIRECTION::LEFT)
-		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
-	else
-		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
-
-	// 20은 렉트 중심에 이미지 맞추기 위해.
-	D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y - 20, 0.f);
-	matWorld = matScale * matTrans ;
-
-	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-
-
+	// 상태 Render
+	m_pCurState->Render(this);
 
 	// 무기 그리기
 	m_pWeapon->Render(_hdc);
@@ -202,6 +183,8 @@ void CPlayer::Render(const HDC& _hdc)
 
 void CPlayer::Release()
 {
+	PlayerIdleState::Destroy_Instance();
+	PlayerMoveState::Destroy_Instance();
 }
 
 void CPlayer::ShootBoomerang(void)
@@ -242,13 +225,25 @@ void CPlayer::CheckKeyState(void)
 
 	// 플레이어 이동
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_A))
+	{
 		m_tInfo.vPos.x -= m_fSpeed;
+		SetState(GET_SINGLE(PlayerMoveState));
+	}
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_D))
+	{
 		m_tInfo.vPos.x += m_fSpeed;
+		SetState(GET_SINGLE(PlayerMoveState));
+	}
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_W))
+	{
 		m_tInfo.vPos.y -= m_fSpeed;
+		SetState(GET_SINGLE(PlayerMoveState));
+	}
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_S))
+	{
 		m_tInfo.vPos.y += m_fSpeed;
+		SetState(GET_SINGLE(PlayerMoveState));
+	}
 
 	// 나중에 크기 * 자전 * 이동 * 공전 * 부모
 	D3DXMatrixTranslation(&matParent, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);

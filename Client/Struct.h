@@ -44,3 +44,14 @@ typedef struct tagTexture
 	D3DXIMAGE_INFO tImageInfo;   //이미지의 정보를 담아둘 구조체. 
 
 }TEXINFO;
+
+typedef struct tagInfo
+{
+	D3DXVECTOR3 vPos;  // 위치벡터 
+	D3DXVECTOR3 vDir;  // 방향벡터 
+	D3DXVECTOR3 vSize; // 크기 표현할 놈.
+	D3DXVECTOR3 vLook;
+	D3DXVECTOR3 vImageSize;
+	D3DXMATRIX  mat;
+
+}INFO;

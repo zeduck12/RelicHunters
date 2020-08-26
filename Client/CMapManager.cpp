@@ -28,11 +28,7 @@ void CMapManager::LateUpdate(void)
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 
 	for (auto& pTile : m_vecCreateTile)
-	{
 		CCollisionManager::CollideCharacterTile(pPlayer, pTile);
-	}
-
-
 
 }
 
@@ -84,9 +80,7 @@ void CMapManager::Render(void)
 
 	// ¸Ê Á¶Çü¹° 
 	for (auto& pObj : m_vecStructure)
-	{
 		pObj->Render();
-	}
 
 }
 

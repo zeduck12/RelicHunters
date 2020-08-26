@@ -16,6 +16,9 @@ public:
     virtual void Render(const HDC& _hdc)         override;
 
 public:
+    bool GetWorldMatrix(D3DXMATRIX* _pOutMatrix);
+
+public:
     void SetCurWeaponID(GUN::ID _eID) { m_eCurWeaponID = _eID; }
 
 public:

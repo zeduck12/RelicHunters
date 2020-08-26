@@ -11,6 +11,8 @@
 #include "CCasing.h"
 #include "CInventory.h"
 #include "CCameraManager.h"
+#include "CTextureManager.h"
+#include "CGraphicDevice.h"
 
 CWeapon::~CWeapon()
 {
@@ -85,6 +87,44 @@ void CWeapon::Release(void)
 {
 }
 
+bool CWeapon::GetWorldMatrix(D3DXMATRIX* _pOutMatrix)
+{
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pPlayer) { return false; }
+
+	CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
+	DO_IF_IS_NOT_VALID_OBJ(pPlayer) { return false; }
+
+	D3DXMATRIX matWorld, matScale, matRotz, matMove, matRev, matParent, matOldScale;
+
+	POINT pt = {};
+	GetCursorPos(&pt);
+	ScreenToClient(g_hWND, &pt);
+
+	// 마우스 좌표
+	D3DXVECTOR3 vMouse = { float(pt.x) + pPlayer->GetX() - (WINCX >> 1), float(pt.y) + pPlayer->GetY() - (WINCY >> 1), 0.f };
+
+	// 방향에 따라 스케일 반전
+	if (vMouse.x < pPlayer->GetX())
+	{
+		D3DXMatrixScaling(&matScale, 1.f, -1.f, 1.f);
+		D3DXMatrixTranslation(&matMove, 15.f, -5.f, 0.f);
+	}
+	else if (vMouse.x > pPlayer->GetX())
+	{
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
+		D3DXMatrixTranslation(&matMove, 15.f, 5.f, 0.f);
+	}
+
+	D3DXMatrixRotationZ(&matRev, D3DXToRadian(pRealPlayer->GetShootingDegree()));
+	D3DXMatrixTranslation(&matParent, pPlayer->GetX(), pPlayer->GetY(), 0.f);
+
+	matWorld = matScale * matMove * matRev * matParent;
+	*_pOutMatrix = matWorld;
+
+	return true;
+}
+
 void CWeapon::Render(const HDC& _hdc)
 {
 	// 총 아이디에 따라 총 이미지 달라지게
@@ -98,6 +138,22 @@ void CWeapon::Render(const HDC& _hdc)
 	for (int i = 1; i < 4; i++)
 		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
 	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
+
+	// 총 그림 회전
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Pistol", 0);
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matWorld;
+	D3DXMatrixIdentity(&matWorld);
+	if (!GetWorldMatrix(&matWorld))
+		return;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
 }
 
 void CWeapon::Shoot(void)
@@ -128,8 +184,8 @@ void CWeapon::ShootDefault(void)
 
 	// Bullet 발사
 	shared_ptr<CBullet> pBullet 
-		= make_shared<CBullet>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 100.f,
-		pPlayer->GetY() + pPlayer->GetDirectionVector().y * 100.f,
+		= make_shared<CBullet>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 10.f,
+		pPlayer->GetY() + pPlayer->GetDirectionVector().y * 10.f,
 		pPlayer->GetDirectionVector(), cfDefaultBulletSpeed, pPlayer->GetShootingDegree());
 	pBullet->Ready();
 	GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);
@@ -152,8 +208,8 @@ void CWeapon::ShootShotGun(void)
 	shared_ptr<CBullet> pShotGun = nullptr;
 	for (int i = 0; i < 3; i++)
 	{
-		pShotGun = make_shared<CShotGun>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 100.f,
-			pPlayer->GetY() + pPlayer->GetDirectionVector().y * 100.f,
+		pShotGun = make_shared<CShotGun>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 10.f,
+			pPlayer->GetY() + pPlayer->GetDirectionVector().y * 10.f,
 			pPlayer->GetDirectionVector(), -7.f * (i - 1), cfDefaultBulletSpeed, pPlayer->GetShootingDegree());
 		pShotGun->Ready();
 		GET_SINGLE(CObjManager)->GetBullets().emplace_back(pShotGun);

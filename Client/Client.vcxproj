@@ -172,6 +172,7 @@
     <ClInclude Include="Const.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPlayerManager.h" />
+    <ClInclude Include="CPlayerState.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneManager.h" />
     <ClInclude Include="CShotGun.h" />
@@ -212,6 +213,7 @@
     <ClCompile Include="CObjManager.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayerManager.cpp" />
+    <ClCompile Include="CPlayerState.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
     <ClCompile Include="CShotGun.cpp" />
