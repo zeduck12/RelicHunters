@@ -4,6 +4,7 @@
 #include "CTimeManager.h"
 #include "CGraphicDevice.h"
 #include "CPlayer.h"
+#include "CShadow.h"
 
 DEFINITION_SINGLETON(PlayerIdleState)
 DEFINITION_SINGLETON(PlayerMoveState)
@@ -47,6 +48,7 @@ void PlayerIdleState::Render(CPlayer* _pPlayer)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
+	CShadow::RenderShadow(_pPlayer);
 }
 
 void PlayerMoveState::Update(CPlayer* _pPlayer)
@@ -86,6 +88,8 @@ void PlayerMoveState::Render(CPlayer* _pPlayer)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	CShadow::RenderShadow(_pPlayer);
 }
 
 void PlayerAttacked::Update(CPlayer* _pPlayer)
@@ -133,4 +137,6 @@ void PlayerAttacked::Render(CPlayer* _pPlayer)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	
+	CShadow::RenderShadow(_pPlayer);
 }

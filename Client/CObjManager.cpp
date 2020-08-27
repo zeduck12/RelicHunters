@@ -36,9 +36,8 @@ bool CObjManager::Ready(void)
 		return false;
 
 	// TEST 몬스터 생성.
-	/*float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed = cfMosterDefaultSpeed,
-	float _fHp = cfMosterDefaultHp, IMAGE::ID _eID = IMAGE::DUCK*/
-	shared_ptr<CObj> pMonster = make_shared<CMonster>(500.f, 500.f, 100.f, 100.f,
+
+	shared_ptr<CObj> pMonster = make_shared<CMonster>(500.f, 500.f, 50.f, 50.f,
 		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::DUCK);
 	pMonster->Ready();
 	m_listMonsters.emplace_back(pMonster);
@@ -53,7 +52,7 @@ bool CObjManager::Ready(void)
 	pMonster->Ready();
 	m_listMonsters.emplace_back(pMonster);
 
-	pMonster = make_shared<CMonster>(800.f, 900.f, 50.f, 50.f,
+	pMonster = make_shared<CMonster>(800.f, 1000.f, 50.f, 50.f,
 		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::TURTLE);
 	pMonster->Ready();
 	m_listMonsters.emplace_back(pMonster);

@@ -7,7 +7,8 @@ CObj::CObj()
 	m_bIsValid{true},
 	m_fSpeed{ 0.f },
 	m_fDegree{ 0.f },
-	m_eImageID{ IMAGE::END } 
+	m_eImageID{ IMAGE::END },
+	m_eDir{ DIRECTION::END }
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 }

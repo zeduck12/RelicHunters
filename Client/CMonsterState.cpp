@@ -7,6 +7,7 @@
 #include "CAnimation.h"
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
+#include "CShadow.h"
 
 
 CMonsterState* IdleState::Update(CMonster* _pMonster)
@@ -72,6 +73,7 @@ void IdleState::Render(CMonster* _pMonster)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
+	CShadow::RenderShadow(_pMonster);
 }
 
 CMonsterState* TrackingState::Update(CMonster* _pMonster)
@@ -95,7 +97,10 @@ CMonsterState* TrackingState::Update(CMonster* _pMonster)
 			m_fStackTime = 0.f;
 			int iRandNum = rand() % 100 + 1;
 			if (iRandNum > 98)
+			{
+				dynamic_cast<CMonster*>(_pMonster)->SetOldPos(_pMonster->GetInfo()->vPos);
 				return new FlyState;
+			}
 		}
 	}
 
@@ -153,6 +158,8 @@ void TrackingState::Render(CMonster* _pMonster)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	
+	CShadow::RenderShadow(_pMonster);
 }
 
 CMonsterState* AttackState::Update(CMonster* _pMonster)
@@ -192,7 +199,10 @@ CMonsterState* AttackState::Update(CMonster* _pMonster)
 			{
 				int iRandNum = rand() % 100 + 1;
 				if (iRandNum > 98)
+				{
+					dynamic_cast<CMonster*>(_pMonster)->SetOldPos(_pMonster->GetInfo()->vPos);
 					return new FlyState;
+				}
 			}
 		}
 	}
@@ -243,6 +253,8 @@ void AttackState::Render(CMonster* _pMonster)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	
+	CShadow::RenderShadow(_pMonster);
 }
 
 CMonsterState* AttackedState::Update(CMonster* _pMonster)
@@ -288,6 +300,8 @@ void AttackedState::Render(CMonster* _pMonster)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	
+	CShadow::RenderShadow(_pMonster);
 }
 
 CMonsterState* FlyState::Update(CMonster* _pMonster)
@@ -301,7 +315,10 @@ CMonsterState* FlyState::Update(CMonster* _pMonster)
 	m_fCoolTime = 2.f;
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStackTime >= m_fCoolTime)
+	{
+		dynamic_cast<CMonster*>(_pMonster)->SetGap(dynamic_cast<CMonster*>(_pMonster)->GetOldPos() - _pMonster->GetInfo()->vPos);
 		return new PatrolState;
+	}
 
 	// 공격을 당하지 않고, 그 자리에서 일정 수치 올라간다음 주위를 몇초동안 순회하다 다시 내려감.
 	_pMonster->Fly();
@@ -337,6 +354,8 @@ void FlyState::Render(CMonster* _pMonster)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	
+	CShadow::RenderFlyShadow(_pMonster);
 }
 
 CMonsterState* LandingState::Update(CMonster* _pMonster)
@@ -347,7 +366,7 @@ CMonsterState* LandingState::Update(CMonster* _pMonster)
 
 	pAnimation->ChangeClip("Fly");
 
-	m_fCoolTime = 2.f;
+	m_fCoolTime = 1.6f;
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStackTime >= m_fCoolTime)
 	{
@@ -390,6 +409,7 @@ void LandingState::Render(CMonster* _pMonster)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
+	CShadow::RenderLandingShadow(_pMonster);
 }
 
 CMonsterState* PatrolState::Update(CMonster* _pMonster)
@@ -407,6 +427,7 @@ CMonsterState* PatrolState::Update(CMonster* _pMonster)
 	{
 		m_fStackTime = 0.f;
 		_pMonster->SetStackTime(0.f);
+		dynamic_cast<CMonster*>(_pMonster)->SetOldPos(_pMonster->GetInfo()->vPos);
 		return new LandingState;
 	}
 
@@ -443,4 +464,6 @@ void PatrolState::Render(CMonster* _pMonster)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	
+	CShadow::RenderPatrolShadow(_pMonster);
 }

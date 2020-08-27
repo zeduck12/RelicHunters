@@ -19,6 +19,7 @@
 #include "CAnimation.h"
 #include "CPlayerState.h"
 #include "CImageSetting.h"
+#include "CShadow.h"
 
 CPlayer::CPlayer()
 	:
@@ -395,6 +396,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
 	}
 	
 	if (m_fAddSpeed >= 3.f && m_fAddSpeed <= 8.f)
@@ -466,5 +468,6 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
+	CShadow::RenderSheetShadow(this, pTexInfo);
 }
 

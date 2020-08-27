@@ -40,8 +40,6 @@ public:
 	void Landing(void);
 
 public:
-	void SetDirection(DIRECTION::ID _eDir) { m_eDir = _eDir; }
-	DIRECTION::ID GetDirection(void) const { return m_eDir; }
 	D3DXVECTOR3 GetDirectionVector(void) const { return m_tInfo.vDir; }
 	void SetDirectionVector(D3DXVECTOR3& _rVecDir) { m_tInfo.vDir = _rVecDir; }
 	float GetHp(void) const { return m_fCurHp; }
@@ -79,6 +77,11 @@ public:
 	void SetStackTime(float _fTime) { m_fStackTime = _fTime; }
 	bool IsFlying(void) const { return m_bIsFlying; }
 	void SetIsFlying(bool _bIsFlying) { m_bIsFlying = _bIsFlying; }
+	void SetOldPos(D3DXVECTOR3 _vPos) { m_vOldPos = _vPos; }
+	// 그림자용
+	D3DXVECTOR3 GetOldPos(void) const { return m_vOldPos; }
+	D3DXVECTOR3 GetGap(void) const { return m_vGap; }
+	void SetGap(D3DXVECTOR3 _vGap) { m_vGap = _vGap; }
 
 public:
 	void SetState(CMonsterState* _pState);
@@ -87,6 +90,8 @@ private:
 
 	float m_fStackTime;
 	bool  m_bIsFlying;
+	D3DXVECTOR3 m_vOldPos;
+	D3DXVECTOR3 m_vGap;
 
 	bool  m_bIsDash;
 	float m_fAddSpeed;
@@ -99,8 +104,6 @@ private:
 
     D3DXVECTOR3 m_vRotVertex[3];
     D3DXVECTOR3 m_vRealVertex[3];
-
-	DIRECTION::ID m_eDir;
 
 	// State 담는 변수
 	CMonsterState* m_pNextState;

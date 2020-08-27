@@ -23,8 +23,6 @@ public:
 	void SetIsAttacked(bool _bIsAttacked) { m_bIsAttacked = _bIsAttacked; }
 	float GetShootingDegree(void) const { return m_fShootingDegree; }
 	const D3DXVECTOR3& GetDirectionVector(void) const { return (const D3DXVECTOR3&)m_tInfo.vDir; }
-	DIRECTION::ID GetDirection(void) const { return m_eDir; }
-	void SetDirection(DIRECTION::ID _eDir) { m_eDir = _eDir; }
 	LINEINFO* GetLinesInfo(void)
 	{
 		LINEINFO* pLineArray = new LINEINFO[4];
@@ -80,8 +78,6 @@ private:
 
 	float m_fStackTime; // 누적시간 담는 용도의 변수.
 
-	// 현재 방향
-	DIRECTION::ID m_eDir;
 	float m_fShootingDegree;
 	float m_fShootingDist;
 

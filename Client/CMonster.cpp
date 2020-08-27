@@ -26,6 +26,7 @@ CMonster::CMonster(float _fX, float _fY, float _fWidth, float _fHeight,
 {
 	m_eImageID = _eID;
 
+	m_vOldPos = { 0.f ,0.f ,0.f };
 	m_tInfo.vPos = { _fX, _fY, 0.f };
 	m_tInfo.vDir = { 1.0f, 0.f, 0.f };
 	m_tInfo.vSize = { _fWidth, _fHeight, 0.f };
@@ -330,7 +331,7 @@ void CMonster::ShowSpectrum(void)
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
 	}
 
 	if (m_fAddSpeed >= 6.f && m_fAddSpeed <= 8.f)
@@ -354,7 +355,7 @@ void CMonster::ShowSpectrum(void)
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
 	}
 
 	if (m_fAddSpeed >= 5.f && m_fAddSpeed <= 9.f)
@@ -378,7 +379,7 @@ void CMonster::ShowSpectrum(void)
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
 	}
 
 	if (m_fAddSpeed >= 4.f && m_fAddSpeed <= 10.f)
@@ -402,7 +403,7 @@ void CMonster::ShowSpectrum(void)
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
 	}
 
 	if (m_fAddSpeed >= 3.f && m_fAddSpeed <= 11.f)
@@ -425,7 +426,7 @@ void CMonster::ShowSpectrum(void)
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
 	}
 
 	if (m_fAddSpeed >= 2.f && m_fAddSpeed <= 12.f)
@@ -448,7 +449,7 @@ void CMonster::ShowSpectrum(void)
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
 	}
 
 	if (m_fAddSpeed >= 1.f && m_fAddSpeed <= 13.f)
@@ -472,7 +473,7 @@ void CMonster::ShowSpectrum(void)
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
 	}
 }
 

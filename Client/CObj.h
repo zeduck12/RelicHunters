@@ -52,6 +52,11 @@ public:
 	void SetPosVector(D3DXVECTOR3 _rVecPos) { m_tInfo.vPos = _rVecPos; }
 	IMAGE::ID GetImageID(void) const { return m_eImageID; }
 
+
+	DIRECTION::ID GetDirection(void) const { return m_eDir; }
+	void SetDirection(DIRECTION::ID _eDir) { m_eDir = _eDir; }
+
+
 public:
 	CAnimation* CreateAnimation(const string& _strTag);
 	bool AddAnimationClip(const string& strName,
@@ -67,6 +72,9 @@ public:
 	vector<TEXINFO*> GetTextureInfo(void) const { return m_pVecTextureInfo; }
 
 protected:
+	// 현재 방향
+	DIRECTION::ID m_eDir;
+
 	INFO m_tInfo;
 	bool m_bIsValid;
 	float m_fSpeed;

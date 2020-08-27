@@ -133,6 +133,9 @@
     <Filter Include="06.ImageSetting">
       <UniqueIdentifier>{44d5fbf0-a4e5-4db7-b6a5-57c71de3094b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="07.Shadow">
+      <UniqueIdentifier>{31414bdc-b614-4bc9-9c0f-088360603a85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -261,6 +264,9 @@
     <ClInclude Include="CImageSetting.h">
       <Filter>06.ImageSetting</Filter>
     </ClInclude>
+    <ClInclude Include="CShadow.h">
+      <Filter>07.Shadow</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -359,11 +365,14 @@
     <ClCompile Include="CAnimation.cpp">
       <Filter>05.Animation</Filter>
     </ClCompile>
-    <ClCompile Include="CPlayerState.cpp">
-      <Filter>01.CObj\011.Player\StatePattern</Filter>
-    </ClCompile>
     <ClCompile Include="CImageSetting.cpp">
       <Filter>06.ImageSetting</Filter>
+    </ClCompile>
+    <ClCompile Include="CShadow.cpp">
+      <Filter>07.Shadow</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerState.cpp">
+      <Filter>01.CObj\011.Player\Weapon</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
