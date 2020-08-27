@@ -273,6 +273,11 @@ void CPlayer::CheckKeyState(void)
 			m_tInfo.vPos.y + m_tInfo.vDir.y * 100.f, m_tInfo.vDir, 20.f, m_fShootingDegree, m_fShootingDist);
 		pGrenade->Ready();
 		GET_SINGLE(CObjManager)->GetGrenades().emplace_back(pGrenade);
+
+		pGrenade = make_shared<CGrenade>(m_tInfo.vPos.x + m_tInfo.vDir.x * 100.f,
+			m_tInfo.vPos.y + m_tInfo.vDir.y * 100.f, m_tInfo.vDir, 20.f, m_fShootingDegree, m_fShootingDist, true);
+		pGrenade->Ready();
+		GET_SINGLE(CObjManager)->GetGrenades().emplace_back(pGrenade);
 	}
 
 	// ฟฌป็
@@ -336,15 +341,21 @@ void CPlayer::DetectDirection(void)
 	m_fShootingDegree = fDegree;
 	m_fShootingDist = fDist;
 
-	if (135.f < fDegree && fDegree < 225.f)
+	//if (135.f < fDegree && fDegree < 225.f)
+	//	m_eDir = DIRECTION::LEFT;
+	//else if (315.f <= fDegree && fDegree <= 360.f ||
+	//	0 <= fDegree && fDegree <= 45.f)
+	//	m_eDir = DIRECTION::RIGHT;
+	//else if (45.f < fDegree && fDegree <= 135.f)
+	//	m_eDir = DIRECTION::UP;
+	//else if (225.f < fDegree && fDegree < 315.f)
+	//	m_eDir = DIRECTION::DOWN;
+
+
+	if (90.f < fDegree && fDegree < 270.f)
 		m_eDir = DIRECTION::LEFT;
-	else if (315.f <= fDegree && fDegree <= 360.f ||
-		0 <= fDegree && fDegree <= 45.f)
+	else
 		m_eDir = DIRECTION::RIGHT;
-	else if (45.f < fDegree && fDegree <= 135.f)
-		m_eDir = DIRECTION::UP;
-	else if (225.f < fDegree && fDegree < 315.f)
-		m_eDir = DIRECTION::DOWN;
 
 }
 

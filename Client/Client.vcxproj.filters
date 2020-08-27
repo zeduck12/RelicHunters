@@ -372,7 +372,7 @@
       <Filter>07.Shadow</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerState.cpp">
-      <Filter>01.CObj\011.Player\Weapon</Filter>
+      <Filter>01.CObj\011.Player\StatePattern</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

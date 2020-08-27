@@ -12,6 +12,7 @@
 #include "CPlayerState.h"
 #include "CMonster.h"
 #include "CMonsterState.h"
+#include "CShadow.h"
 
 CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID)
 	:
@@ -141,7 +142,7 @@ void CBullet::Render(const HDC& _hdc)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
-
+	CShadow::RenderSheetProjectile(this, pTexInfo, m_fDegree);
 }
 
 void CBullet::Release()

@@ -102,7 +102,15 @@ void CMonster::LateUpdate(void)
 {
 	// 수류탄 충돌
 	for (auto& pGrenade : CObjManager::Get_Instance()->GetGrenades())
+	{
+		DO_IF_IS_NOT_VALID_OBJ(pGrenade)
+			continue;
+
+		if (dynamic_cast<CGrenade*>(pGrenade.get())->IsReverse() == true)
+			continue;
+
 		CCollisionManager::CollideWallGrenade(this, pGrenade.get());
+	}
 
 	// 플레이어 출동 선과 선 충돌
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();

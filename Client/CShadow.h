@@ -1,5 +1,6 @@
 #pragma once
 #include "CObj.h"
+#include "CGrenade.h"
 
 // 그림자만 그려주는 클래스
 class CShadow
@@ -14,7 +15,11 @@ public:
 	static void RenderLandingShadow(CObj* _pOwner);
 
 	static void RenderShadow(CObj* _pOwner);
+	// 낱장 이미지 그림자
 	static void RenderSheetShadow(CObj* _pOwner, const TEXINFO*& _pTexInfo);
+	static void RenderSheetProjectile(CObj* _pOwner, const TEXINFO*& _pTexInfo, const float& _fDegree);
+	// 수류탄 그림자
+	static void RenderGrenadeShadow(CGrenade* _pOwner, const TEXINFO*& _pTexInfo);
 
 private:
 	static D3DXVECTOR3 vOldPos;

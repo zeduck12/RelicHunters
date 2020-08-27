@@ -188,3 +188,55 @@ void CShadow::RenderSheetShadow(CObj* _pOwner, const TEXINFO*& _pTexInfo)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(_pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 100, 100, 100));
 }
+
+void CShadow::RenderSheetProjectile(CObj* _pOwner, const TEXINFO*& _pTexInfo, const float& _fDegree)
+{
+	float fSizeX = _pOwner->GetInfo()->vSize.x;
+	float fSizeY = _pOwner->GetInfo()->vSize.y;
+
+	float fCenterX = float(_pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(_pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matRev, matTrans, matWorld;
+	if (_pOwner->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, -0.6f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, -0.6f, 0.f);
+
+	D3DXMatrixRotationZ(&matRev, D3DXToRadian(_fDegree));
+
+	D3DXVECTOR3 vSpectrumPos = _pOwner->GetInfo()->vPos;
+	vSpectrumPos.y -= 20.f;
+
+	// 20은 렉트 중심에 이미지 맞추기 위해.
+	D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y + 50 + fSizeY, 0.f);
+	matWorld = matScale * matRev * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(_pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 100, 100, 100));
+}
+
+void CShadow::RenderGrenadeShadow(CGrenade* _pOwner, const TEXINFO*& _pTexInfo)
+{
+	D3DXVECTOR3 vPos /*= _pOwner->GetTestPos()*/;
+
+	float fSizeX = _pOwner->GetInfo()->vSize.x;
+	float fSizeY = _pOwner->GetInfo()->vSize.y;
+
+	float fCenterX = float(_pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(_pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matRev, matWorld;
+	if (_pOwner->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, -0.6f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, -0.6f, 0.f);
+
+	// 20은 렉트 중심에 이미지 맞추기 위해.
+	D3DXMatrixTranslation(&matTrans, vPos.x, vPos.y, 0.f);
+	D3DXMatrixRotationZ(&matRev, D3DXToRadian(10.f));
+	matWorld = matScale * matTrans * matRev;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(_pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 100, 100, 100));
+}

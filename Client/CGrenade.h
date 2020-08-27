@@ -5,7 +5,7 @@ class CGrenade :
 {
 public:
     CGrenade() = default;
-    CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed = cfGrenadeSpeed, float _fShootingDegree = 0.f, float _fShootingDist = 0.f);
+    CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed = cfGrenadeSpeed, float _fShootingDegree = 0.f, float _fShootingDist = 0.f, bool _bIsReverse = false);
 
 public:
     virtual void Ready(void)                    override;
@@ -21,21 +21,23 @@ public:
     void  SetIncidenceDegree(float _fDegree) { m_fDegree = _fDegree; }
     bool  GetIsCollide(void) const { return m_bIsCollide; }
     void  SetIsCollide(bool _bIsCollide) { m_bIsCollide = _bIsCollide; }
+    bool IsReverse(void) const { return m_bIsReverse; }
+    void SetCollideCount(int _iCount) { m_iCollideCount += _iCount; }
     
 public:
 
     void BombGrenade(void);
-    void ActiveGravity(void);
     void ShootGrenade(void);
-
-    void ActiveMiniGravity(void);
     void MiniJump(void);
 
     // 반사각으로 보내는 함수.
     void Reflection(void);
 
-
 private:
+    int m_iCollideCount;
+    bool m_bIsReverse;
+    float m_fRotZAngle;
+    float m_fSaveDegree;
 
     float m_fBombX;
     float m_fBombY;
