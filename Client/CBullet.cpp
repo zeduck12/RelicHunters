@@ -80,6 +80,10 @@ void CBullet::LateUpdate()
 	{
 		for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
 		{
+			// 몬스터가 하늘을 나는 중이면 충돌판정 PASS !
+			if (dynamic_cast<CMonster*>(pMonster.get())->IsFlying() == true)
+				continue;
+
 			if (CCollisionManager::CollideBullet(pMonster.get(), this) == true)
 			{
 				CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());

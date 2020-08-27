@@ -11,6 +11,8 @@
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
 #include "CPlayerState.h"
+#include "CTimeManager.h"
+
 
 // 삼각형 몬스터 
 CMonster::CMonster(float _fX, float _fY, float _fWidth, float _fHeight,
@@ -18,7 +20,9 @@ CMonster::CMonster(float _fX, float _fY, float _fWidth, float _fHeight,
 	:
 	m_fMaxHp{ _fHp },
 	m_pNextState{ nullptr },
-	m_pImageSetting{ nullptr }
+	m_pImageSetting{ nullptr },
+	m_fStackTime{ 0.f },
+	m_bIsFlying{ false }
 {
 	m_eImageID = _eID;
 
@@ -137,7 +141,7 @@ void CMonster::Render(const HDC& _hdc)
 
 
 	// 몬스터 아이디에 따라 총장착 여부 달라짐.
-	if(m_eImageID == IMAGE::DUCK)
+	if(m_eImageID != IMAGE::KAMIKAZE && m_eImageID != IMAGE::KAMIKAZE_FLY)
 		EquipWeapon(); // 총 장착
 
 	// 삼각형 그리기
@@ -230,7 +234,14 @@ void CMonster::DetectDirection(void)
 
 void CMonster::EquipWeapon(void)
 {
-	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Pistol", 0);
+	wstring szWeaponName = L"";
+	if (m_eImageID == IMAGE::TURTLE)
+		szWeaponName = L"Flame";
+	else
+		szWeaponName = L"Pistol";
+
+
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", szWeaponName, 0);
 	if (nullptr == pTexInfo)
 		return;
 	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
@@ -463,6 +474,53 @@ void CMonster::ShowSpectrum(void)
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
+}
+
+void CMonster::Fly(void)
+{
+	// 단순히 올라가는 함수
+	m_tInfo.vPos.y -= 1.5f;
+}
+
+void CMonster::Patrol(void)
+{
+	// 몇초동안 이렇게 한쪽으로 갔다가
+	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fStackTime < 5.f)
+	{
+
+		if (m_fStackTime < 2.f)
+		{
+			m_tInfo.vPos.x += 1.5f;
+			m_tInfo.vPos.y += -0.6f;
+		}
+		else
+		{
+			m_tInfo.vPos.x -= 1.5f;
+			m_tInfo.vPos.y += 0.6f;
+		}
+	}
+	// 몇초동안 반대로 가기
+	else if(5.f < m_fStackTime && m_fStackTime < 10.f)
+	{
+		
+		if (m_fStackTime < 8.f)
+		{
+			m_tInfo.vPos.x -= 1.5f;
+			m_tInfo.vPos.y += -0.6f;
+		}
+		else
+		{
+			m_tInfo.vPos.x += 1.5f;
+			m_tInfo.vPos.y += 0.6f;
+		}
+	}
+}
+
+void CMonster::Landing(void)
+{
+	// 단순히 내랴가는 함수
+	m_tInfo.vPos.y += 1.5f;
 }
 
 void CMonster::SetState(CMonsterState* _pState)

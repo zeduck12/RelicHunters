@@ -17,11 +17,6 @@ protected:
 	float m_fStackTime = 0.f;
 };
 
-// Tracking 상태
-// IDLE 상태
-// Move 상태
-// Attack 상태
-
 class IdleState : public CMonsterState
 {
 public:
@@ -67,4 +62,37 @@ public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
 	virtual void Render(CMonster* _pMonster)				  override;
 
+};
+
+class FlyState : public CMonsterState
+{
+public:
+	explicit FlyState() = default;
+	virtual ~FlyState() = default;
+
+public:
+	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
+	virtual void Render(CMonster* _pMonster)				  override;
+};
+
+class PatrolState : public CMonsterState
+{
+public:
+	explicit PatrolState() = default;
+	virtual ~PatrolState() = default;
+
+public:
+	virtual CMonsterState* Update(CMonster * _pMonster)		  override;
+	virtual void Render(CMonster * _pMonster)				  override;
+};
+
+class LandingState : public CMonsterState
+{
+public:
+	explicit LandingState() = default;
+	virtual ~LandingState() = default;
+
+public:
+	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
+	virtual void Render(CMonster* _pMonster)				  override;
 };

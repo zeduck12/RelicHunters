@@ -35,6 +35,9 @@ public:
 	void Shoot(void);
 	void Dash(void);
 	void ShowSpectrum(void);
+	void Fly(void);
+	void Patrol(void);
+	void Landing(void);
 
 public:
 	void SetDirection(DIRECTION::ID _eDir) { m_eDir = _eDir; }
@@ -73,11 +76,17 @@ public:
 	void SetIsDash(bool _bIsDash) { m_bIsDash = _bIsDash; }
 	float GetAddSpeed(void) const { return m_fAddSpeed; }
 	void SetAddSpeed(float _fAddSpd) { m_fAddSpeed = _fAddSpd; }
+	void SetStackTime(float _fTime) { m_fStackTime = _fTime; }
+	bool IsFlying(void) const { return m_bIsFlying; }
+	void SetIsFlying(bool _bIsFlying) { m_bIsFlying = _bIsFlying; }
 
 public:
 	void SetState(CMonsterState* _pState);
 
 private:
+
+	float m_fStackTime;
+	bool  m_bIsFlying;
 
 	bool  m_bIsDash;
 	float m_fAddSpeed;

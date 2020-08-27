@@ -9,7 +9,7 @@ namespace OBJ
 
 namespace IMAGE
 {
-	enum ID { PLAYER, DUCK, KAMIKAZE, KAMIKAZE_FLY, END};
+	enum ID { PLAYER, DUCK, TURTLE, KAMIKAZE, KAMIKAZE_FLY, END};
 }
 
 namespace DIRECTION

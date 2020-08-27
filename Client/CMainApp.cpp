@@ -32,6 +32,8 @@ void CMainApp::Ready()
 	m_hDC = GetDC(g_hWND);
 	SetGraphicsMode(m_hDC, GM_ADVANCED);
 
+	srand(static_cast<unsigned int>(time(nullptr)));	// 랜덤값을 생성하기 위한 시드 전달.
+
 	// 키매니저 생성
 	GET_SINGLE(CKeyManager);
 
@@ -106,8 +108,32 @@ void CMainApp::SetImages(void)
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Kamikaze/Death/spr_kamikaze_death_%d.png", L"Kamikaze", L"Death", 13))
 		return;
 
-	// Pistol
+	// Kamikaze Fly Imamge
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/KamikazeFly/Idle/spr_kamikazelite_idle_%d.png", L"KamikazeFly", L"Idle", 16))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/KamikazeFly/Move/spr_kamikazelite_walk_%d.png", L"KamikazeFly", L"Move", 8))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/KamikazeFly/Attacked/spr_kamikazelite_hit_%d.png", L"KamikazeFly", L"Attacked", 2))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/KamikazeFly/Fly/spr_kamikazelite_flying_0%d.png", L"KamikazeFly", L"Fly", 9))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/KamikazeFly/Death/spr_kamikazelite_death1_%d.png", L"KamikazeFly", L"Death", 16))
+		return;
+
+	// Turtle Image 
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Turtle/Idle/spr_turtle_idle_%d.png", L"Turtle", L"Idle", 12))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Turtle/Move/spr_turtle_walk_%d.png", L"Turtle", L"Move", 6))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Turtle/Attacked/spr_turtle_hit_%d.png", L"Turtle", L"Attacked", 2))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Turtle/Death/spr_turtle_death_%d.png", L"Turtle", L"Death", 13))
+		return;
+
+	// Weapon
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Pistol/pistol_%d.png", L"Weapon", L"Pistol", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Flame/flame_%d.png", L"Weapon", L"Flame", 3))
 		return;
 
 	// Bullet

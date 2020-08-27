@@ -48,6 +48,16 @@ bool CObjManager::Ready(void)
 	pMonster->Ready();
 	m_listMonsters.emplace_back(pMonster);
 
+	pMonster = make_shared<CMonster>(800.f, 900.f, 50.f, 50.f,
+		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::KAMIKAZE_FLY);
+	pMonster->Ready();
+	m_listMonsters.emplace_back(pMonster);
+
+	pMonster = make_shared<CMonster>(800.f, 900.f, 50.f, 50.f,
+		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::TURTLE);
+	pMonster->Ready();
+	m_listMonsters.emplace_back(pMonster);
+
 	return true;
 }
 
