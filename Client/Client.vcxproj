@@ -176,6 +176,7 @@
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPlayerManager.h" />
     <ClInclude Include="CPlayerState.h" />
+    <ClInclude Include="CRocket.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneManager.h" />
     <ClInclude Include="CShadow.h" />
@@ -221,6 +222,7 @@
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayerManager.cpp" />
     <ClCompile Include="CPlayerState.cpp" />
+    <ClCompile Include="CRocket.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
     <ClCompile Include="CShadow.cpp" />

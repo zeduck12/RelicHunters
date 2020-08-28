@@ -58,7 +58,7 @@ bool CObjManager::Ready(void)
 	pMonster->Ready();
 	m_listMonsters.emplace_back(pMonster);
 
-	pMonster = make_shared<CBoss>(800.f, 1400.f, 114.f, 120.f,
+	pMonster = make_shared<CBoss>(800.f, 1400.f, 120.f, 120.f,
 		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);
 	pMonster->Ready();
 	m_listMonsters.emplace_back(pMonster);

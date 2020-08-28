@@ -5,6 +5,7 @@
 #include "CGraphicDevice.h"
 #include "CTimeManager.h"
 #include "CShadow.h"
+#include "CPlayerManager.h"
 
 CBossState* EggIdleState::Update(CBoss* _pBoss)
 {
@@ -142,6 +143,10 @@ CBossState* BossIdleState::Update(CBoss* _pBoss)
 
 	pAnimation->ChangeClip("Idle");
 
+	// 만약에 플레이어를 감지했다면
+	if (_pBoss->IsDetectPlayerBossVersion() == true)
+		return new BossMoveState;
+
 	return nullptr;
 }
 
@@ -178,20 +183,117 @@ void BossIdleState::Render(CBoss* _pBoss)
 
 CBossState* BossMoveState::Update(CBoss* _pBoss)
 {
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
+		return nullptr;
+
+	CAnimation* pAnimation = _pBoss->GetAnimation();
+	if (pAnimation)
+		pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
+
+	pAnimation->ChangeClip("Move");
+
+	// 만약에 플레이어가 감지 범위를 벗어나면 다시 Idle 상태로
+	if (_pBoss->IsDetectPlayerBossVersion() == false)
+		return new BossIdleState;
+
+	// 만약에 공격범위 안에 들어온다면 AttackState로
+	if (_pBoss->IsInAttackRangePlayerBossVersion() == true)
+	{
+		// 플레이어 방향으로 방향벡터 구함
+		D3DXVECTOR3 vDir = pPlayer->GetInfo()->vPos - _pBoss->GetInfo()->vPos;
+		D3DXVec3Normalize(&vDir, &vDir);
+		_pBoss->SetDirectionVector(vDir);
+		return new BossAttackState;
+	}
+
+	// 방향벡터 구함.
+	D3DXVECTOR3 vDir = pPlayer->GetInfo()->vPos - _pBoss->GetInfo()->vPos;
+	D3DXVec3Normalize(&vDir, &vDir);
+	_pBoss->SetDirectionVector(vDir);
+	// 이동
+	D3DXVECTOR3 vMoveResult = _pBoss->GetPosVector() + _pBoss->GetDirectionVector();
+	_pBoss->SetPosVector(vMoveResult);
+
 	return nullptr;
 }
 
 void BossMoveState::Render(CBoss* _pBoss)
 {
+	int iFrame = 0;
+	CAnimation* pAnimation = _pBoss->GetAnimation();
+	if (pAnimation)
+	{
+		ANIMATION_CLIP* pClip = pAnimation->GetCurrentClip();
+		iFrame = pClip->iFrame; // 인덱스
+	}
+
+	TEXINFO* pTexInfo = _pBoss->GetTextureInfo()[iFrame];
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	if (_pBoss->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+	// 20은 렉트 중심에 이미지 맞추기 위해.
+	D3DXMatrixTranslation(&matTrans, _pBoss->GetInfo()->vPos.x, _pBoss->GetInfo()->vPos.y - 20, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	CShadow::RenderShadow(_pBoss);
 }
 
 CBossState* BossAttackedState::Update(CBoss* _pBoss)
 {
+	CAnimation* pAnimation = _pBoss->GetAnimation();
+	if (pAnimation)
+		pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
+
+	pAnimation->ChangeClip("Attacked");
+
+	m_fCoolTime = 0.4f;
+	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fStackTime >= m_fCoolTime)
+		return new BossIdleState;
+
 	return nullptr;
 }
 
 void BossAttackedState::Render(CBoss* _pBoss)
 {
+	int iFrame = 0;
+	CAnimation* pAnimation = _pBoss->GetAnimation();
+	if (pAnimation)
+	{
+		ANIMATION_CLIP* pClip = pAnimation->GetCurrentClip();
+		iFrame = pClip->iFrame; // 인덱스
+	}
+
+	TEXINFO* pTexInfo = _pBoss->GetTextureInfo()[iFrame];
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	if (_pBoss->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+	// 20은 렉트 중심에 이미지 맞추기 위해.
+	D3DXMatrixTranslation(&matTrans, _pBoss->GetInfo()->vPos.x, _pBoss->GetInfo()->vPos.y - 20, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	CShadow::RenderShadow(_pBoss);
 }
 
 CBossState* BossDeathState::Update(CBoss* _pBoss)
@@ -201,4 +303,216 @@ CBossState* BossDeathState::Update(CBoss* _pBoss)
 
 void BossDeathState::Render(CBoss* _pBoss)
 {
+}
+
+CBossState* BossAttackState::Update(CBoss* _pBoss)
+{
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
+		return nullptr;
+
+	CAnimation* pAnimation = _pBoss->GetAnimation();
+	if (pAnimation)
+		pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
+
+	pAnimation->ChangeClip("Idle");
+
+	// 만약에 공격범위를 벗어났다면 다시 IdleState로
+	if (_pBoss->IsInAttackRangePlayerBossVersion() == false)
+		return new BossIdleState;
+
+	int iRandNum = rand() % 2 + 1;
+	if (m_iCount >= 4)
+	{
+		if (iRandNum > 1)
+		{
+			m_iCount = 0;
+			m_fStackTime = 0.f;
+			_pBoss->ShootRocket();
+			return new BossRocketAttackState;
+		}
+		else
+		{
+			m_iCount = 0;
+			m_fStackTime = 0.f;
+			_pBoss->ShootShotgun();
+			return new BossShotGunState;
+		}
+	}
+
+	m_fCoolTime = 0.3f;
+	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fStackTime >= m_fCoolTime)
+	{
+		m_iCount++;
+		m_fStackTime = 0.f;
+		_pBoss->Shoot();
+		
+	}
+
+	return nullptr;
+}
+
+void BossAttackState::Render(CBoss* _pBoss)
+{
+	int iFrame = 0;
+	CAnimation* pAnimation = _pBoss->GetAnimation();
+	if (pAnimation)
+	{
+		ANIMATION_CLIP* pClip = pAnimation->GetCurrentClip();
+		iFrame = pClip->iFrame; // 인덱스
+	}
+
+	TEXINFO* pTexInfo = _pBoss->GetTextureInfo()[iFrame];
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	if (_pBoss->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+	// 20은 렉트 중심에 이미지 맞추기 위해.
+	D3DXMatrixTranslation(&matTrans, _pBoss->GetInfo()->vPos.x, _pBoss->GetInfo()->vPos.y - 20, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	CShadow::RenderShadow(_pBoss);
+}
+
+CBossState* BossRocketAttackState::Update(CBoss* _pBoss)
+{
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
+		return nullptr;
+
+	CAnimation* pAnimation = _pBoss->GetAnimation();
+	if (pAnimation)
+		pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
+
+	pAnimation->ChangeClip("Idle");
+
+	// 만약에 공격범위를 벗어났다면 다시 IdleState로
+	if (_pBoss->IsInAttackRangePlayerBossVersion() == false)
+		return new BossIdleState;
+
+	m_fCoolTime = 1.f;
+	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fStackTime >= m_fCoolTime)
+	{
+		if (m_iCount >= 5)
+		{
+			m_iCount = 0;
+			m_fStackTime = 0.f;
+			return new BossAttackState;
+		}
+
+		m_iCount++;
+		m_fStackTime = 0.f;
+		_pBoss->ShootRocket();
+	}
+
+
+	return nullptr;
+}
+
+void BossRocketAttackState::Render(CBoss* _pBoss)
+{
+	int iFrame = 0;
+	CAnimation* pAnimation = _pBoss->GetAnimation();
+	if (pAnimation)
+	{
+		ANIMATION_CLIP* pClip = pAnimation->GetCurrentClip();
+		iFrame = pClip->iFrame; // 인덱스
+	}
+
+	TEXINFO* pTexInfo = _pBoss->GetTextureInfo()[iFrame];
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	if (_pBoss->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+	// 20은 렉트 중심에 이미지 맞추기 위해.
+	D3DXMatrixTranslation(&matTrans, _pBoss->GetInfo()->vPos.x, _pBoss->GetInfo()->vPos.y - 20, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	CShadow::RenderShadow(_pBoss);
+}
+
+CBossState* BossShotGunState::Update(CBoss* _pBoss)
+{
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
+		return nullptr;
+
+	CAnimation* pAnimation = _pBoss->GetAnimation();
+	if (pAnimation)
+		pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
+
+	pAnimation->ChangeClip("Idle");
+
+	// 만약에 공격범위를 벗어났다면 다시 IdleState로
+	if (_pBoss->IsInAttackRangePlayerBossVersion() == false)
+		return new BossIdleState;
+
+	m_fCoolTime = 1.5f;
+	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fStackTime >= m_fCoolTime)
+	{
+		if (m_iCount >= 5)
+		{
+			m_iCount = 0;
+			m_fStackTime = 0.f;
+			return new BossAttackState;
+		}
+
+		m_iCount++;
+		m_fStackTime = 0.f;
+		_pBoss->ShootShotgun();
+	}
+
+	return nullptr;
+}
+
+void BossShotGunState::Render(CBoss* _pBoss)
+{
+	int iFrame = 0;
+	CAnimation* pAnimation = _pBoss->GetAnimation();
+	if (pAnimation)
+	{
+		ANIMATION_CLIP* pClip = pAnimation->GetCurrentClip();
+		iFrame = pClip->iFrame; // 인덱스
+	}
+
+	TEXINFO* pTexInfo = _pBoss->GetTextureInfo()[iFrame];
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	if (_pBoss->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+	// 20은 렉트 중심에 이미지 맞추기 위해.
+	D3DXMatrixTranslation(&matTrans, _pBoss->GetInfo()->vPos.x, _pBoss->GetInfo()->vPos.y - 20, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	CShadow::RenderShadow(_pBoss);
 }

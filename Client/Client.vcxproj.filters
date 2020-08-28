@@ -142,6 +142,9 @@
     <Filter Include="01.CObj\015.Boss\StatePattern">
       <UniqueIdentifier>{8e24e4d8-6d1f-41f8-9f4c-b6a4e9a37894}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\012.Projectile\Bullet\05.Rocket">
+      <UniqueIdentifier>{8dcd1b09-1bbe-4f90-95a4-4998889fed83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -279,6 +282,9 @@
     <ClInclude Include="CBossState.h">
       <Filter>01.CObj\015.Boss\StatePattern</Filter>
     </ClInclude>
+    <ClInclude Include="CRocket.h">
+      <Filter>01.CObj\012.Projectile\Bullet\05.Rocket</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -391,6 +397,9 @@
     </ClCompile>
     <ClCompile Include="CBossState.cpp">
       <Filter>01.CObj\015.Boss\StatePattern</Filter>
+    </ClCompile>
+    <ClCompile Include="CRocket.cpp">
+      <Filter>01.CObj\012.Projectile\Bullet\05.Rocket</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

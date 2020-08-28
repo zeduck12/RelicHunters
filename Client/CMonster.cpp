@@ -318,13 +318,36 @@ void CMonster::Shoot(void)
 	D3DXVec3Normalize(&m_tInfo.vDir, &vDeltaPos);
 
 	// ÃÑ¾Ë »ý¼º
-	shared_ptr<CObj> pBullet = make_shared<CBullet>(
-			this->GetX() + m_tInfo.vDir.x * 50.f, this->GetY() + m_tInfo.vDir.y * 50.f,
-			m_tInfo.vDir, 5.f, D3DXToDegree(fRadian),
-			OBJ::MONSTER);
-	pBullet->Ready();
-	GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);
-
+	if (m_eImageID == IMAGE::BOSS)
+	{
+		if (m_eDir == DIRECTION::LEFT)
+		{
+			shared_ptr<CObj> pBullet = make_shared<CBullet>(
+				this->GetX() + m_tInfo.vDir.x * 50.f -25.f, this->GetY() + m_tInfo.vDir.y * 50.f + 25.f,
+				m_tInfo.vDir, 5.f, D3DXToDegree(fRadian),
+				OBJ::MONSTER, L"Default");
+			pBullet->Ready();
+			GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);
+		}
+		else
+		{
+			shared_ptr<CObj> pBullet = make_shared<CBullet>(
+				this->GetX() + m_tInfo.vDir.x * 50.f + 25.f, this->GetY() + m_tInfo.vDir.y * 50.f + 25.f,
+				m_tInfo.vDir, 5.f, D3DXToDegree(fRadian),
+				OBJ::MONSTER, L"Default");
+			pBullet->Ready();
+			GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);
+		}
+	}
+	else
+	{
+		shared_ptr<CObj> pBullet = make_shared<CBullet>(
+				this->GetX() + m_tInfo.vDir.x * 50.f, this->GetY() + m_tInfo.vDir.y * 50.f,
+				m_tInfo.vDir, 5.f, D3DXToDegree(fRadian),
+				OBJ::MONSTER);
+		pBullet->Ready();
+		GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);
+	}
 }
 
 void CMonster::Dash(void)

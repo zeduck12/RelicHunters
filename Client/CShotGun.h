@@ -5,7 +5,7 @@ class CShotGun :
 {
 public:
 	CShotGun() = default;
-	CShotGun(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fAddDegree = 0.f , float _fSpeed = cfDefaultBulletSpeed, float _fShootingDegree = 0.f);
+	CShotGun(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fAddDegree = 0.f , float _fSpeed = cfDefaultBulletSpeed, float _fShootingDegree = 0.f, OBJ::ID _eID = OBJ::PLAYER, const wstring& _strBulletName = L"Small");
 	virtual ~CShotGun();
 public:
 	virtual void Ready(void) { }
@@ -16,9 +16,6 @@ public:
 
 private:
 	float m_fAddDegree;
-
-	D3DXVECTOR3 m_vRotVertex[4];
-	D3DXVECTOR3 m_vRealVertex[4];
 
 };
 

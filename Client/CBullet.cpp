@@ -14,6 +14,7 @@
 #include "CMonsterState.h"
 #include "CShadow.h"
 #include "CBoss.h"
+#include "CBossState.h"
 
 CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree,
 	OBJ::ID _eID, const wstring& _strBulletName /*= L"Small"*/)
@@ -91,10 +92,16 @@ void CBullet::LateUpdate()
 			if (CCollisionManager::CollideBullet(pMonster.get(), this) == true)
 			{
 				if (pMonster->GetImageID() == IMAGE::BOSS)
-					continue;
+				{
+					CBoss* pBoss = dynamic_cast<CBoss*>(pMonster.get());
+					pBoss->SetState(new BossAttackedState());
+				}
+				else
+				{
+					CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
+					pMonst->SetState(new AttackedState());
+				}
 
-				CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
-				pMonst->SetState(new AttackedState());
 			}
 		}
 	}

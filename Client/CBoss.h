@@ -21,6 +21,12 @@ public:
 
 public:
 	void SetState(CBossState* _pState) { m_pNextState = _pState; }
+	void ShootRocket(void);
+	void ShootShotgun(void);
+
+public:
+	bool IsDetectPlayerBossVersion(void);
+	bool IsInAttackRangePlayerBossVersion(void);
 
 private:
 

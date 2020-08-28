@@ -17,8 +17,8 @@ protected:
 	}
 
 protected:
-	float fAccumulateTime = 0.f;
-	float fStateDelay = 0.f;
+	float m_fStackTime = 0.f;
+	float m_fCoolTime  = 0.f;
 
 };
 
@@ -105,4 +105,49 @@ public:
 	// CBossState을(를) 통해 상속됨
 	virtual CBossState* Update(CBoss* _pBoss) override;
 	virtual void Render(CBoss* _pBoss) override;
+};
+
+class BossAttackState : public CBossState
+{
+public:
+	explicit BossAttackState() = default;
+	virtual ~BossAttackState() = default;
+
+public:
+	// CBossState을(를) 통해 상속됨
+	virtual CBossState* Update(CBoss* _pBoss) override;
+	virtual void Render(CBoss* _pBoss) override;
+
+private:
+	int m_iCount = 0;
+};
+
+class BossRocketAttackState : public CBossState
+{
+public:
+	explicit BossRocketAttackState() = default;
+	virtual ~BossRocketAttackState() = default;
+
+public:
+	// CBossState을(를) 통해 상속됨
+	virtual CBossState* Update(CBoss* _pBoss) override;
+	virtual void Render(CBoss* _pBoss) override;
+
+private:
+	int m_iCount = 0;
+};
+
+class BossShotGunState : public CBossState
+{
+public:
+	explicit BossShotGunState() = default;
+	virtual ~BossShotGunState() = default;
+
+public:
+	// CBossState을(를) 통해 상속됨
+	virtual CBossState* Update(CBoss* _pBoss) override;
+	virtual void Render(CBoss* _pBoss) override;
+
+private:
+	int m_iCount = 0;
 };

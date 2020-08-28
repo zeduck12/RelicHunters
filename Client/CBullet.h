@@ -19,7 +19,6 @@ protected:
 	// 방향
 	D3DXVECTOR3 m_vDir;
 
-private:
 	D3DXVECTOR3 m_vRotVertex[4];
 	D3DXVECTOR3 m_vRealVertex[4];
 	// 총알 사용자 Owner 아이디

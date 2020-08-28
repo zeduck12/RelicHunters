@@ -5,8 +5,16 @@
 #include "CCollisionManager.h"
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
+#include "CMonster.h"
+#include "CBoss.h"
+#include "CBossState.h"
+#include "CMonsterState.h"
+#include "CPlayer.h"
+#include "CPlayerState.h"
+#include "CMapManager.h"
+#include "CStructure.h"
 
-CShotGun::CShotGun(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fAddDegree, float _fSpeed, float _fShootingDegree)
+CShotGun::CShotGun(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fAddDegree, float _fSpeed, float _fShootingDegree, OBJ::ID _eID /*= OBJ::PLAYER*/, const wstring& _strBulletName /*= L"Small"*/)
 	:
 	m_fAddDegree{ _fAddDegree }
 {
@@ -29,6 +37,9 @@ CShotGun::CShotGun(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fAddDegree, f
 	m_vRotVertex[2].y = +(m_tInfo.vSize.y * 0.5f);
 	m_vRotVertex[3].x = -(m_tInfo.vSize.x * 0.5f);
 	m_vRotVertex[3].y = +(m_tInfo.vSize.y * 0.5f);
+
+	m_eObjID = _eID;
+	m_strBulletName = _strBulletName;
 }
 
 CShotGun::~CShotGun()
@@ -63,8 +74,49 @@ int CShotGun::Update(float _fDeltaTime)
 
 void CShotGun::LateUpdate(void)
 {
-	for (auto& pMonster : CObjManager::Get_Instance()->GetMonsters())
-		CCollisionManager::CollideBullet(pMonster.get(), this);
+	if (m_eObjID == OBJ::PLAYER)
+	{
+		for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
+		{
+			// 몬스터가 하늘을 나는 중이면 충돌판정 PASS !
+			if (dynamic_cast<CMonster*>(pMonster.get())->IsFlying() == true)
+				continue;
+
+			if (CCollisionManager::CollideBullet(pMonster.get(), this) == true)
+			{
+				if (pMonster->GetImageID() == IMAGE::BOSS)
+				{
+					CBoss* pBoss = dynamic_cast<CBoss*>(pMonster.get());
+					pBoss->SetState(new BossAttackedState());
+				}
+				else
+				{
+					CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
+					pMonst->SetState(new AttackedState());
+				}
+
+			}
+		}
+	}
+
+	if (m_eObjID == OBJ::MONSTER)
+	{
+		CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
+		if (CCollisionManager::CollideBullet(pObj, this) == true)
+		{
+			// 피격 애니메이션
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+			pPlayer->SetState(GET_SINGLE(PlayerAttacked));
+			pPlayer->SetIsAttacked(true);
+		}
+	}
+
+	// 공통
+	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
+		CCollisionManager::CollideBullet(pObj, this);
+
+	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
+		CCollisionManager::CollideTileBullet(pTile, this);
 }
 
 void CShotGun::Render(const HDC& _hdc)
@@ -75,7 +127,7 @@ void CShotGun::Render(const HDC& _hdc)
 		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
 	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
 
-	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", L"Small", 1);
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", m_strBulletName, 1);
 	if (nullptr == pTexInfo)
 		return;
 	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
