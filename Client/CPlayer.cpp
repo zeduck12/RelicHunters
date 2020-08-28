@@ -269,19 +269,19 @@ void CPlayer::CheckKeyState(void)
 	// 수류탄
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_F))
 	{
-		shared_ptr<CGrenade> pGrenade = make_shared<CGrenade>(m_tInfo.vPos.x + m_tInfo.vDir.x * 100.f,
-			m_tInfo.vPos.y + m_tInfo.vDir.y * 100.f, m_tInfo.vDir, 20.f, m_fShootingDegree, m_fShootingDist);
+		shared_ptr<CGrenade> pGrenade = make_shared<CGrenade>(m_tInfo.vPos.x + m_tInfo.vDir.x * 50.f,
+			m_tInfo.vPos.y + m_tInfo.vDir.y * 50.f, m_tInfo.vDir, 20.f, m_fShootingDegree, m_fShootingDist);
 		pGrenade->Ready();
 		GET_SINGLE(CObjManager)->GetGrenades().emplace_back(pGrenade);
 
-		pGrenade = make_shared<CGrenade>(m_tInfo.vPos.x + m_tInfo.vDir.x * 100.f,
-			m_tInfo.vPos.y + m_tInfo.vDir.y * 100.f, m_tInfo.vDir, 20.f, m_fShootingDegree, m_fShootingDist, true);
+		pGrenade = make_shared<CGrenade>(m_tInfo.vPos.x + m_tInfo.vDir.x * 50.f,
+			m_tInfo.vPos.y + m_tInfo.vDir.y * 50.f, m_tInfo.vDir, 20.f, m_fShootingDegree, m_fShootingDist, true);
 		pGrenade->Ready();
 		GET_SINGLE(CObjManager)->GetGrenades().emplace_back(pGrenade);
 	}
 
 	// 연사
-	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_LBUTTON))
+	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_LBUTTON) && m_pWeapon->GetCurWeaponID() != GUN::SHOTGUN)
 	{
 		m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 		if (m_fStackTime >= 0.15f)
@@ -294,7 +294,7 @@ void CPlayer::CheckKeyState(void)
 	}
 
 	// 단발
-	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_LBUTTON))
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_LBUTTON) && m_pWeapon->GetCurWeaponID() == GUN::SHOTGUN)
 		m_pWeapon->Shoot();
 
 	// 무기 교체

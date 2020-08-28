@@ -2,6 +2,8 @@
 #include "CCasing.h"
 #include "CPlayerManager.h"
 #include "CPlayer.h"
+#include "CTextureManager.h"
+#include "CGraphicDevice.h"
 
 CCasing::CCasing(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree)
 {
@@ -86,11 +88,11 @@ int CCasing::Update(float _fDeltaTime )
 void CCasing::LateUpdate(void)
 {
 	// 일정 각도 회전하면 없어지기.
-	if (m_fRotDegree >= 5.f)
+	if (m_fRotDegree >= 1000.f)
 		this->SetIsValid(false);
 
 	// 탄피 꼭지점을 회전시키기
-	m_fRotDegree += 0.1f;
+	m_fRotDegree += 20.f;
 	
 	// 탄피의 중점을 기준으로 꼭지점들이 회전
 	D3DXMATRIX matWorld, matRev, matParent;
@@ -102,7 +104,6 @@ void CCasing::LateUpdate(void)
 	for(int i = 0; i < 2; i++)
 		D3DXVec3TransformCoord(&m_vRealVertex[i], &m_vRotVertex[i], &matWorld);
 
-
 }
 
 void CCasing::Release(void)
@@ -112,9 +113,28 @@ void CCasing::Release(void)
 void CCasing::Render(const HDC& _hdc)
 {
 
-	// 탄피
-	MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-	LineTo(_hdc, (int)m_vRealVertex[1].x, (int)m_vRealVertex[1].y);
+	//// 탄피
+	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
+	//LineTo(_hdc, (int)m_vRealVertex[1].x, (int)m_vRealVertex[1].y);
+
+	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"CasingLite");
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matRotZ, matTrans, matWorld;
+
+	if (this->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+	D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(m_fRotDegree));
+	D3DXMatrixTranslation(&matTrans, this->GetInfo()->vPos.x, this->GetInfo()->vPos.y, 0.f);
+	matWorld = matScale * matRotZ * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 }
 
 void CCasing::ActiveGravity(void)

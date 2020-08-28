@@ -86,15 +86,9 @@ public:
 public:
 	void SetState(CMonsterState* _pState);
 
-private:
-
+	
+protected:
 	float m_fStackTime;
-	bool  m_bIsFlying;
-	D3DXVECTOR3 m_vOldPos;
-	D3DXVECTOR3 m_vGap;
-
-	bool  m_bIsDash;
-	float m_fAddSpeed;
 
     float m_fCurHp;
     float m_fMaxHp;
@@ -104,9 +98,18 @@ private:
 
     D3DXVECTOR3 m_vRotVertex[3];
     D3DXVECTOR3 m_vRealVertex[3];
+	// 이미지 셋팅
+	unique_ptr<CImageSetting> m_pImageSetting;
+private:
+	bool  m_bIsDash;
+	bool  m_bIsFlying;
+	float m_fAddSpeed;
+
+	D3DXVECTOR3 m_vOldPos;
+	D3DXVECTOR3 m_vGap;
 
 	// State 담는 변수
 	CMonsterState* m_pNextState;
-	unique_ptr<CImageSetting> m_pImageSetting;
+
 };
 

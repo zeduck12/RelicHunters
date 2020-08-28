@@ -7,6 +7,7 @@
 #include "CMapManager.h"
 #include "CGraphicDevice.h"
 #include "CTextureManager.h"
+#include "CBoss.h"
 
 DEFINITION_SINGLETON(CObjManager)
 
@@ -54,6 +55,11 @@ bool CObjManager::Ready(void)
 
 	pMonster = make_shared<CMonster>(800.f, 1000.f, 50.f, 50.f,
 		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::TURTLE);
+	pMonster->Ready();
+	m_listMonsters.emplace_back(pMonster);
+
+	pMonster = make_shared<CBoss>(800.f, 1400.f, 114.f, 120.f,
+		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);
 	pMonster->Ready();
 	m_listMonsters.emplace_back(pMonster);
 

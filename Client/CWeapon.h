@@ -19,7 +19,8 @@ public:
     bool GetWorldMatrix(D3DXMATRIX* _pOutMatrix);
 
 public:
-    void SetCurWeaponID(GUN::ID _eID) { m_eCurWeaponID = _eID; }
+    void    SetCurWeaponID(GUN::ID _eID) { m_eCurWeaponID = _eID; }
+    GUN::ID GetCurWeaponID(void) const { return m_eCurWeaponID; }
 
 public:
     void Shoot(void);

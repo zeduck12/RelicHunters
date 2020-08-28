@@ -152,6 +152,8 @@
     <ClInclude Include="CAbstractFactory.h" />
     <ClInclude Include="CAnimation.h" />
     <ClInclude Include="CBoomerang.h" />
+    <ClInclude Include="CBoss.h" />
+    <ClInclude Include="CBossState.h" />
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CCameraManager.h" />
     <ClInclude Include="CCasing.h" />
@@ -196,6 +198,8 @@
   <ItemGroup>
     <ClCompile Include="CAnimation.cpp" />
     <ClCompile Include="CBoomerang.cpp" />
+    <ClCompile Include="CBoss.cpp" />
+    <ClCompile Include="CBossState.cpp" />
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CCameraManager.cpp" />
     <ClCompile Include="CCasing.cpp" />

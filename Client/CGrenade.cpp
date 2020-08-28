@@ -150,7 +150,7 @@ void CGrenade::ShootGrenade(void)
 			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 20.f)) * 2.f; 
 
 			m_tInfo.vPos -= D3DXVECTOR3(m_vDir.y, -m_vDir.x, 0.f) * m_fJumpPower  * 2.f;
-			m_tInfo.vPos += m_vDir * 3.5f * (m_fShootingDist / 100);
+			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 		}
 		else if (m_eDir == DIRECTION::RIGHT)
 		{
@@ -158,7 +158,7 @@ void CGrenade::ShootGrenade(void)
 			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 20.f)) * 2.f; 
 
 			m_tInfo.vPos += D3DXVECTOR3(m_vDir.y, -m_vDir.x, 0.f) * m_fJumpPower * 2.f;
-			m_tInfo.vPos += m_vDir * 3.5f * (m_fShootingDist / 100);
+			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 
 		}
 	
@@ -171,7 +171,7 @@ void CGrenade::ShootGrenade(void)
 			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 20.f)) * 2.f;
 
 			m_tInfo.vPos -= D3DXVECTOR3(-m_vDir.y, m_vDir.x, 0.f) * m_fJumpPower * 2.f;
-			m_tInfo.vPos += m_vDir * 3.5f * (m_fShootingDist / 100);
+			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 		}
 		else if (m_eDir == DIRECTION::RIGHT)
 		{
@@ -179,7 +179,7 @@ void CGrenade::ShootGrenade(void)
 			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 20.f)) * 2.f; 
 
 			m_tInfo.vPos += D3DXVECTOR3(-m_vDir.y, m_vDir.x, 0.f) * m_fJumpPower * 2.f;
-			m_tInfo.vPos += m_vDir * 3.5f * (m_fShootingDist / 100);
+			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 		}
 
 	}
@@ -199,7 +199,7 @@ void CGrenade::MiniJump(void)
 			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fSaveDegree + 40.f)) * 2.f;
 
 			m_tInfo.vPos += D3DXVECTOR3(-m_vDir.y, m_vDir.x, 0.f) * m_fMiniJumpPower * 3.f;
-			m_tInfo.vPos += m_vDir * 3.5f * (m_fShootingDist / 100);
+			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 		}
 		else if (m_eDir == DIRECTION::RIGHT)
 		{
@@ -207,7 +207,7 @@ void CGrenade::MiniJump(void)
 			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 40.f)) * 2.f; 
 
 			m_tInfo.vPos += D3DXVECTOR3(m_vDir.y, -m_vDir.x, 0.f) * m_fMiniJumpPower * 3.f;
-			m_tInfo.vPos += m_vDir * 3.5f * (m_fShootingDist / 100);
+			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 		}
 	}
 	else
@@ -218,7 +218,7 @@ void CGrenade::MiniJump(void)
 			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fSaveDegree - 40.f)) * 2.f; 
 			
 			m_tInfo.vPos += D3DXVECTOR3(m_vDir.y, -m_vDir.x, 0.f) * m_fMiniJumpPower * 3.f;
-			m_tInfo.vPos += m_vDir * 3.5f * (m_fShootingDist / 100);
+			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 		}
 		else if (m_eDir == DIRECTION::RIGHT)
 		{
@@ -227,7 +227,7 @@ void CGrenade::MiniJump(void)
 
 
 			m_tInfo.vPos += D3DXVECTOR3(-m_vDir.y, m_vDir.x, 0.f) * m_fMiniJumpPower * 3.f;
-			m_tInfo.vPos += m_vDir * 3.5f * (m_fShootingDist / 100);
+			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 		}
 	}
 }

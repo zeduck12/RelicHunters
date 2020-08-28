@@ -13,10 +13,13 @@
 #include "CMonster.h"
 #include "CMonsterState.h"
 #include "CShadow.h"
+#include "CBoss.h"
 
-CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID)
+CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree,
+	OBJ::ID _eID, const wstring& _strBulletName /*= L"Small"*/)
 	:
-	m_eObjID{ _eID }
+	m_eObjID{ _eID },
+	m_strBulletName{ _strBulletName }
 {
 	m_fDegree = _fShootingDegree;
 	m_fSpeed = _fSpeed;
@@ -87,6 +90,9 @@ void CBullet::LateUpdate()
 
 			if (CCollisionManager::CollideBullet(pMonster.get(), this) == true)
 			{
+				if (pMonster->GetImageID() == IMAGE::BOSS)
+					continue;
+
 				CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
 				pMonst->SetState(new AttackedState());
 			}
@@ -125,7 +131,7 @@ void CBullet::Render(const HDC& _hdc)
 
 
 	// Bullet ±×¸®±â
-	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", L"Small", 1);
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", m_strBulletName, 1);
 	if (nullptr == pTexInfo)
 		return;
 	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);

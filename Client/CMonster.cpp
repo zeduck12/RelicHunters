@@ -246,6 +246,8 @@ void CMonster::EquipWeapon(void)
 	wstring szWeaponName = L"";
 	if (m_eImageID == IMAGE::TURTLE)
 		szWeaponName = L"Flame";
+	else if(m_eImageID == IMAGE::BOSS)
+		szWeaponName = L"Boss";
 	else
 		szWeaponName = L"Pistol";
 
@@ -262,13 +264,31 @@ void CMonster::EquipWeapon(void)
 
 	if (m_eDir == DIRECTION::LEFT)
 	{
-		D3DXMatrixScaling(&matScale, 1.f, -1.f, 1.f);
-		D3DXMatrixTranslation(&matParent, this->GetX() - 14.f , this->GetY() + 3, 0.f);
+		if (m_eImageID == IMAGE::BOSS)
+		{
+			D3DXMatrixScaling(&matScale, 1.f, -1.f, 1.f);
+			D3DXMatrixTranslation(&matParent, this->GetX() - 14.f, this->GetY() + 30, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, -1.f, 1.f);
+			D3DXMatrixTranslation(&matParent, this->GetX() - 14.f , this->GetY() + 3, 0.f);
+		}
+
 	}
 	else
 	{
-		D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
-		D3DXMatrixTranslation(&matParent, this->GetX() + 14.f , this->GetY() + 3, 0.f);
+		if (m_eImageID == IMAGE::BOSS)
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
+			D3DXMatrixTranslation(&matParent, this->GetX() + 14.f, this->GetY() + 30, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
+			D3DXMatrixTranslation(&matParent, this->GetX() + 14.f , this->GetY() + 3, 0.f);
+		}
+
 	}
 
 

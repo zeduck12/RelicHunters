@@ -47,6 +47,16 @@ bool CImageSetting::Ready(void)
         m_pOwner->AddAnimationClip("Attacked", ANIMATION::ONCE_RETURN, 0.2f, 2, 0, 2, 0.f, L"KamikazeFly", L"Attacked", L"../Texture/Monster/KamikazeFly/Attacked/spr_kamikazelite_hit_%d.png");
         m_pOwner->AddAnimationClip("Fly", ANIMATION::ONCE_RETURN, 0.9f, 9, 0, 9, 0.f, L"KamikazeFly", L"Fly", L"../Texture/Monster/KamikazeFly/Fly/spr_kamikazelite_flying_0%d.png");
         break;
+    case IMAGE::BOSS:
+        m_pOwner->AddAnimationClip("EggIdle", ANIMATION::LOOP, 1.f, 1, 0, 1, 0.f, L"Boss", L"EggIdle", L"../Texture/Monster/Boss/Egg/Idle/spr_boss_egg_idle_%d.png");
+        m_pOwner->AddAnimationClip("EggStart", ANIMATION::LOOP, 2.f, 10, 0, 10, 0.f, L"Boss", L"EggStart", L"../Texture/Monster/Boss/Egg/Start/spr_boss_egg_start_%d.png");
+        m_pOwner->AddAnimationClip("EggCrack", ANIMATION::LOOP, 4.1f, 21, 0, 21, 0.f, L"Boss", L"EggCrack", L"../Texture/Monster/Boss/Egg/Crack/spr_boss_egg_crack_%d.png");
+        m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 1.4f, 14, 0, 14, 0.f, L"Boss", L"Idle", L"../Texture/Monster/Boss/Idle/spr_boss_idle_%d.png");
+        m_pOwner->AddAnimationClip("Move", ANIMATION::ONCE_RETURN, 0.6f, 6, 0, 6, 0.f, L"Boss", L"Move", L"../Texture/Monster/Boss/Move/spr_boss_walk_%d.png");
+        m_pOwner->AddAnimationClip("Attacked", ANIMATION::ONCE_RETURN, 0.2f, 2, 0, 2, 0.f, L"Boss", L"Attacked", L"../Texture/Monster/Boss/Attacked/spr_boss_hit_%d.png");
+        m_pOwner->AddAnimationClip("Death", ANIMATION::ONCE_RETURN, 1.3f, 13, 0, 13, 0.f, L"Boss", L"Death", L"../Texture/Monster/Boss/Death/spr_boss_death_%d.png");
+        break;
+
     }
           
     return true;
