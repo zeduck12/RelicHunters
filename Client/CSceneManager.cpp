@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "CSceneManager.h"
 #include "CGame.h"
+#include "CIntro.h"
+#include "CLogo.h"
+#include "CLobby.h"
 
 // ΩÃ±€≈Ê ¡§¿«
 DEFINITION_SINGLETON(CSceneManager)
@@ -24,10 +27,13 @@ void CSceneManager::ChangeScene(ID _eSceneID)
 		switch (m_eNextScene)
 		{
 		case CSceneManager::SCENE_LOGO:
+			m_pScene = new CLogo;
 			break;
 		case CSceneManager::SCENE_INTRO:
+			m_pScene = new CIntro;
 			break;
 		case CSceneManager::SCENE_LOBBY:
+			m_pScene = new CLobby;
 			break;
 		case CSceneManager::SCENE_GAME:
 			m_pScene = new CGame;

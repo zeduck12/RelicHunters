@@ -41,9 +41,10 @@ bool CObjManager::Ready(void)
 		return false;
 
 
-	// TEST 몬스터 생성.
+	// 몬스터 생성.
 	CEnemyManager::LoadMonsterData();
 
+	//Test 아이템 
 	shared_ptr<CObj> pItem = make_shared<CPickUpLight>(800.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_LIGHT);
 	pItem->Ready();
 	m_listBullets.emplace_back(pItem);

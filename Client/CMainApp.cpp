@@ -39,7 +39,7 @@ void CMainApp::Ready()
 	GET_SINGLE(CKeyManager);
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
 }
 
 void CMainApp::Update()
@@ -201,6 +201,28 @@ void CMainApp::SetImages(void)
 	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Prompt/spr_prompt_e_%d.png", L"Prompt", L"PromptE", 8)))
 		return;
 
+	// Logo Scene
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Logo/spr_splash_bg_0.png", L"Logo")))
+		return;
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Logo/spr_splash_roguelogo_0.png", L"LogoText")))
+		return;
+	// Intro Scene
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Intro/spr_intro_animated_%d.png", L"Scene", L"Intro", 12)))
+		return;
+
+	// Lobby Scene
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Lobby/Background/bg_menu_main.png", L"MainBackground")))
+		return;
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Lobby/Background/bg_pause.png", L"MainBackground2")))
+		return;
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Lobby/Deco/spr_menu_star_0.png", L"Deco")))
+		return;
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Lobby/Button/spr_menu_buttonMain_%d.png", L"Lobby", L"Button", 2)))
+		return;
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Lobby/LogoBox/spr_logo_%d.png", L"Lobby", L"LogoBox", 42)))
+		return;
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Lobby/Zueira/spr_zueira_menu_%d.png", L"Lobby", L"Zueira", 23)))
+		return;
 }
 
 

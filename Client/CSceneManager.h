@@ -15,11 +15,17 @@ public:
 	void Render(const HDC& _hdc);
 	void Release(void);
 
+public:
+	bool IsChangeScene(void) const { return m_bIsChangeScene; }
+	void SetIsChangeScene(bool _bIsChange) { m_bIsChangeScene = _bIsChange; }
+
 private:
 	CSceneManager();
 	~CSceneManager();
 
 private:
+	bool m_bIsChangeScene = false;
+
 	CScene* m_pScene = nullptr;
 
 	ID		m_eCurScene = SCENE_END;

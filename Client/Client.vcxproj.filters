@@ -55,15 +55,6 @@
     <Filter Include="02.Scene\023.Lobby">
       <UniqueIdentifier>{27b788fa-b99e-4cb7-8e89-40cbe8722aa9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Scene\024.Game">
-      <UniqueIdentifier>{564e28f9-dd07-4f64-98c8-2739f5968177}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.Scene\025.End">
-      <UniqueIdentifier>{a540079a-8cc1-4572-9c19-4e4ca494ef8a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="02.Scene\026.Edit">
-      <UniqueIdentifier>{c4d0fca6-e5e2-4f15-89bf-674a2986ad53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="97.Manager\KeyManager">
       <UniqueIdentifier>{98d01ecf-2239-407f-a043-eea47be85222}</UniqueIdentifier>
     </Filter>
@@ -157,6 +148,27 @@
     <Filter Include="97.Manager\InteractionManager">
       <UniqueIdentifier>{8992afa0-a794-423c-bd95-f2b931a5be3f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="02.Scene\026.End">
+      <UniqueIdentifier>{a540079a-8cc1-4572-9c19-4e4ca494ef8a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\027.Edit">
+      <UniqueIdentifier>{c4d0fca6-e5e2-4f15-89bf-674a2986ad53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\025.Game">
+      <UniqueIdentifier>{564e28f9-dd07-4f64-98c8-2739f5968177}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\024.Menu">
+      <UniqueIdentifier>{49239a4d-a557-411b-acf4-c1662947adb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08.UI">
+      <UniqueIdentifier>{4399fab2-142f-4c20-8959-e01cad0a3581}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08.UI\081.Button">
+      <UniqueIdentifier>{8648c126-abed-4077-b5dd-94eb22b219df}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08.UI\082.Star">
+      <UniqueIdentifier>{6bbba4cc-8d95-43fe-bf88-a2d2f5958384}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -217,7 +229,7 @@
       <Filter>97.Manager\SceneManager</Filter>
     </ClInclude>
     <ClInclude Include="CGame.h">
-      <Filter>02.Scene\024.Game</Filter>
+      <Filter>02.Scene\025.Game</Filter>
     </ClInclude>
     <ClInclude Include="CGrenade.h">
       <Filter>01.CObj\012.Projectile\Grenade</Filter>
@@ -309,6 +321,21 @@
     <ClInclude Include="CInteractionManager.h">
       <Filter>97.Manager\InteractionManager</Filter>
     </ClInclude>
+    <ClInclude Include="CIntro.h">
+      <Filter>02.Scene\022.Intro</Filter>
+    </ClInclude>
+    <ClInclude Include="CLogo.h">
+      <Filter>02.Scene\021.Logo</Filter>
+    </ClInclude>
+    <ClInclude Include="CLobby.h">
+      <Filter>02.Scene\023.Lobby</Filter>
+    </ClInclude>
+    <ClInclude Include="CButton.h">
+      <Filter>08.UI\081.Button</Filter>
+    </ClInclude>
+    <ClInclude Include="CDecoStar.h">
+      <Filter>08.UI\082.Star</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -354,7 +381,7 @@
       <Filter>97.Manager\SceneManager</Filter>
     </ClCompile>
     <ClCompile Include="CGame.cpp">
-      <Filter>02.Scene\024.Game</Filter>
+      <Filter>02.Scene\025.Game</Filter>
     </ClCompile>
     <ClCompile Include="CGrenade.cpp">
       <Filter>01.CObj\012.Projectile\Grenade</Filter>
@@ -436,6 +463,21 @@
     </ClCompile>
     <ClCompile Include="CInteractionManager.cpp">
       <Filter>97.Manager\InteractionManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CIntro.cpp">
+      <Filter>02.Scene\022.Intro</Filter>
+    </ClCompile>
+    <ClCompile Include="CLogo.cpp">
+      <Filter>02.Scene\021.Logo</Filter>
+    </ClCompile>
+    <ClCompile Include="CLobby.cpp">
+      <Filter>02.Scene\023.Lobby</Filter>
+    </ClCompile>
+    <ClCompile Include="CButton.cpp">
+      <Filter>08.UI\081.Button</Filter>
+    </ClCompile>
+    <ClCompile Include="CDecoStar.cpp">
+      <Filter>08.UI\082.Star</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
