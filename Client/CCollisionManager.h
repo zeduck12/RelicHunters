@@ -12,8 +12,8 @@ public:
 	static bool CollideWallGrenade(CObj* _pDstObj, CObj* _SrcObj);			 // 벽과 수류탄
 	static bool CollideLineToLine(LINEINFO& _DstLine, LINEINFO& _SrcLine);	 // 선과 선 충돌
 	static bool CollideLineToLineReturn(LINEINFO& _DstLine, LINEINFO& _SrcLine, LINEPOS* _pOut = nullptr);	 // 선과 선 충돌
-	static bool CollideCharacterTile(CObj* _pDstObj, TILE* _pTile);		 // 캐릭터 타일 충돌
-
+	static bool CollideCharacterTile(CObj* _pDstObj, TILE* _pTile);			 // 캐릭터 타일 충돌
+	static bool CollideCharacterStructure(CObj* _pDstObj, CObj* _pSrcObj);	 // 캐릭터 구조물 충돌
 
 
 private:

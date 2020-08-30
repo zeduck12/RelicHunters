@@ -18,6 +18,7 @@ public:
 	list<shared_ptr<CObj>>& GetGrenades(void) { return m_listGrenades; }
 	list<shared_ptr<CObj>>& GetCasings(void) { return m_listCasings; }
 	list<shared_ptr<CObj>>& GetMonsters(void) { return m_listMonsters; }
+	list<shared_ptr<CObj>>& GetItems(void) { return m_listItems; }
 
 private:
 	CObjManager();
@@ -28,7 +29,7 @@ private:
 	list<shared_ptr<CObj>> m_listGrenades;
 	list<shared_ptr<CObj>> m_listCasings;
 	list<shared_ptr<CObj>> m_listMonsters;
-
+	list<shared_ptr<CObj>> m_listItems;
 
 };
 

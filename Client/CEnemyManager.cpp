@@ -36,7 +36,6 @@ bool CEnemyManager::LoadMonsterData()
 		ReadFile(hFile, &fHp, sizeof(float), &dwByte, nullptr);
 		ReadFile(hFile, &eID, sizeof(IMAGE::ID), &dwByte, nullptr);
 
-		//pMonster = make_shared<CMonster>(fX, fY, fWidth, fHeight, fSpeed, fHp, eID);
 		pMonster = new CMonster(fX, fY, fWidth, fHeight, fSpeed, fHp, eID);
 		pMonster->Ready();
 		GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);

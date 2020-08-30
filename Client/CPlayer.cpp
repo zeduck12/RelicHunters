@@ -299,7 +299,7 @@ void CPlayer::CheckKeyState(void)
 		m_pWeapon->Shoot();
 
 	// 무기 교체
-	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_TAB))
 		GET_SINGLE(CPlayerManager)->GetInventory()->ChangeWeapon();
 
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_RBUTTON)) // 카메라 확대

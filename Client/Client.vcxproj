@@ -163,7 +163,10 @@
     <ClInclude Include="CGraphicDevice.h" />
     <ClInclude Include="CGrenade.h" />
     <ClInclude Include="CImageSetting.h" />
+    <ClInclude Include="CInteractionManager.h" />
     <ClInclude Include="CInventory.h" />
+    <ClInclude Include="CItem.h" />
+    <ClInclude Include="CItemState.h" />
     <ClInclude Include="CKeyManager.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="CMainApp.h" />
@@ -211,7 +214,10 @@
     <ClCompile Include="CGraphicDevice.cpp" />
     <ClCompile Include="CGrenade.cpp" />
     <ClCompile Include="CImageSetting.cpp" />
+    <ClCompile Include="CInteractionManager.cpp" />
     <ClCompile Include="CInventory.cpp" />
+    <ClCompile Include="CItem.cpp" />
+    <ClCompile Include="CItemState.cpp" />
     <ClCompile Include="CKeyManager.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CMainApp.cpp" />

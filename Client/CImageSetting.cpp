@@ -56,7 +56,18 @@ bool CImageSetting::Ready(void)
         m_pOwner->AddAnimationClip("Attacked", ANIMATION::ONCE_RETURN, 0.2f, 2, 0, 2, 0.f, L"Boss", L"Attacked", L"../Texture/Monster/Boss/Attacked/spr_boss_hit_%d.png");
         m_pOwner->AddAnimationClip("Death", ANIMATION::ONCE_RETURN, 1.3f, 13, 0, 13, 0.f, L"Boss", L"Death", L"../Texture/Monster/Boss/Death/spr_boss_death_%d.png");
         break;
-
+    case IMAGE::PICKUP_LIGHT:
+        m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 0.1f, 1, 0, 1, 0.f, L"PickUpLight", L"Start", L"../Texture/Item/PickUp/Light/spr_pickup_light_%d.png");
+        m_pOwner->AddAnimationClip("Start", ANIMATION::LOOP, 1.6f, 16, 0, 16, 0.f, L"PickUpLight", L"Start", L"../Texture/Item/PickUp/Light/spr_pickup_light_%d.png");     
+        break;
+    case IMAGE::PICKUP_MEDIUM:
+        m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 0.1f, 1, 0, 1, 0.f, L"PickUpMedium", L"Start", L"../Texture/Item/PickUp/Medium/spr_pickup_medium_%d.png");
+        m_pOwner->AddAnimationClip("Start", ANIMATION::LOOP, 1.6f, 16, 0, 16, 0.f, L"PickUpMedium", L"Start", L"../Texture/Item/PickUp/Medium/spr_pickup_medium_%d.png");
+        break;
+    case IMAGE::PICKUP_HEAVY:
+        m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 0.1f, 1, 0, 1, 0.f, L"PickUpHeavy", L"Start", L"../Texture/Item/PickUp/Heavy/spr_pickup_heavy_%d.png");
+        m_pOwner->AddAnimationClip("Start", ANIMATION::LOOP, 1.6f, 16, 0, 16, 0.f, L"PickUpHeavy", L"Start", L"../Texture/Item/PickUp/Heavy/spr_pickup_heavy_%d.png");
+        break;
     }
           
     return true;

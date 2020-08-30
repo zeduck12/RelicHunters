@@ -24,6 +24,7 @@
 #define		KEY_G			0x00004000
 #define		KEY_A			0x00008000
 #define		KEY_W			0x00010000
+#define		KEY_TAB			0x00020000
 
 #define WINCX 800
 #define WINCY 600

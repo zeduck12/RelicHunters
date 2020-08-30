@@ -148,6 +148,15 @@
     <Filter Include="97.Manager\EnemyManager">
       <UniqueIdentifier>{07a84792-9b60-49aa-93b4-b2a9b45885be}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\016.Item">
+      <UniqueIdentifier>{72cfe1c6-034b-48de-8d45-a3b602615f2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\016.Item\StatePattern">
+      <UniqueIdentifier>{920e13ba-b6f5-4496-8d18-0bbb236ea584}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\InteractionManager">
+      <UniqueIdentifier>{8992afa0-a794-423c-bd95-f2b931a5be3f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -291,6 +300,15 @@
     <ClInclude Include="CEnemyManager.h">
       <Filter>97.Manager\EnemyManager</Filter>
     </ClInclude>
+    <ClInclude Include="CItem.h">
+      <Filter>01.CObj\016.Item</Filter>
+    </ClInclude>
+    <ClInclude Include="CItemState.h">
+      <Filter>01.CObj\016.Item\StatePattern</Filter>
+    </ClInclude>
+    <ClInclude Include="CInteractionManager.h">
+      <Filter>97.Manager\InteractionManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -409,6 +427,15 @@
     </ClCompile>
     <ClCompile Include="CEnemyManager.cpp">
       <Filter>97.Manager\EnemyManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CItem.cpp">
+      <Filter>01.CObj\016.Item</Filter>
+    </ClCompile>
+    <ClCompile Include="CItemState.cpp">
+      <Filter>01.CObj\016.Item\StatePattern</Filter>
+    </ClCompile>
+    <ClCompile Include="CInteractionManager.cpp">
+      <Filter>97.Manager\InteractionManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -13,7 +13,7 @@ public:
 	virtual int  Update(float _fDeltaTime = 0.f) = 0;
 	virtual void LateUpdate(void)				 = 0;
 	virtual void Release(void)					 = 0;
-	virtual void Render(const HDC& _hdc)		 = 0;
+	virtual void Render(const HDC& _hdc)		 = 0; 
 
 public:
 	INFO* GetInfo(void) { return &m_tInfo ; }

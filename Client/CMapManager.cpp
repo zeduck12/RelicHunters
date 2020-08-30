@@ -6,6 +6,7 @@
 #include "CPlayerManager.h"
 #include "CPlayer.h"
 #include "CCollisionManager.h"
+#include "CItem.h"
 
 DEFINITION_SINGLETON(CMapManager)
 
@@ -23,21 +24,28 @@ bool CMapManager::Ready(void)
 	return true;
 }
 
+void CMapManager::Update(void)
+{
+	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Update(); } }
+}
+
 void CMapManager::LateUpdate(void)
 {
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 
 	for (auto& pTile : m_vecCreateTile)
 		CCollisionManager::CollideCharacterTile(pPlayer, pTile);
+	for (auto& pStruc : m_listStructure)
+		CCollisionManager::CollideCharacterStructure(pPlayer, pStruc.get());
 
 	for (auto& pStructure : m_listStructure) { DO_IF_IS_VALID_OBJ(pStructure) { pStructure->LateUpdate(); } }
 
 	// 무효한 객체면 삭제
-	//for (auto& pStructure : m_listStructure) { DO_IF_IS_NOT_VALID_OBJ(pStructure) { pStructure.reset(); } }
 	CollectGarbageObjects(m_listStructure);
+	CollectGarbageObjects(m_listItems);
 }
 
-void CMapManager::Render(void)
+void CMapManager::Render(const HDC& _hdc)
 {
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
@@ -110,13 +118,15 @@ void CMapManager::Render(void)
 		}
 	}
 
+	// 아이템
+	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Render(_hdc); } }
+
 }
 
 void CMapManager::Release(void)
 {
 	DeleteListSafe(m_vecTile);
 	DeleteListSafe(m_vecCreateTile);
-	//DeleteListSafe(m_listStructure);
 }
 
 // 나중에 파일 경로 받아서 스테이지마다 다른 맵 생성되게 해주기.
@@ -182,8 +192,37 @@ bool CMapManager::LoadFile(void)
 
 	
 		pObj = make_shared<CStructure>(tInfo.vPos, tInfo.vSize, tInfo.vImageSize, iDrawID);
-		//pObj = new CStructure(tInfo.vPos, tInfo.vSize, tInfo.vImageSize, iDrawID);
 		m_listStructure.emplace_back(pObj);
+	}
+
+	shared_ptr<CObj> pItem = nullptr;
+	float fX = 0.f;
+	float fY = 0.f;
+	float fWidth = 0.f;
+	float fHeight = 0.f;
+	iDrawID   =  0;
+	IMAGE::ID eID = IMAGE::END;
+
+	ReadFile(hFile, &iTileCount, sizeof(int), &dwByte, nullptr);
+	for (int i = 0; i < iTileCount; i++)
+	{
+		ReadFile(hFile, &fX, sizeof(float), &dwByte, nullptr);
+		ReadFile(hFile, &fY, sizeof(float), &dwByte, nullptr);
+		ReadFile(hFile, &fWidth, sizeof(float), &dwByte, nullptr);
+		ReadFile(hFile, &fHeight, sizeof(float), &dwByte, nullptr);
+		ReadFile(hFile, &iDrawID, sizeof(int), &dwByte, nullptr);
+		ReadFile(hFile, &eID, sizeof(IMAGE::ID), &dwByte, nullptr);
+
+		if (eID == IMAGE::PICKUP_LIGHT)
+			pItem = make_shared<CPickUpLight>(fX, fY, fWidth, fHeight, eID);
+		else if (eID == IMAGE::PICKUP_MEDIUM)
+			pItem = make_shared<CPickUpMedium>(fX, fY, fWidth, fHeight, eID);
+		else if (eID == IMAGE::PICKUP_HEAVY)
+			pItem = make_shared<CPickUpHeavy>(fX, fY, fWidth, fHeight, eID);
+
+		pItem->Ready();
+		m_listItems.emplace_back(pItem);
+
 	}
 
 	CloseHandle(hFile);

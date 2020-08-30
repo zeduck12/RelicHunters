@@ -9,6 +9,8 @@
 #include "CTextureManager.h"
 #include "CBoss.h"
 #include "CEnemyManager.h"
+#include "CInteractionManager.h"
+#include "CItem.h"
 
 DEFINITION_SINGLETON(CObjManager)
 
@@ -17,7 +19,8 @@ CObjManager::CObjManager()
 	m_listBullets{ },
 	m_listGrenades{ },
 	m_listCasings{ },
-	m_listMonsters{ }
+	m_listMonsters{ },
+	m_listItems{ }
 {
 }
 
@@ -37,8 +40,21 @@ bool CObjManager::Ready(void)
 	if (!GET_SINGLE(CMapManager)->Ready())
 		return false;
 
+
 	// TEST 몬스터 생성.
 	CEnemyManager::LoadMonsterData();
+
+	shared_ptr<CObj> pItem = make_shared<CPickUpLight>(800.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_LIGHT);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+	pItem = make_shared<CPickUpLight>(900.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_MEDIUM);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+	pItem = make_shared<CPickUpLight>(1000.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_HEAVY);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
 
 	// 보스생성
 	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 1400.f, 120.f, 120.f,
@@ -51,12 +67,14 @@ bool CObjManager::Ready(void)
 
 void CObjManager::Update(void)
 {
+	GET_SINGLE(CMapManager)->Update();
 	GET_SINGLE(CPlayerManager)->Update();
 	GET_SINGLE(CCameraManager)->Update();
 	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Update(); } }
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Update(); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Update(); } }
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Update(); } }
+	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Update(); } }
 }
 
 void CObjManager::LateUpdate(void)
@@ -74,6 +92,7 @@ void CObjManager::LateUpdate(void)
 	CollectGarbageObjects(m_listGrenades);
 	CollectGarbageObjects(m_listCasings);
 	CollectGarbageObjects(m_listMonsters);
+	CollectGarbageObjects(m_listItems);
 }
 
 void CObjManager::Render(const HDC& _hdc)
@@ -89,13 +108,15 @@ void CObjManager::Render(const HDC& _hdc)
 	xfWorld = GET_SINGLE(CCameraManager)->GetWorldMatrix();
 	SetWorldTransform(_hdc, &xfWorld);
 
-	GET_SINGLE(CMapManager)->Render();
+	GET_SINGLE(CMapManager)->Render(_hdc);
 	GET_SINGLE(CPlayerManager)->Render(_hdc);
 	
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Render(_hdc); } }
 	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Render(_hdc); } }
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Render(_hdc); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }
+	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Render(_hdc); } }
+
 
 	// 카메라 움직임 결과
 	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();

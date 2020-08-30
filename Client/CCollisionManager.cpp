@@ -220,6 +220,9 @@ bool CCollisionManager::CollideCharacterTile(CObj* _pDstObj, TILE* _pTile)
 	DO_IF_IS_NOT_VALID_OBJ(_pDstObj)
 		return false;
 
+	if (_pTile->iOption == 0) // 0이면 지나갈 수 있게
+		return false;
+
 	RECT rcDst = _pDstObj->GetRect(); // 플레이어
 	RECT rcSrc =					  // Tile
 	{
@@ -256,6 +259,46 @@ bool CCollisionManager::CollideCharacterTile(CObj* _pDstObj, TILE* _pTile)
 
 	return false;
 	
+}
+
+bool CCollisionManager::CollideCharacterStructure(CObj* _pDstObj, CObj* _pSrcObj)
+{
+	DO_IF_IS_NOT_VALID_OBJ(_pDstObj)
+		return false;
+
+	DO_IF_IS_NOT_VALID_OBJ(_pSrcObj)
+		return false;
+
+	RECT rcDst = _pDstObj->GetRect(); // 플레이어
+	RECT rcSrc = _pSrcObj->GetRect(); // Structure
+
+	RECT rc = {};
+	if (IntersectRect(&rc, &rcSrc, &rcDst) == TRUE)
+	{
+		// 충돌했다면 player 밀쳐내기
+		int iVertical = rc.bottom - rc.top;
+		int iHorizontal = rc.right - rc.left;
+
+		if (iHorizontal > iVertical)
+		{
+			if (_pDstObj->GetY() < _pSrcObj->GetY())
+				_pDstObj->SetY(_pDstObj->GetY() - iVertical);
+			else if (_pDstObj->GetY() > _pSrcObj->GetY())
+				_pDstObj->SetY(_pDstObj->GetY() + iVertical);
+		}
+		else
+		{
+			if (_pDstObj->GetX() > _pSrcObj->GetX())
+				_pDstObj->SetX(_pDstObj->GetX() + iHorizontal);
+			else if (_pDstObj->GetX() < _pSrcObj->GetX())
+				_pDstObj->SetX(_pDstObj->GetX() - iHorizontal);
+		}
+
+		return true;
+	}
+
+	return false;
+
 }
 
 CCollisionManager::~CCollisionManager()

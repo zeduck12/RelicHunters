@@ -13,6 +13,8 @@
 #include "CPlayerState.h"
 #include "CTimeManager.h"
 #include "CAnimation.h"
+#include "CMapManager.h"
+
 
 
 // 삼각형 몬스터 
@@ -108,6 +110,12 @@ void CMonster::LateUpdate(void)
 
 		CCollisionManager::CollideWallGrenade(this, pGrenade.get());
 	}
+
+	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
+		CCollisionManager::CollideCharacterTile(this, pTile);
+
+	for(auto& pStruc : GET_SINGLE(CMapManager)->GetStructures())
+		CCollisionManager::CollideCharacterStructure(this, pStruc.get());
 
 	// 플레이어 출동 선과 선 충돌
 	//CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
