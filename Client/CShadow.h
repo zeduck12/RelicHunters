@@ -18,8 +18,6 @@ public:
 	// 낱장 이미지 그림자
 	static void RenderSheetShadow(CObj* _pOwner, const TEXINFO*& _pTexInfo);
 	static void RenderSheetProjectile(CObj* _pOwner, const TEXINFO*& _pTexInfo, const float& _fDegree);
-	// 수류탄 그림자
-	static void RenderGrenadeShadow(CGrenade* _pOwner, const TEXINFO*& _pTexInfo);
 
 private:
 	static D3DXVECTOR3 vOldPos;

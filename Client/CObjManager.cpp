@@ -8,6 +8,7 @@
 #include "CGraphicDevice.h"
 #include "CTextureManager.h"
 #include "CBoss.h"
+#include "CEnemyManager.h"
 
 DEFINITION_SINGLETON(CObjManager)
 
@@ -37,31 +38,13 @@ bool CObjManager::Ready(void)
 		return false;
 
 	// TEST 몬스터 생성.
+	CEnemyManager::LoadMonsterData();
 
-	shared_ptr<CObj> pMonster = make_shared<CMonster>(500.f, 500.f, 50.f, 50.f,
-		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::DUCK);
-	pMonster->Ready();
-	m_listMonsters.emplace_back(pMonster);
-
-	pMonster = make_shared<CMonster>(800.f, 800.f, 50.f, 50.f,
-		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::KAMIKAZE);
-	pMonster->Ready();
-	m_listMonsters.emplace_back(pMonster);
-
-	pMonster = make_shared<CMonster>(800.f, 900.f, 50.f, 50.f,
-		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::KAMIKAZE_FLY);
-	pMonster->Ready();
-	m_listMonsters.emplace_back(pMonster);
-
-	pMonster = make_shared<CMonster>(800.f, 1000.f, 50.f, 50.f,
-		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::TURTLE);
-	pMonster->Ready();
-	m_listMonsters.emplace_back(pMonster);
-
-	pMonster = make_shared<CBoss>(800.f, 1400.f, 120.f, 120.f,
-		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);
-	pMonster->Ready();
-	m_listMonsters.emplace_back(pMonster);
+	// 보스생성
+	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 1400.f, 120.f, 120.f,
+	//	cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);
+	//pMonster->Ready();
+	//m_listMonsters.emplace_back(pMonster);
 
 	return true;
 }
@@ -87,10 +70,10 @@ void CObjManager::LateUpdate(void)
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->LateUpdate(); } }
 
 	// 만약에 오브젝트들이 무효하면 없애주기.
-	for (auto& pBullet : m_listBullets) { DO_IF_IS_NOT_VALID_OBJ(pBullet) { pBullet.reset(); } }
-	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_NOT_VALID_OBJ(pGrenade) { pGrenade.reset(); } }
-	for (auto& pCasing : m_listCasings) { DO_IF_IS_NOT_VALID_OBJ(pCasing) { pCasing.reset(); } }
-	for (auto& pMonster : m_listMonsters) { DO_IF_IS_NOT_VALID_OBJ(pMonster) { pMonster.reset(); } }
+	CollectGarbageObjects(m_listBullets);
+	CollectGarbageObjects(m_listGrenades);
+	CollectGarbageObjects(m_listCasings);
+	CollectGarbageObjects(m_listMonsters);
 }
 
 void CObjManager::Render(const HDC& _hdc)
@@ -124,14 +107,19 @@ void CObjManager::Render(const HDC& _hdc)
 	
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);
-
 }
 
 void CObjManager::Release(void)
 {
+	m_listGrenades.clear();
+	m_listCasings.clear();
+	m_listBullets.clear();
+	m_listMonsters.clear();
+
 	CCameraManager::Destroy_Instance();
 	CPlayerManager::Destroy_Instance();
 	CMapManager::Destroy_Instance();
+	CTextureManager::Destroy_Instance();
 }
 
 

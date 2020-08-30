@@ -39,7 +39,4 @@ void CGame::Render(const HDC& _hdc)
 
 void CGame::Release(void)
 {
-	GET_SINGLE(CObjManager)->Release();
-	GET_SINGLE(CObjManager)->Destroy_Instance();
-	GET_SINGLE(CCollisionManager)->Destroy_Instance();
 }

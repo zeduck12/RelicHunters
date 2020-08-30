@@ -20,7 +20,7 @@ public:
 	void Release(void);
 
 public:
-	void SetState(CBossState* _pState) { m_pNextState = _pState; }
+	void SetState(CBossState* _pState) { m_pBossNextState = _pState; }
 	void ShootRocket(void);
 	void ShootShotgun(void);
 
@@ -30,7 +30,7 @@ public:
 
 private:
 
-	CBossState* m_pNextState ; 
+	CBossState* m_pBossNextState ; 
 
 
 };

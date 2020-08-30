@@ -145,6 +145,9 @@
     <Filter Include="01.CObj\012.Projectile\Bullet\05.Rocket">
       <UniqueIdentifier>{8dcd1b09-1bbe-4f90-95a4-4998889fed83}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Manager\EnemyManager">
+      <UniqueIdentifier>{07a84792-9b60-49aa-93b4-b2a9b45885be}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -285,6 +288,9 @@
     <ClInclude Include="CRocket.h">
       <Filter>01.CObj\012.Projectile\Bullet\05.Rocket</Filter>
     </ClInclude>
+    <ClInclude Include="CEnemyManager.h">
+      <Filter>97.Manager\EnemyManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -400,6 +406,9 @@
     </ClCompile>
     <ClCompile Include="CRocket.cpp">
       <Filter>01.CObj\012.Projectile\Bullet\05.Rocket</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnemyManager.cpp">
+      <Filter>97.Manager\EnemyManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

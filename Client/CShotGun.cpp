@@ -113,7 +113,7 @@ void CShotGun::LateUpdate(void)
 
 	// °øÅë
 	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
-		CCollisionManager::CollideBullet(pObj, this);
+		CCollisionManager::CollideBullet(pObj.get(), this);
 
 	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
 		CCollisionManager::CollideTileBullet(pTile, this);

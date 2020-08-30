@@ -20,13 +20,6 @@ CObj::~CObj()
 		delete m_pAnimation;
 		m_pAnimation = nullptr;
 	}
-
-	for (auto& pTexInfo : m_pVecTextureInfo)
-		Safe_Delete(pTexInfo);
-
-	m_pVecTextureInfo.clear();
-	m_pVecTextureInfo.shrink_to_fit();
-
 }
 
 CAnimation* CObj::CreateAnimation(const string& _strTag)

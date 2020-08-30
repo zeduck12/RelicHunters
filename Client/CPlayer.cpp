@@ -49,7 +49,7 @@ void CPlayer::Ready()
 {
 	m_eImageID =IMAGE::PLAYER;
 
-	m_tInfo.vPos = {200.f, 200.f, 0.f};
+	m_tInfo.vPos = {800.f, 600.f, 0.f};
 	m_tInfo.vDir = {1.0f, 0.f, 0.f};
 	m_tInfo.vSize = { 50.f, 50.f, 0.f };
 	m_tInfo.vLook = {1.f, 0.f, 0.f};
@@ -113,7 +113,7 @@ int CPlayer::Update(float _fDeltaTime)
 void CPlayer::LateUpdate()
 {
 	// 벽과 충돌 했을때 (현재는 몬스터)
-	LINEINFO* pLineArray = nullptr;
+	/*LINEINFO* pLineArray = nullptr;
 	for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
 	{
 		DO_IF_IS_NOT_VALID_OBJ(pMonster)
@@ -130,9 +130,7 @@ void CPlayer::LateUpdate()
 				m_tPosin.tRPoint.fY = m_tCrossPos.fY;
 			}
 		}
-	}
-
-	delete[] pLineArray;
+	};*/
 
 }
 
@@ -186,6 +184,9 @@ void CPlayer::Render(const HDC& _hdc)
 
 void CPlayer::Release()
 {
+	m_pWeapon.reset();
+	m_pImageSetting.reset();
+
 	PlayerIdleState::Destroy_Instance();
 	PlayerMoveState::Destroy_Instance();
 	PlayerAttacked::Destroy_Instance();

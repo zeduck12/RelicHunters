@@ -43,10 +43,11 @@ public:
 	D3DXVECTOR3 GetDirectionVector(void) const { return m_tInfo.vDir; }
 	void SetDirectionVector(D3DXVECTOR3& _rVecDir) { m_tInfo.vDir = _rVecDir; }
 	float GetHp(void) const { return m_fCurHp; }
+	void SetHp(float _fHp) { m_fCurHp = _fHp; }
 	float GetMaxHp(void) const { return m_fMaxHp; }
 	LINEINFO* GetLinesInfo(void)
 	{
-		LINEINFO* pLineArray = new LINEINFO[3];
+		LINEINFO pLineArray[3] = {};
 		// 첫번째 선분
 		LINEPOS tLeftPoint = { m_vRealVertex[0].x, m_vRealVertex[0].y };
 		LINEPOS tRightPoint = { m_vRealVertex[1].x, m_vRealVertex[1].y };
@@ -99,7 +100,7 @@ protected:
     D3DXVECTOR3 m_vRotVertex[3];
     D3DXVECTOR3 m_vRealVertex[3];
 	// 이미지 셋팅
-	unique_ptr<CImageSetting> m_pImageSetting;
+	unique_ptr<CImageSetting> m_pImageSetting = nullptr;
 private:
 	bool  m_bIsDash;
 	bool  m_bIsFlying;
@@ -109,7 +110,7 @@ private:
 	D3DXVECTOR3 m_vGap;
 
 	// State 담는 변수
-	CMonsterState* m_pNextState;
+	CMonsterState* m_pNextState = nullptr;
 
 };
 

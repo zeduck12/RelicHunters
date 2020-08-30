@@ -24,7 +24,7 @@ private:
 private:
 	CAnimation() = default;
 	CAnimation(const CAnimation& _rOther);
-	virtual ~CAnimation();
+	~CAnimation();
 
 private:
 	map<string, ANIMATION_CLIP*> m_mapClip;

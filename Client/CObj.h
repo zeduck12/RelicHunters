@@ -68,8 +68,8 @@ public:
 	CAnimation* GetAnimation(void) const { return m_pAnimation; }
 
 public:
-	void SetTextureInfo(vector<TEXINFO*> _pVecTexInfo) { m_pVecTextureInfo = _pVecTexInfo; }
-	vector<TEXINFO*> GetTextureInfo(void) const { return m_pVecTextureInfo; }
+	void SetTextureInfo(const vector<TEXINFO*>& _pVecTexInfo) { m_vecTextureInfo = _pVecTexInfo; }
+	const vector<TEXINFO*>& GetTextureInfo(void) const { return m_vecTextureInfo; }
 
 protected:
 	// 현재 방향
@@ -84,7 +84,7 @@ protected:
 	IMAGE::ID	  m_eImageID;
 
 	CAnimation* m_pAnimation    = nullptr;
-	vector<TEXINFO*>    m_pVecTextureInfo ;
+	vector<TEXINFO*>    m_vecTextureInfo ;
 
 };
 

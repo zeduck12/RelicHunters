@@ -158,6 +158,7 @@
     <ClInclude Include="CCameraManager.h" />
     <ClInclude Include="CCasing.h" />
     <ClInclude Include="CCollisionManager.h" />
+    <ClInclude Include="CEnemyManager.h" />
     <ClInclude Include="CGame.h" />
     <ClInclude Include="CGraphicDevice.h" />
     <ClInclude Include="CGrenade.h" />
@@ -205,6 +206,7 @@
     <ClCompile Include="CCameraManager.cpp" />
     <ClCompile Include="CCasing.cpp" />
     <ClCompile Include="CCollisionManager.cpp" />
+    <ClCompile Include="CEnemyManager.cpp" />
     <ClCompile Include="CGame.cpp" />
     <ClCompile Include="CGraphicDevice.cpp" />
     <ClCompile Include="CGrenade.cpp" />

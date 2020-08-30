@@ -15,7 +15,7 @@
 
 CBoss::CBoss(float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed, float _fHp, IMAGE::ID _eID)
 	:
-	m_pNextState{ nullptr }
+	m_pBossNextState{ nullptr }
 {
 	m_fDegree = 0.f;
 	m_fMaxHp = _fHp;
@@ -62,7 +62,7 @@ void CBoss::Ready(void)
 	if (!m_pImageSetting->Ready())
 		return;
 
-	m_pNextState = new BossIdleState;
+	m_pBossNextState = new BossIdleState;
 	m_eDir = DIRECTION::RIGHT;
 }
 
@@ -70,17 +70,14 @@ int CBoss::Update(float _fDeltaTime)
 {
 	DetectDirection();
 
-	CBossState* pCurState = m_pNextState->Update(this);
+	CBossState* pCurState = m_pBossNextState->Update(this);
 	if (pCurState != nullptr)
 	{
-		delete	m_pNextState;
-		m_pNextState = nullptr;
+		delete	m_pBossNextState;
+		m_pBossNextState = nullptr;
 
-		m_pNextState = pCurState;
+		m_pBossNextState = pCurState;
 	}
-
-	if (m_pNextState != nullptr)
-		m_pNextState->Update(this);
 
 	// 몬스터 방향 플레이어 기준으로 설정. 나중에 이미지 넣으면 그때는 좌우만
 	UpdateMonsterDirection();
@@ -91,32 +88,32 @@ int CBoss::Update(float _fDeltaTime)
 void CBoss::LateUpdate(void)
 {
 	// 플레이어 출동 선과 선 충돌
-	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
-	LINEINFO* pPlayerLineArray = dynamic_cast<CPlayer*>(pPlayer)->GetLinesInfo();
-	LINEINFO* pMonsterLineArray = GetLinesInfo();
+	//CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	//LINEINFO* pPlayerLineArray = dynamic_cast<CPlayer*>(pPlayer)->GetLinesInfo();
+	//LINEINFO* pMonsterLineArray = GetLinesInfo();
 
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			if (CCollisionManager::CollideLineToLine(pPlayerLineArray[i], pMonsterLineArray[j]))
-			{
-				// 충돌이 일어났다면 방향벡터 쪽으로 밀기
-				pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
-				pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
-				dynamic_cast<CPlayer*>(pPlayer)->SetState(GET_SINGLE(PlayerAttacked));
-			}
-		}
-	}
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	for (int j = 0; j < 3; j++)
+	//	{
+	//		if (CCollisionManager::CollideLineToLine(pPlayerLineArray[i], pMonsterLineArray[j]))
+	//		{
+	//			// 충돌이 일어났다면 방향벡터 쪽으로 밀기
+	//			pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
+	//			pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
+	//			dynamic_cast<CPlayer*>(pPlayer)->SetState(GET_SINGLE(PlayerAttacked));
+	//		}
+	//	}
+	//}
 
-	// 다쓴 라인정보 삭제
-	delete[] pPlayerLineArray;
-	delete[] pMonsterLineArray;
+	//// 다쓴 라인정보 삭제
+	//delete[] pPlayerLineArray;
+	//delete[] pMonsterLineArray;
 }
 
 void CBoss::Render(const HDC& _hdc)
 {
-	m_pNextState->Render(this);
+	m_pBossNextState->Render(this);
 
 	EquipWeapon(); // 총 장착
 
@@ -135,7 +132,7 @@ void CBoss::Render(const HDC& _hdc)
 
 void CBoss::Release(void)
 {
-	SAFE_DELETE(m_pNextState);
+	SAFE_DELETE(m_pBossNextState);
 }
 
 void CBoss::ShootRocket(void)

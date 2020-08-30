@@ -30,17 +30,31 @@ void CMapManager::LateUpdate(void)
 	for (auto& pTile : m_vecCreateTile)
 		CCollisionManager::CollideCharacterTile(pPlayer, pTile);
 
+	for (auto& pStructure : m_listStructure) { DO_IF_IS_VALID_OBJ(pStructure) { pStructure->LateUpdate(); } }
+
+	// 무효한 객체면 삭제
+	//for (auto& pStructure : m_listStructure) { DO_IF_IS_NOT_VALID_OBJ(pStructure) { pStructure.reset(); } }
+	CollectGarbageObjects(m_listStructure);
 }
 
 void CMapManager::Render(void)
 {
-	TCHAR szBuf[MAX_PATH] = L"";
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
+		return;
+
 	int iIndex = 0;
+	const TEXINFO* pTexInfo = nullptr;
 	for (auto& pTile : m_vecTile)
 	{
-		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tile", pTile->iDrawID);
+		if (pTile->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pTile->vPos.x ||
+			pTile->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pTile->vPos.y)
+			continue;
+
+		pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tile", pTile->iDrawID);
 		if (nullptr == pTexInfo)
 			return;
+
 		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
 		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
 
@@ -58,7 +72,11 @@ void CMapManager::Render(void)
 	// 새로 생성한 타일
 	for (auto& pTile : m_vecCreateTile)
 	{
-		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tileset", pTile->iDrawID);
+		if (pTile->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pTile->vPos.x ||
+			pTile->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pTile->vPos.y)
+			continue;
+
+		pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tileset", pTile->iDrawID);
 		if (nullptr == pTexInfo)
 			return;
 		RECT rc = { pTile->iFrameX * 72, pTile->iFrameY * 72, pTile->iFrameX * 72 + 72, pTile->iFrameY * 72 + 72 };
@@ -79,90 +97,33 @@ void CMapManager::Render(void)
 	}
 
 	// 맵 조형물 
-	for (auto& pObj : m_vecStructure)
-		pObj->Render();
-
-}
-
-void CMapManager::Render(D3DXMATRIX _rMat)
-{
-	TCHAR szBuf[MAX_PATH] = L"";
-	for (auto& pTile : m_vecTile)
+	for (auto& pObj : m_listStructure)
 	{
-		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tile", pTile->iDrawID);
-		if (nullptr == pTexInfo)
-			return;
-		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
-		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+		DO_IF_IS_VALID_OBJ(pObj)
+		{
+			if (pObj->GetInfo()->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pObj->GetInfo()->vPos.x ||
+				pObj->GetInfo()->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pObj->GetInfo()->vPos.y)
+				continue;
 
-		D3DXMATRIX matScale, matTrans, matWorld;
-		// 크 자 이 공 부
-		D3DXMatrixScaling(&matScale, pTile->vSize.x, pTile->vSize.y, 0.f);
-		D3DXMatrixTranslation(&matTrans, pTile->vPos.x, pTile->vPos.y, 0.f);
-		matWorld = matScale * matTrans;
-
-		matWorld *= _rMat;
-
-		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
-	}
-
-
-	// 새로 생성한 타일
-	for (auto& pTile : m_vecCreateTile)
-	{
-		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tileset", pTile->iDrawID);
-		if (nullptr == pTexInfo)
-			return;
-		RECT rc = { pTile->iFrameX * 72, pTile->iFrameY * 72, pTile->iFrameX * 72 + 72, pTile->iFrameY * 72 + 72 };
-		float fCenterX = float(rc.right - rc.left) * 0.5f;
-		float fCenterY = float(rc.bottom - rc.top) * 0.5f;
-
-		D3DXMATRIX matScale, matTrans, matWorld;
-		D3DXMatrixScaling(&matScale, pTile->vSize.x, pTile->vSize.y, 0.f);
-		D3DXMatrixTranslation(&matTrans, pTile->vPos.x, pTile->vPos.y, 0.f);
-		matWorld = matScale * matTrans;
-
-		matWorld *= _rMat;
-
-		// 이미지 출력영역
-		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc,
-			&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+			dynamic_cast<CStructure*>(pObj.get())->Render();
+			
+		}
 	}
 
 }
 
 void CMapManager::Release(void)
 {
-	for (auto& pTile : m_vecTile)
-		Safe_Delete(pTile);
-
-	m_vecTile.clear();
-	m_vecTile.shrink_to_fit();
-
-
-	for (auto& pTile : m_vecCreateTile)
-		Safe_Delete(pTile);
-
-	m_vecCreateTile.clear();
-	m_vecCreateTile.shrink_to_fit();
-
-	for (auto& pObj : m_vecStructure)
-		Safe_Delete(pObj);
-
-	m_vecStructure.clear();
-	m_vecStructure.shrink_to_fit();
-
+	DeleteListSafe(m_vecTile);
+	DeleteListSafe(m_vecCreateTile);
+	//DeleteListSafe(m_listStructure);
 }
 
 // 나중에 파일 경로 받아서 스테이지마다 다른 맵 생성되게 해주기.
 bool CMapManager::LoadFile(void)
 {
 	// 맵툴에서 작업한 Data파일에 있는 맵 정보 벡터에 넣어주기.
-	TCHAR szFilePath[MAX_PATH] = L"..\\Data\\Test.dat";
+	TCHAR szFilePath[MAX_PATH] = L"..\\Data\\Stage1.dat";
 	HANDLE hFile = CreateFile(szFilePath, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 	if (hFile == INVALID_HANDLE_VALUE)
@@ -198,7 +159,7 @@ bool CMapManager::LoadFile(void)
 		m_vecCreateTile.emplace_back(pTile);
 	}
 
-	CStructure* pObj = nullptr;
+	shared_ptr<CStructure> pObj = nullptr;
 	INFO tInfo = {};
 	ZeroMemory(&tInfo, sizeof(INFO));
 	bool  bIsValid = false;
@@ -211,7 +172,6 @@ bool CMapManager::LoadFile(void)
 	ReadFile(hFile, &iTileCount, sizeof(int), &dwByte, nullptr);
 	for (int i = 0; i < iTileCount; i++)
 	{
-		pObj = new CStructure;
 		ReadFile(hFile, &tInfo, sizeof(INFO), &dwByte, nullptr);
 		ReadFile(hFile, &bIsValid, sizeof(bool), &dwByte, nullptr);
 		ReadFile(hFile, &fSpeed, sizeof(float), &dwByte, nullptr);
@@ -220,15 +180,10 @@ bool CMapManager::LoadFile(void)
 		ReadFile(hFile, &iCurHp, sizeof(int), &dwByte, nullptr);
 		ReadFile(hFile, &iMaxHp, sizeof(int), &dwByte, nullptr);
 
-		pObj->SetInfo(tInfo);
-		pObj->SetIsValid(bIsValid);
-		pObj->SetSpeed(fSpeed);
-		pObj->SetDegree(fDegree);
-		pObj->SetDrawID(iDrawID);
-		pObj->SetCurHp(iCurHp);
-		pObj->SetMaxHp(iMaxHp);
-
-		m_vecStructure.emplace_back(pObj);
+	
+		pObj = make_shared<CStructure>(tInfo.vPos, tInfo.vSize, tInfo.vImageSize, iDrawID);
+		//pObj = new CStructure(tInfo.vPos, tInfo.vSize, tInfo.vImageSize, iDrawID);
+		m_listStructure.emplace_back(pObj);
 	}
 
 	CloseHandle(hFile);

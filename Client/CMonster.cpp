@@ -12,6 +12,7 @@
 #include "CGraphicDevice.h"
 #include "CPlayerState.h"
 #include "CTimeManager.h"
+#include "CAnimation.h"
 
 
 // 삼각형 몬스터 
@@ -80,14 +81,10 @@ int CMonster::Update(float _fDeltaTime)
 	CMonsterState* pCurState = m_pNextState->Update(this);
 	if (pCurState != nullptr)
 	{
-		delete	m_pNextState;
-		m_pNextState = nullptr;
+		Safe_Delete(m_pNextState);
 
 		m_pNextState = pCurState;
 	}
-
-	if (m_pNextState != nullptr)
-		m_pNextState->Update(this);
 
 	// 몬스터 방향 플레이어 기준으로 설정. 나중에 이미지 넣으면 그때는 좌우만
 	UpdateMonsterDirection();
@@ -113,33 +110,33 @@ void CMonster::LateUpdate(void)
 	}
 
 	// 플레이어 출동 선과 선 충돌
-	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
-	LINEINFO* pPlayerLineArray = dynamic_cast<CPlayer*>(pPlayer)->GetLinesInfo();
-	LINEINFO* pMonsterLineArray = GetLinesInfo();
+	//CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	//LINEINFO* pPlayerLineArray = dynamic_cast<CPlayer*>(pPlayer)->GetLinesInfo();
+	//LINEINFO* pMonsterLineArray = GetLinesInfo();
 
-	for (int i = 0; i < 4; i++)
-	{
-		for (int j = 0; j < 3; j++)
-		{
-			if (CCollisionManager::CollideLineToLine( pPlayerLineArray[i], pMonsterLineArray[j]))
-			{
-				// 충돌이 일어났다면 방향벡터 쪽으로 밀기
-				pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
-				pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
-				dynamic_cast<CPlayer*>(pPlayer)->SetState(GET_SINGLE(PlayerAttacked));
-			}
-		}
-	}
+	//for (int i = 0; i < 4; i++)
+	//{
+	//	for (int j = 0; j < 3; j++)
+	//	{
+	//		if (CCollisionManager::CollideLineToLine( pPlayerLineArray[i], pMonsterLineArray[j]))
+	//		{
+	//			// 충돌이 일어났다면 방향벡터 쪽으로 밀기
+	//			pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
+	//			pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
+	//			dynamic_cast<CPlayer*>(pPlayer)->SetState(GET_SINGLE(PlayerAttacked));
+	//		}
+	//	}
+	//}
 
-	// 다쓴 라인정보 삭제
-	delete[] pPlayerLineArray;
-	delete[] pMonsterLineArray;
 	
+
 }
 
 void CMonster::Release(void)
 {
-	SAFE_DELETE(m_pNextState);
+	if(m_pImageSetting)
+		m_pImageSetting.reset();
+	Safe_Delete(m_pNextState);
 }
 
 void CMonster::Render(const HDC& _hdc)
@@ -577,12 +574,7 @@ void CMonster::Landing(void)
 
 void CMonster::SetState(CMonsterState* _pState)
 {
-	if (m_pNextState)
-	{
-		delete m_pNextState;
-		m_pNextState = nullptr;
-	}
-
+	Safe_Delete(m_pNextState);
 	m_pNextState = _pState;
 }
 

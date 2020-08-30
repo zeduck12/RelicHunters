@@ -15,6 +15,7 @@
 #include "CShadow.h"
 #include "CBoss.h"
 #include "CBossState.h"
+#include "CStructure.h"
 
 CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree,
 	OBJ::ID _eID, const wstring& _strBulletName /*= L"Small"*/)
@@ -120,7 +121,18 @@ void CBullet::LateUpdate()
 
 	// °øÅë
 	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
-		CCollisionManager::CollideBullet(pObj, this);
+	{
+		if (CCollisionManager::CollideBullet(pObj.get(), this) == true)
+		{
+			CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
+			pStructure->SetCurHp(pStructure->GetCurHp() - 10);
+			if (pStructure->GetCurDrawID() >= pStructure->GetMaxDrawID())
+				continue;
+
+			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
+		}
+		
+	}
 
 	for(auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
 		CCollisionManager::CollideTileBullet(pTile, this);

@@ -25,7 +25,8 @@ public:
 	const D3DXVECTOR3& GetDirectionVector(void) const { return (const D3DXVECTOR3&)m_tInfo.vDir; }
 	LINEINFO* GetLinesInfo(void)
 	{
-		LINEINFO* pLineArray = new LINEINFO[4];
+		//LINEINFO* pLineArray = new LINEINFO[4];
+		LINEINFO pLineArray[4] = {};
 
 		// 플레이어 보유 선분 업데이트
 		// 첫번째 선분

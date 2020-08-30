@@ -9,6 +9,7 @@
 #include "CKeyManager.h"
 #include "CGraphicDevice.h"
 #include "CTextureManager.h"
+#include "CTimeManager.h"
 
 CMainApp::CMainApp()
 	:
@@ -60,11 +61,13 @@ void CMainApp::Render()
 void CMainApp::Release()
 {
 	ReleaseDC(g_hWND, m_hDC);
+	
+	CTimeManager::Destroy_Instance();
 	CKeyManager::Destroy_Instance();
 	CCollisionManager::Destroy_Instance();
-	CTextureManager::Destroy_Instance();
-	CGraphicDevice::Destroy_Instance();
 	CSceneManager::Destroy_Instance();
+	CObjManager::Destroy_Instance();
+	CGraphicDevice::Destroy_Instance();
 }
 
 void CMainApp::SetImages(void)
@@ -73,7 +76,7 @@ void CMainApp::SetImages(void)
 		return;
 
 	// Tileset
-	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/tileset%d.png", L"Terrain", L"Tileset", 5))
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/tileset%d.png", L"Terrain", L"Tileset", 44))
 		return;
 
 	// Player Test Image
@@ -175,9 +178,16 @@ void CMainApp::SetImages(void)
 		return;
 
 	// Object
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/structure%d.png", L"Terrain", L"Object", 2)))
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/structure%d.png", L"Terrain", L"Object", 4)))
 		return;
-
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Barrel/barrel_%d.png", L"Structure", L"Barrel", 14)))
+		return;
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Root1/root_%d.png", L"Structure", L"Root1", 11)))
+		return;
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Root2/root_%d.png", L"Structure", L"Root2", 15)))
+		return;
+	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Root3/root_%d.png", L"Structure", L"Root3", 12)))
+		return;
 }
 
 

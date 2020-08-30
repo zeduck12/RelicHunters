@@ -5,8 +5,8 @@ class CMonster;
 class CMonsterState 
 {
 public:
-	explicit CMonsterState() = default;
-	virtual ~CMonsterState() = default;
+	CMonsterState() = default;
+	virtual ~CMonsterState() {}
 
 public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  = 0;
@@ -20,8 +20,8 @@ protected:
 class IdleState : public CMonsterState
 {
 public:
-	explicit IdleState() = default;
-	virtual ~IdleState() = default;
+	IdleState() = default;
+	virtual ~IdleState() {}
 
 public:
 	// CMonsterState을(를) 통해 상속됨
@@ -32,8 +32,8 @@ public:
 class TrackingState : public CMonsterState
 {
 public:
-	explicit TrackingState() = default;
-	virtual ~TrackingState() = default;
+	TrackingState() = default;
+	virtual ~TrackingState() {}
 
 public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
@@ -43,8 +43,8 @@ public:
 class AttackState : public CMonsterState
 {
 public:
-	explicit AttackState() = default;
-	virtual ~AttackState() = default;
+	AttackState() = default;
+	virtual ~AttackState() {};
 
 public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
@@ -55,8 +55,8 @@ public:
 class AttackedState : public CMonsterState
 {
 public:
-	explicit AttackedState() = default;
-	virtual ~AttackedState() = default;
+	AttackedState() = default;
+	virtual ~AttackedState() {}
 
 public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
@@ -67,8 +67,8 @@ public:
 class FlyState : public CMonsterState
 {
 public:
-	explicit FlyState() = default;
-	virtual ~FlyState() = default;
+	FlyState() = default;
+	virtual ~FlyState() {}
 
 public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
@@ -78,8 +78,8 @@ public:
 class PatrolState : public CMonsterState
 {
 public:
-	explicit PatrolState() = default;
-	virtual ~PatrolState() = default;
+	PatrolState() = default;
+	virtual ~PatrolState() {}
 
 public:
 	virtual CMonsterState* Update(CMonster * _pMonster)		  override;
@@ -89,8 +89,8 @@ public:
 class LandingState : public CMonsterState
 {
 public:
-	explicit LandingState() = default;
-	virtual ~LandingState() = default;
+	LandingState() = default;
+	virtual ~LandingState() {}
 
 public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  override;

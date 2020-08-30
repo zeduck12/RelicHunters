@@ -6,10 +6,12 @@
 
 CStructure::CStructure(D3DXVECTOR3 _vPos, D3DXVECTOR3 _vSize, D3DXVECTOR3 _vImageSize, int _iDrawID)
 	:
-	m_iDrawID{ _iDrawID }
+	m_iDrawID{ _iDrawID },
+	m_strStateKey{ L"" }
 {
 	m_iMaxHp = 200;
 	m_iCurHp = m_iMaxHp;
+	m_iCurDrawID = 0;
 
 	// ÃÊ±âÈ­
 	m_tInfo.vPos = _vPos;
@@ -18,6 +20,33 @@ CStructure::CStructure(D3DXVECTOR3 _vPos, D3DXVECTOR3 _vSize, D3DXVECTOR3 _vImag
 	m_tInfo.vDir = { 1.f ,0.f , 0.f };
 	m_tInfo.vLook = { 1.f ,0.f , 0.f };
 	D3DXMatrixIdentity(&m_tInfo.mat);
+
+	// Draw ID 
+	// 0 - Åë
+	// 1 - ÀÜµð1
+	// 2 - ÀÜµð2
+	// 3 - ÀÜµð3
+
+	if (m_iDrawID == 0)
+	{
+		m_strStateKey = L"Barrel";
+		m_iMaxDrawID = 13;
+	}
+	else if (m_iDrawID == 1)
+	{
+		m_strStateKey = L"Root1";
+		m_iMaxDrawID = 10;
+	}
+	else if (m_iDrawID == 2)
+	{
+		m_strStateKey = L"Root2";
+		m_iMaxDrawID = 14;
+	}
+	else if (m_iDrawID == 3)
+	{
+		m_strStateKey = L"Root3";
+		m_iMaxDrawID = 11;
+	}
 }
 
 CStructure::~CStructure()
@@ -27,7 +56,6 @@ CStructure::~CStructure()
 
 void CStructure::Ready(void)
 {
-    m_iDrawID = 0;
 	m_iMaxHp = 200;
     m_iCurHp  = m_iMaxHp;
 }
@@ -39,32 +67,27 @@ int CStructure::Update(float _fDeltaTime)
 
 void CStructure::LateUpdate(void)
 {
+	if (m_iCurHp <= 0 || m_iCurDrawID >= m_iMaxDrawID)
+	{
+		m_iCurHp = 0;
+		m_iCurDrawID = m_iMaxDrawID;
+		this->SetIsValid(false);
+		return;
+	}
+
+	if (m_iCurHp >= m_iMaxHp * 0.8f && m_iMaxHp * 0.85f >= m_iCurHp)
+		m_iCurDrawID += 1;
+
 }
 
 void CStructure::Release(void)
 {
 }
 
-void CStructure::Render(const HDC& _hdc)
-{
-	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Object", m_iDrawID);
-	if (nullptr == pTexInfo)
-		return;
-	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
-	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
-
-	D3DXMATRIX matScale, matTrans, matWorld;
-	D3DXMatrixScaling(&matScale, m_tInfo.vSize.x, m_tInfo.vSize.y, 0.f);
-	D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);
-	matWorld = matScale * matTrans;
-
-	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-}
 
 void CStructure::Render()
 {
-	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Object", m_iDrawID);
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Structure", m_strStateKey, m_iCurDrawID);
 	if (nullptr == pTexInfo)
 		return;
 	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);

@@ -31,3 +31,13 @@ using namespace std;
 #include "Function.h"
 #include "Const.h"
 
+
+#define _CRTDBG_MAP_ALLOC
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#if defined(_MSC_VER) && defined(_DEBUG)
+#include <malloc.h>
+#include <crtdbg.h>
+#define _VC_DEBUG
+#endif

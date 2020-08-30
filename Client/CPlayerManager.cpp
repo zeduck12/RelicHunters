@@ -38,6 +38,8 @@ void CPlayerManager::Render(const HDC& _hdc)
 
 void CPlayerManager::Release(void)
 {
+	m_pInventory.reset();
+	m_pPlayer.reset();
 }
 
 bool CPlayerManager::CreateInventory(void)
