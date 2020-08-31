@@ -169,6 +169,15 @@
     <Filter Include="08.UI\082.Star">
       <UniqueIdentifier>{6bbba4cc-8d95-43fe-bf88-a2d2f5958384}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08.UI\083.SelButton">
+      <UniqueIdentifier>{901fbfcc-b9c0-4f22-9e4f-6028d7b70614}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08.UI\084.StatBox">
+      <UniqueIdentifier>{885dd95a-88e3-4ef7-8390-97a7b051181d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08.UI\084.StatBox\StatBoxButton">
+      <UniqueIdentifier>{bdd443ce-ca59-4d3b-8478-08d025ec4956}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -336,6 +345,18 @@
     <ClInclude Include="CDecoStar.h">
       <Filter>08.UI\082.Star</Filter>
     </ClInclude>
+    <ClInclude Include="CMenu.h">
+      <Filter>02.Scene\024.Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="CSelButton.h">
+      <Filter>08.UI\083.SelButton</Filter>
+    </ClInclude>
+    <ClInclude Include="CStatBox.h">
+      <Filter>08.UI\084.StatBox</Filter>
+    </ClInclude>
+    <ClInclude Include="CStatBoxButton.h">
+      <Filter>08.UI\084.StatBox\StatBoxButton</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -478,6 +499,18 @@
     </ClCompile>
     <ClCompile Include="CDecoStar.cpp">
       <Filter>08.UI\082.Star</Filter>
+    </ClCompile>
+    <ClCompile Include="CMenu.cpp">
+      <Filter>02.Scene\024.Menu</Filter>
+    </ClCompile>
+    <ClCompile Include="CSelButton.cpp">
+      <Filter>08.UI\083.SelButton</Filter>
+    </ClCompile>
+    <ClCompile Include="CStatBox.cpp">
+      <Filter>08.UI\084.StatBox</Filter>
+    </ClCompile>
+    <ClCompile Include="CStatBoxButton.cpp">
+      <Filter>08.UI\084.StatBox\StatBoxButton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

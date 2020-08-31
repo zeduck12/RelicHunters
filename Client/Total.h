@@ -25,7 +25,8 @@ namespace GUN
 
 namespace BUTTON
 {
-	enum ID { START, CLOSE ,END};
+	enum ID { START, CHANGE, CLOSE ,END};
+	enum SEL_ID { JIMMY, PINKY, RAFF, BIU, PUNNY, ASS, RANDOM, SEL_END};
 }
 
 namespace ANIMATION

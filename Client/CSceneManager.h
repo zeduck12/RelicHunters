@@ -7,7 +7,7 @@ class CSceneManager
 	DECLARE_SINGLETON(CSceneManager)
 
 public:
-	enum ID { SCENE_LOGO, SCENE_INTRO, SCENE_LOBBY, SCENE_GAME, SCENE_END };
+	enum ID { SCENE_LOGO, SCENE_INTRO, SCENE_LOBBY, SCENE_MENU, SCENE_GAME, SCENE_END };
 public:
 	void ChangeScene(ID _eSceneID);
 	void Update(void);

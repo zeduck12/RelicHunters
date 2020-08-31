@@ -176,6 +176,7 @@
     <ClInclude Include="CLogo.h" />
     <ClInclude Include="CMainApp.h" />
     <ClInclude Include="CMapManager.h" />
+    <ClInclude Include="CMenu.h" />
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CMonsterState.h" />
     <ClInclude Include="CMultiTexture.h" />
@@ -188,9 +189,12 @@
     <ClInclude Include="CRocket.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneManager.h" />
+    <ClInclude Include="CSelButton.h" />
     <ClInclude Include="CShadow.h" />
     <ClInclude Include="CShotGun.h" />
     <ClInclude Include="CSingleTexture.h" />
+    <ClInclude Include="CStatBox.h" />
+    <ClInclude Include="CStatBoxButton.h" />
     <ClInclude Include="CStructure.h" />
     <ClInclude Include="CTexture.h" />
     <ClInclude Include="CTextureManager.h" />
@@ -232,6 +236,7 @@
     <ClCompile Include="CLogo.cpp" />
     <ClCompile Include="CMainApp.cpp" />
     <ClCompile Include="CMapManager.cpp" />
+    <ClCompile Include="CMenu.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CMonsterState.cpp" />
     <ClCompile Include="CMultiTexture.cpp" />
@@ -243,9 +248,12 @@
     <ClCompile Include="CRocket.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneManager.cpp" />
+    <ClCompile Include="CSelButton.cpp" />
     <ClCompile Include="CShadow.cpp" />
     <ClCompile Include="CShotGun.cpp" />
     <ClCompile Include="CSingleTexture.cpp" />
+    <ClCompile Include="CStatBox.cpp" />
+    <ClCompile Include="CStatBoxButton.cpp" />
     <ClCompile Include="CStructure.cpp" />
     <ClCompile Include="CTexture.cpp" />
     <ClCompile Include="CTextureManager.cpp" />

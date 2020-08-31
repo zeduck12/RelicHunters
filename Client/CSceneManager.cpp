@@ -4,6 +4,7 @@
 #include "CIntro.h"
 #include "CLogo.h"
 #include "CLobby.h"
+#include "CMenu.h"
 
 // ΩÃ±€≈Ê ¡§¿«
 DEFINITION_SINGLETON(CSceneManager)
@@ -34,6 +35,9 @@ void CSceneManager::ChangeScene(ID _eSceneID)
 			break;
 		case CSceneManager::SCENE_LOBBY:
 			m_pScene = new CLobby;
+			break;
+		case CSceneManager::SCENE_MENU:
+			m_pScene = new CMenu;
 			break;
 		case CSceneManager::SCENE_GAME:
 			m_pScene = new CGame;

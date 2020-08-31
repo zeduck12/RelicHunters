@@ -39,7 +39,7 @@ void CMainApp::Ready()
 	GET_SINGLE(CKeyManager);
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
 }
 
 void CMainApp::Update()
@@ -178,51 +178,98 @@ void CMainApp::SetImages(void)
 		return;
 
 	// Object
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/structure%d.png", L"Terrain", L"Object", 4)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/structure%d.png", L"Terrain", L"Object", 4)))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Barrel/barrel_%d.png", L"Structure", L"Barrel", 14)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Barrel/barrel_%d.png", L"Structure", L"Barrel", 14)))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Root1/root_%d.png", L"Structure", L"Root1", 11)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Root1/root_%d.png", L"Structure", L"Root1", 11)))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Root2/root_%d.png", L"Structure", L"Root2", 15)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Root2/root_%d.png", L"Structure", L"Root2", 15)))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Root3/root_%d.png", L"Structure", L"Root3", 12)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Root3/root_%d.png", L"Structure", L"Root3", 12)))
 		return;
 
 	// ITEM
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Item/PickUp/Light/spr_pickup_light_%d.png", L"PickUpLight", L"Start", 16)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Item/PickUp/Light/spr_pickup_light_%d.png", L"PickUpLight", L"Start", 16)))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Item/PickUp/Medium/spr_pickup_medium_%d.png", L"PickUpMedium", L"Start", 16)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Item/PickUp/Medium/spr_pickup_medium_%d.png", L"PickUpMedium", L"Start", 16)))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Item/PickUp/Heavy/spr_pickup_heavy_%d.png", L"PickUpHeavy", L"Start", 16)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Item/PickUp/Heavy/spr_pickup_heavy_%d.png", L"PickUpHeavy", L"Start", 16)))
 		return;
 
 	// Prompt E
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Prompt/spr_prompt_e_%d.png", L"Prompt", L"PromptE", 8)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Prompt/spr_prompt_e_%d.png", L"Prompt", L"PromptE", 8)))
 		return;
 
 	// Logo Scene
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Logo/spr_splash_bg_0.png", L"Logo")))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Logo/spr_splash_bg_0.png", L"Logo")))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Logo/spr_splash_roguelogo_0.png", L"LogoText")))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Logo/spr_splash_roguelogo_0.png", L"LogoText")))
 		return;
 	// Intro Scene
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Intro/spr_intro_animated_%d.png", L"Scene", L"Intro", 12)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Intro/spr_intro_animated_%d.png", L"Scene", L"Intro", 12)))
 		return;
 
 	// Lobby Scene
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Lobby/Background/bg_menu_main.png", L"MainBackground")))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Lobby/Background/bg_menu_main.png", L"MainBackground")))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Lobby/Background/bg_pause.png", L"MainBackground2")))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Lobby/Background/bg_pause.png", L"MainBackground2")))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Lobby/Deco/spr_menu_star_0.png", L"Deco")))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Lobby/Deco/spr_menu_star_0.png", L"Deco")))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Lobby/Button/spr_menu_buttonMain_%d.png", L"Lobby", L"Button", 2)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Lobby/Button/spr_menu_buttonMain_%d.png", L"Lobby", L"Button", 2)))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Lobby/LogoBox/spr_logo_%d.png", L"Lobby", L"LogoBox", 42)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Lobby/LogoBox/spr_logo_%d.png", L"Lobby", L"LogoBox", 42)))
 		return;
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Lobby/Zueira/spr_zueira_menu_%d.png", L"Lobby", L"Zueira", 23)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Lobby/Zueira/spr_zueira_menu_%d.png", L"Lobby", L"Zueira", 23)))
 		return;
+
+	// Menu Scene
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/Background/background.png", L"MenuBackground")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/StatsBox/statsbox.png", L"StatsBox")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/PlayerCard/playerCard.png", L"PlayerCard")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/PlayerCard/playerStat.png", L"PlayerStat")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/Button/spr_char_Button_%d.png", L"Menu", L"Button", 2)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/CharacterSel/Jimmy/Idle/spr_char_jimmyOn_0.png", L"JimmyCardIdle")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/CharacterSel/Jimmy/Active/spr_char_jimmySel_%d.png", L"Menu", L"JimmySel", 11)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/CharacterSel/Jimmy/Clicked/spr_char_jimmyFinal_%d.png", L"Menu", L"JimmyClicked", 5)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/CharacterSel/Pinky/Idle/spr_char_pinkyOn_0.png", L"PinkyCardIdle")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/CharacterSel/Pinky/Active/spr_char_pinkySel_%d.png", L"Menu", L"PinkySel", 11)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/CharacterSel/Pinky/Clicked/spr_char_pinkyFinal_%d.png", L"Menu", L"PinkyClicked", 5)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/CharacterSel/Raff/Idle/spr_char_raffOn_0.png", L"RaffCardIdle")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/CharacterSel/Raff/Active/spr_char_raffSel_%d.png", L"Menu", L"RaffSel", 11)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/CharacterSel/Raff/Clicked/spr_char_raffFinal_%d.png", L"Menu", L"RaffClicked", 5)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/CharacterSel/Biu/Death/spr_char_biuOff_0.png", L"BiuCardDeath")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/CharacterSel/Punny/Death/spr_char_punnyOff_0.png", L"PunnyCardDeath")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/CharacterSel/Ass/Death/spr_char_assOff_0.png", L"AssCardDeath")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/Menu/CharacterSel/Random/Idle/spr_char_randomOn_0.png", L"RadomCardIdle")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/CharacterSel/Random/Active/spr_char_randomSel_%d.png", L"Menu", L"RandomSel", 11)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/CharacterSel/Random/Clicked/spr_char_randomFinal_%d.png", L"Menu", L"RandomClicked", 5)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/CharacterCard/spr_card_%d.png", L"Menu", L"CharacterCard", 6)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/StarBar/spr_char_statBar_%d.png", L"Menu", L"StarBar", 3)))
+		return;
+
 }
 
 

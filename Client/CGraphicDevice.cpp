@@ -66,11 +66,11 @@ HRESULT CGraphicDevice::Ready(void)
 
 	D3DXFONT_DESCW tFontInfo;
 	ZeroMemory(&tFontInfo, sizeof(D3DXFONT_DESCW));
-	tFontInfo.Height  = 20;
-	tFontInfo.Width   = 10;
+	tFontInfo.Height  = 26;
+	tFontInfo.Width   = 13;
 	tFontInfo.Weight  = FW_HEAVY;
 	tFontInfo.CharSet = HANGUL_CHARSET;
-	lstrcpy(tFontInfo.FaceName, L"메이플스토리");
+	lstrcpy(tFontInfo.FaceName, L"굴림체");
 	if (FAILED(D3DXCreateFontIndirect(m_pDevice, &tFontInfo, &m_pFont)))
 	{
 		ERR_MSG(L"폰트 생성 실패");

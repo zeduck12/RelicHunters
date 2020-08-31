@@ -110,4 +110,39 @@ void CButton::Render(const HDC& _hdc)
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 	}
+
+	if (m_eID == BUTTON::START)
+	{
+		TCHAR szBuf[MAX_PATH] = L"PLAY ADVENTURE";
+		if (m_bIsPress)
+		{
+			D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y - 10.f, 0.f);
+			CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+			CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 0, 0));
+		}
+		else
+		{
+			D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y - 10.f, 0.f);
+			CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+			CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
+	}
+
+	if (m_eID == BUTTON::CLOSE)
+	{
+		TCHAR szBuf[MAX_PATH] = L"EXIT";
+		if (m_bIsPress)
+		{
+			D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x + 120.f, m_tInfo.vPos.y - 10.f, 0.f);
+			CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+			CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 0, 0));
+		}
+		else
+		{
+			D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x + 120.f, m_tInfo.vPos.y - 10.f, 0.f);
+			CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+			CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
+	}
+
 }

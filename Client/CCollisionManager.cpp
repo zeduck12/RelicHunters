@@ -50,10 +50,10 @@ bool CCollisionManager::CollideTileBullet(TILE* _pTile, CObj* _SrcObj)
 	RECT rc = {};
 	RECT rcDst = 
 	{
-		_pTile->vPos.x - (128.f * 0.5f),
-		_pTile->vPos.y - (128.f * 0.5f),
-		_pTile->vPos.x + (128.f * 0.5f),
-		_pTile->vPos.y + (128.f * 0.5f)
+		LONG(_pTile->vPos.x - (128.f * 0.5f)),
+		LONG(_pTile->vPos.y - (128.f * 0.5f)),
+		LONG(_pTile->vPos.x + (128.f * 0.5f)),
+		LONG(_pTile->vPos.y + (128.f * 0.5f))
 	};
 
 	RECT rcSrc = _SrcObj->GetRect();
@@ -226,10 +226,10 @@ bool CCollisionManager::CollideCharacterTile(CObj* _pDstObj, TILE* _pTile)
 	RECT rcDst = _pDstObj->GetRect(); // 플레이어
 	RECT rcSrc =					  // Tile
 	{
-		_pTile->vPos.x - (128.f * 0.5f),
-		_pTile->vPos.y - (128.f * 0.5f),
-		_pTile->vPos.x + (128.f * 0.5f),
-		_pTile->vPos.y + (128.f * 0.5f)
+		LONG(_pTile->vPos.x - (128.f * 0.5f)),
+		LONG(_pTile->vPos.y - (128.f * 0.5f)),
+		LONG(_pTile->vPos.x + (128.f * 0.5f)),
+		LONG(_pTile->vPos.y + (128.f * 0.5f))
 	};
 
 	RECT rc = {};
