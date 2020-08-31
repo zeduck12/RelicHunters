@@ -41,6 +41,11 @@ void CInteractionManager::Render(CObj* _pItem)
 // 아이템 범위안에 플레이어가 들어온다면 상호작용 표시뜨게 하기
 bool CInteractionManager::InteractPlayerItem(CObj* _pPlayer, CObj* _pItem)
 {
+	DO_IF_IS_NOT_VALID_OBJ(_pPlayer)
+		return false;
+	DO_IF_IS_NOT_VALID_OBJ(_pItem)
+		return false;
+
 	CItem* pItem = dynamic_cast<CItem*>(_pItem);
 
 	float fPlayerX    = _pPlayer->GetX();

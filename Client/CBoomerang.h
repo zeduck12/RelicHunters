@@ -5,7 +5,8 @@ class CBoomerang :
 {
 public:
 	CBoomerang() = default;
-	CBoomerang(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed = cfBoomerangBulletSpeed);
+	CBoomerang(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed = cfBoomerangBulletSpeed,
+		OBJ::ID _eID = OBJ::PLAYER, const wstring& _strBulletName = L"Small");
     virtual ~CBoomerang();
 public:
 	virtual void Ready(void)					 override;

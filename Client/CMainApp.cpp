@@ -39,7 +39,7 @@ void CMainApp::Ready()
 	GET_SINGLE(CKeyManager);
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
 }
 
 void CMainApp::Update()
@@ -152,11 +152,29 @@ void CMainApp::SetImages(void)
 		return;
 
 	// Weapon
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Boss/spr_boss_gun_%d.png", L"Weapon", L"Boss", 3))
+		return;
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Pistol/pistol_%d.png", L"Weapon", L"Pistol", 3))
 		return;
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Flame/flame_%d.png", L"Weapon", L"Flame", 3))
 		return;
-	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Boss/spr_boss_gun_%d.png", L"Weapon", L"Boss", 3))
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Assault/assault_%d.png", L"Weapon", L"Assault", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/HighMag/highmag_%d.png", L"Weapon", L"HighMag", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Keytar/keytar_%d.png", L"Weapon", L"Keytar", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/MachineGun/machinegun_%d.png", L"Weapon", L"MachineGun", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Pistol_Assualt/pistol_assault_%d.png", L"Weapon", L"Pistol_Assualt", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Pistol_Heavy/pistol_heavy_%d.png", L"Weapon", L"Pistol_Heavy", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Plasma/plasma_%d.png", L"Weapon", L"Plasma", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Shotgun/shotgun_%d.png", L"Weapon", L"Shotgun", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Sniper/sniper_%d.png", L"Weapon", L"Sniper", 3))
 		return;
 
 	// Bullet
@@ -167,6 +185,8 @@ void CMainApp::SetImages(void)
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Bullet/Rocket/rocket_%d.png", L"Bullet", L"Rocket", 1))
 		return;
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Bullet/Blue/blue_%d.png", L"Bullet", L"Blue", 2))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Bullet/Plasma/spr_bullet_plasma_%d.png", L"Bullet", L"Plasma", 12))
 		return;
 
 	// Casing

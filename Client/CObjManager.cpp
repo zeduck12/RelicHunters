@@ -57,6 +57,15 @@ bool CObjManager::Ready(void)
 	pItem->Ready();
 	m_listBullets.emplace_back(pItem);
 
+	pItem = make_shared<ShotGun>(700.f, 600.f, 50.f, 50.f, GUN::SHOTGUN);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+	pItem = make_shared<HighMagGun>(600.f, 600.f, 50.f, 50.f, GUN::HIGH_MAG);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+
 	// 보스생성
 	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 1400.f, 120.f, 120.f,
 	//	cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);

@@ -27,6 +27,9 @@ public:
     void ShootDefault(void);
     void ShootShotGun(void);
     void ShootBoomerang(void);
+
+public:
+    void DrawCurGun(void);
   
 public:
 private:

@@ -71,7 +71,7 @@ void CPlayer::Ready()
 
 	// 여기서 무기 세팅하고 셋팅
 	GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::DEFAULT);
-	GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::SHOTGUN);
+	GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::DEFAULT);
 
 	// 무기 생성
 	m_pWeapon = make_unique<CWeapon>();
@@ -282,7 +282,7 @@ void CPlayer::CheckKeyState(void)
 	}
 
 	// 연사
-	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_LBUTTON) && m_pWeapon->GetCurWeaponID() != GUN::SHOTGUN)
+	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_LBUTTON) && m_pWeapon->GetCurWeaponID() == GUN::MACHINEGUN)
 	{
 		m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 		if (m_fStackTime >= 0.15f)
@@ -295,7 +295,7 @@ void CPlayer::CheckKeyState(void)
 	}
 
 	// 단발
-	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_LBUTTON) && m_pWeapon->GetCurWeaponID() == GUN::SHOTGUN)
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_LBUTTON) && m_pWeapon->GetCurWeaponID() != GUN::MACHINEGUN)
 		m_pWeapon->Shoot();
 
 	// 무기 교체

@@ -139,20 +139,8 @@ void CWeapon::Render(const HDC& _hdc)
 		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
 	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
 
-	// ÃÑ ±×¸² È¸Àü
-	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Pistol", 0);
-	if (nullptr == pTexInfo)
-		return;
-	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
-	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
-
-	D3DXMATRIX matWorld;
-	D3DXMatrixIdentity(&matWorld);
-	if (!GetWorldMatrix(&matWorld))
-		return;
-
-	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	// ÇöÀç ÀåÂøÃÑ ±×¸®±â
+	DrawCurGun();
 
 }
 
@@ -170,7 +158,7 @@ void CWeapon::Shoot(void)
 	case GUN::SHOTGUN:
 		ShootShotGun();
 		break;
-	case GUN::BOOMERANG:
+	case GUN::HIGH_MAG:
 		ShootBoomerang();
 		break;
 	}
@@ -236,9 +224,9 @@ void CWeapon::ShootBoomerang(void)
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 
 	// ºÎ¸Þ¶û ¹ß»ç
-	shared_ptr<CBullet> pBoomerang = make_shared<CBoomerang>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 100.f,
-		pPlayer->GetY() + pPlayer->GetDirectionVector().y * 100.f,
-		pPlayer->GetDirectionVector());
+	shared_ptr<CBullet> pBoomerang = make_shared<CBoomerang>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 20.f,
+		pPlayer->GetY() + pPlayer->GetDirectionVector().y * 20.f,
+		pPlayer->GetDirectionVector(), cfBoomerangBulletSpeed, OBJ::PLAYER, L"Plasma");
 	pBoomerang->Ready();
 	GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBoomerang);
 	GET_SINGLE(CCameraManager)->SetIsShooting(true);
@@ -248,4 +236,59 @@ void CWeapon::ShootBoomerang(void)
 		pPlayer->GetY(), pPlayer->GetDirectionVector(), cfCasingSpeed, pPlayer->GetShootingDegree());
 	pCasing->Ready();
 	GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
+}
+
+void CWeapon::DrawCurGun(void)
+{
+	// ÃÑ ±×¸² È¸Àü
+	if (m_eCurWeaponID == GUN::DEFAULT)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Pistol", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld;
+		D3DXMatrixIdentity(&matWorld);
+		if (!GetWorldMatrix(&matWorld))
+			return;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (m_eCurWeaponID == GUN::SHOTGUN)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Shotgun", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld;
+		D3DXMatrixIdentity(&matWorld);
+		if (!GetWorldMatrix(&matWorld))
+			return;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (m_eCurWeaponID == GUN::HIGH_MAG)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"HighMag", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld;
+		D3DXMatrixIdentity(&matWorld);
+		if (!GetWorldMatrix(&matWorld))
+			return;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
 }

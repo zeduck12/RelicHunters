@@ -3,8 +3,11 @@
 #include "CCollisionManager.h"
 #include "CObjManager.h"
 #include "CPlayerManager.h"
+#include "CTextureManager.h"
+#include "CGraphicDevice.h"
 
-CBoomerang::CBoomerang(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed)
+CBoomerang::CBoomerang(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed,
+	OBJ::ID _eID /*= OBJ::PLAYER*/, const wstring& _strBulletName /*= L"Small"*/)
 	:
 	m_fSpeedAccel{0.7f}
 {
@@ -35,6 +38,9 @@ CBoomerang::CBoomerang(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed)
 
 	m_fR3Vertical = { m_vDir.y, -m_vDir.x, 0.f };
 	m_fR3Vertical *= 1.f;
+
+	m_eObjID = _eID;
+	m_strBulletName = _strBulletName;
 }
 
 CBoomerang::~CBoomerang()
@@ -108,6 +114,23 @@ void CBoomerang::LateUpdate(void)
 void CBoomerang::Render(const HDC& _hdc)
 {
 	Ellipse(_hdc, GetLeft(), GetTop(), GetRight(), GetBottom());
+
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", m_strBulletName, 5);
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matWorld, matScale, matRev, matParent;
+
+	D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
+	D3DXMatrixRotationZ(&matRev, D3DXToRadian(m_fDegree));
+	D3DXMatrixTranslation(&matParent, m_tInfo.vPos.x, m_tInfo.vPos.y, m_tInfo.vPos.z);
+
+	matWorld = matScale * matRev * matParent;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 }
 
 void CBoomerang::Release(void)
