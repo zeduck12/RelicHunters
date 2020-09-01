@@ -10,6 +10,7 @@
 #include "CGraphicDevice.h"
 #include "CTextureManager.h"
 #include "CTimeManager.h"
+#include "CMouse.h"
 
 CMainApp::CMainApp()
 	:
@@ -37,25 +38,35 @@ void CMainApp::Ready()
 
 	// 키매니저 생성
 	GET_SINGLE(CKeyManager);
+	// 마우스 생성
+	m_pMouse = make_unique<CMouse>();
+	m_pMouse->Ready();
 
 	// 씬 로딩
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_MENU);
 }
 
 void CMainApp::Update()
 {
 	GET_SINGLE(CKeyManager)->Update();
 	GET_SINGLE(CSceneManager)->Update();
+	m_pMouse->Update();
 }
 
 void CMainApp::LateUpdate()
 {
 	GET_SINGLE(CSceneManager)->LateUpdate();
+	m_pMouse->LateUpdate();
 }
 
 void CMainApp::Render()
 {
+	// 그림시작
+	GET_SINGLE(CGraphicDevice)->RenderBegin();
 	GET_SINGLE(CSceneManager)->Render(m_hDC);
+	m_pMouse->Render(m_hDC);
+	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
+	GET_SINGLE(CGraphicDevice)->RenderEnd();
 }
 
 void CMainApp::Release()
@@ -292,6 +303,11 @@ void CMainApp::SetImages(void)
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Scene/Menu/StarBar/spr_char_statBar_%d.png", L"Menu", L"StarBar", 3)))
 		return;
 
+	// Mouse
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Mouse/CrossHair/spr_crosshair_%d.png", L"Mouse", L"CrossHair", 3)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Mouse/Reload/spr_crosshair_reload_%d.png", L"Mouse", L"Reload", 12)))
+		return;
 }
 
 

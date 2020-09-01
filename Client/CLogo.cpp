@@ -36,7 +36,7 @@ void CLogo::LateUpdate(void)
 
 void CLogo::Render(const HDC& _hdc)
 {
-	GET_SINGLE(CGraphicDevice)->RenderBegin();
+	//GET_SINGLE(CGraphicDevice)->RenderBegin();
 
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Logo");
 	if (nullptr == pTexInfo)
@@ -71,8 +71,8 @@ void CLogo::Render(const HDC& _hdc)
 	}
 
 
-	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
-	GET_SINGLE(CGraphicDevice)->RenderEnd();
+	//GET_SINGLE(CGraphicDevice)->GetSprite()->End();
+	//GET_SINGLE(CGraphicDevice)->RenderEnd();
 }
 
 void CLogo::Release(void)

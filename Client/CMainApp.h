@@ -1,6 +1,7 @@
 #pragma once
 #include "CPlayer.h"
 
+class CMouse;
 class CMainApp
 {
 public:
@@ -19,6 +20,7 @@ public:
 
 private:
 	HDC m_hDC;
+	unique_ptr<CMouse> m_pMouse;
 
 };
 

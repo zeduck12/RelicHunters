@@ -97,7 +97,7 @@ void CLobby::LateUpdate(void)
 
 void CLobby::Render(const HDC& _hdc)
 {
-	GET_SINGLE(CGraphicDevice)->RenderBegin();
+	//GET_SINGLE(CGraphicDevice)->RenderBegin();
 
 	DrawMainBackGround();
 	DrawMainBackGround2();
@@ -108,8 +108,8 @@ void CLobby::Render(const HDC& _hdc)
 	DrawLogo();
 	DrawZueira();
 
-	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
-	GET_SINGLE(CGraphicDevice)->RenderEnd();
+	//GET_SINGLE(CGraphicDevice)->GetSprite()->End();
+	//GET_SINGLE(CGraphicDevice)->RenderEnd();
 }
 
 void CLobby::Release(void)

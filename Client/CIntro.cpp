@@ -50,7 +50,7 @@ void CIntro::LateUpdate(void)
 
 void CIntro::Render(const HDC& _hdc)
 {
-	GET_SINGLE(CGraphicDevice)->RenderBegin();
+	//GET_SINGLE(CGraphicDevice)->RenderBegin();
 
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Scene", L"Intro", m_iDrawID);
 	if (nullptr == pTexInfo)
@@ -66,8 +66,8 @@ void CIntro::Render(const HDC& _hdc)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
-	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
-	GET_SINGLE(CGraphicDevice)->RenderEnd();
+	//GET_SINGLE(CGraphicDevice)->GetSprite()->End();
+	//GET_SINGLE(CGraphicDevice)->RenderEnd();
 }
 
 void CIntro::Release(void)

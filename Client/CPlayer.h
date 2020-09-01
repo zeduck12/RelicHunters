@@ -19,6 +19,8 @@ public:
 	virtual void Release()						override;
 
 public:
+	bool IsReloading(void) const { return m_bIsReloading; }
+	void SetIsReloading(bool _bIsReloading) { m_bIsReloading = _bIsReloading; }
 	bool IsAttacked(void) const { return m_bIsAttacked; }
 	void SetIsAttacked(bool _bIsAttacked) { m_bIsAttacked = _bIsAttacked; }
 	float GetShootingDegree(void) const { return m_fShootingDegree; }
@@ -75,8 +77,8 @@ public:
 	void ShowSpectrum(const HDC& _hdc);
 
 private:
+	bool m_bIsReloading;
 	bool m_bIsAttacked;
-	bool m_bIsFirst;
 
 	float m_fStackTime; // 누적시간 담는 용도의 변수.
 

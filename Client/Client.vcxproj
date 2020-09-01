@@ -179,6 +179,7 @@
     <ClInclude Include="CMenu.h" />
     <ClInclude Include="CMonster.h" />
     <ClInclude Include="CMonsterState.h" />
+    <ClInclude Include="CMouse.h" />
     <ClInclude Include="CMultiTexture.h" />
     <ClInclude Include="CObj.h" />
     <ClInclude Include="CObjManager.h" />
@@ -240,6 +241,7 @@
     <ClCompile Include="CMenu.cpp" />
     <ClCompile Include="CMonster.cpp" />
     <ClCompile Include="CMonsterState.cpp" />
+    <ClCompile Include="CMouse.cpp" />
     <ClCompile Include="CMultiTexture.cpp" />
     <ClCompile Include="CObj.cpp" />
     <ClCompile Include="CObjManager.cpp" />

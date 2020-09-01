@@ -181,6 +181,9 @@
     <Filter Include="01.CObj\012.Projectile\Bullet\06.Plasma">
       <UniqueIdentifier>{d2396772-3760-41c9-9229-585b48f5d0a7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="09.Mouse">
+      <UniqueIdentifier>{bb219053-15d4-4a3d-82ac-eb0a64b2e659}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -363,6 +366,9 @@
     <ClInclude Include="CPlasma.h">
       <Filter>01.CObj\012.Projectile\Bullet\06.Plasma</Filter>
     </ClInclude>
+    <ClInclude Include="CMouse.h">
+      <Filter>09.Mouse</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -520,6 +526,9 @@
     </ClCompile>
     <ClCompile Include="CPlasma.cpp">
       <Filter>01.CObj\012.Projectile\Bullet\06.Plasma</Filter>
+    </ClCompile>
+    <ClCompile Include="CMouse.cpp">
+      <Filter>09.Mouse</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

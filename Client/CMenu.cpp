@@ -95,7 +95,7 @@ void CMenu::LateUpdate(void)
 
 void CMenu::Render(const HDC& _hdc)
 {
-	GET_SINGLE(CGraphicDevice)->RenderBegin();
+	//GET_SINGLE(CGraphicDevice)->RenderBegin();
 
 	DrawBackgorund();
 	DrawSelBackground();
@@ -105,8 +105,8 @@ void CMenu::Render(const HDC& _hdc)
 
 	DrawSceneTitle();
 
-	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
-	GET_SINGLE(CGraphicDevice)->RenderEnd();
+	//GET_SINGLE(CGraphicDevice)->GetSprite()->End();
+	//GET_SINGLE(CGraphicDevice)->RenderEnd();
 }
 
 void CMenu::Release(void)

@@ -7,6 +7,7 @@ CInventory::~CInventory()
 
 bool CInventory::Ready(void)
 {
+	m_iOwnBullets = 9999;
 	m_iCapacity = 2;
 	// 인벤토리 크기 2개 예약
 	m_vecInventory.reserve(m_iCapacity);

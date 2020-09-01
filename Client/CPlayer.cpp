@@ -33,7 +33,8 @@ CPlayer::CPlayer()
 	m_fStackTime{ 0.f },
 	m_pCurState{ nullptr },
 	m_bIsAttacked{ false },
-	m_pImageSetting{ nullptr }
+	m_pImageSetting{ nullptr },
+	m_bIsReloading{ false }
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tPosin, sizeof(LINEINFO));
@@ -292,6 +293,13 @@ void CPlayer::CheckKeyState(void)
 			m_pWeapon->Shoot();
 	}
 
+	// 장전
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_R))
+	{
+		if (m_pWeapon->ReloadBullets() == true)
+			m_bIsReloading = true; // 장전중
+		
+	}
 
 	// 무기 교체
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_TAB))

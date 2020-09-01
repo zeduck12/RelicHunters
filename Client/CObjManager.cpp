@@ -138,9 +138,6 @@ void CObjManager::LateUpdate(void)
 
 void CObjManager::Render(const HDC& _hdc)
 {
-	// 그림시작
-	GET_SINGLE(CGraphicDevice)->RenderBegin();
-
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
 		return;
@@ -163,9 +160,6 @@ void CObjManager::Render(const HDC& _hdc)
 	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();
 	GET_SINGLE(CGraphicDevice)->GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);
 	
-	
-	GET_SINGLE(CGraphicDevice)->GetSprite()->End(); 
-	GET_SINGLE(CGraphicDevice)->RenderEnd();
 	
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);

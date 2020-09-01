@@ -23,6 +23,8 @@ CWeapon::~CWeapon()
 void CWeapon::Ready(void)
 {
     m_eCurWeaponID = GUN::DEFAULT;
+	m_iCurCapacity	   = 50;
+	m_iReloadedBullets = 50;
 
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 	m_tInfo.vPos = { 0.f, 0.f, 0.f };
@@ -47,7 +49,7 @@ int CWeapon::Update(float _fDeltaTime)
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return 0; }
-	
+
 	D3DXMATRIX matWorld, matScale, matRotz, matMove, matRev, matParent, matOldScale;
 	
 	POINT pt = {};
@@ -154,9 +156,22 @@ void CWeapon::Render(const HDC& _hdc)
 
 void CWeapon::Shoot(void)
 {
+
+	// 현재 장전된 총알이 없으면 발사 X Return
+	if (m_iReloadedBullets <= 0)
+	{
+		m_iReloadedBullets = 0;
+		return;
+	}
+
+	m_iReloadedBullets--;  // 총쏘면 장전된 총알  -1
 	m_eCurWeaponID = GET_SINGLE(CPlayerManager)->GetInventory()->GetCurWeapon();
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer) { return; }
+
+	CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
+	if (pRealPlayer->IsReloading() == true)  // 장전 중이면 총 못쏘게
+		return;
 
 	switch (m_eCurWeaponID)
 	{
@@ -614,3 +629,32 @@ void CWeapon::DrawCurGun(void)
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
 }
+
+bool CWeapon::ReloadBullets(void)
+{
+	// 인벤토리에서 필요한 총알만큼 가져와서 장전할 수 있는 만큼해준다.
+	// m_iCurCapacity;     // 현재 총의 탄창크기    
+	// m_iReloadedBullets; // 현재 장전된 총알 갯수
+
+	// 소유하고 있는 총알 갯수
+	int iOwnBullets = GET_SINGLE(CPlayerManager)->GetInventory()->GetOwnBullets();
+	int iDelta = m_iCurCapacity - m_iReloadedBullets; // 장전해야할 총알의 갯수
+	if (iDelta <= 0)  // 장전해야할 총알 수가 0이면 return;
+		return false;
+
+	// 만약에 소유하고 있는 총알보다 장전해야할 총알의 갯수가 크다면
+	if (m_iCurCapacity > iOwnBullets)
+	{
+		m_iReloadedBullets += iOwnBullets;
+		iDelta = iOwnBullets;
+	}
+	else
+		m_iReloadedBullets += iDelta;
+
+	// 사용한 총알 갯수 빼주기
+	GET_SINGLE(CPlayerManager)->GetInventory()->SetOwnBellets(iOwnBullets - iDelta);
+
+
+	return true;
+}
+
