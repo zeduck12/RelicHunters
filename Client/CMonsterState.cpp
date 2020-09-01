@@ -8,6 +8,8 @@
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
 #include "CShadow.h"
+#include "CObjManager.h"
+#include "CItem.h"
 
 
 CMonsterState* IdleState::Update(CMonster* _pMonster)
@@ -265,6 +267,14 @@ CMonsterState* AttackedState::Update(CMonster* _pMonster)
 
 	pAnimation->ChangeClip("Attacked");
 
+	if (_pMonster->GetHp() <= 0.f)
+	{
+		_pMonster->SetHp(0.f);
+		_pMonster->DropItems();
+		_pMonster->SetIsDead(true);
+		return new DeathState;
+	}
+
 	m_fCoolTime = 0.4f;
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStackTime >= m_fCoolTime)
@@ -466,4 +476,54 @@ void PatrolState::Render(CMonster* _pMonster)
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 	
 	CShadow::RenderPatrolShadow(_pMonster);
+}
+
+CMonsterState* DeathState::Update(CMonster* _pMonster)
+{
+	CAnimation* pAnimation = _pMonster->GetAnimation();
+	if (pAnimation)
+		pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
+
+	pAnimation->ChangeClip("Death");
+
+	m_fCoolTime = 3.f;
+	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fStackTime >= m_fCoolTime)
+	{
+		m_fStackTime = 0.f;
+		_pMonster->SetIsValid(false);
+	}
+
+	return nullptr;
+}
+
+void DeathState::Render(CMonster* _pMonster)
+{
+	int iFrame = 0;
+	CAnimation* pAnimation = _pMonster->GetAnimation();
+	if (pAnimation)
+	{
+		ANIMATION_CLIP* pClip = pAnimation->GetCurrentClip();
+		iFrame = pClip->iFrame; // 인덱스
+	}
+
+	TEXINFO* pTexInfo = _pMonster->GetTextureInfo()[iFrame];
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	if (_pMonster->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+	// 20은 렉트 중심에 이미지 맞추기 위해.
+	D3DXMatrixTranslation(&matTrans, _pMonster->GetInfo()->vPos.x, _pMonster->GetInfo()->vPos.y - 20, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	CShadow::RenderShadow(_pMonster);
 }

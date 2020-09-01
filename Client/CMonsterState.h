@@ -96,3 +96,15 @@ public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  override;
 	virtual void Render(CMonster* _pMonster)				  override;
 };
+
+class DeathState : public CMonsterState
+{
+public:
+	DeathState() = default;
+	virtual ~DeathState() {}
+
+public:
+	virtual CMonsterState* Update(CMonster * _pMonster)		  override;
+	virtual void Render(CMonster * _pMonster)				  override;
+
+};

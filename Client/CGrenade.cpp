@@ -6,6 +6,11 @@
 #include "CGraphicDevice.h"
 #include "CObjManager.h"
 #include "CCollisionManager.h"
+#include "CTimeManager.h"
+#include "CMonster.h"
+#include "CMonsterState.h"
+#include "CStructure.h"
+#include "CMapManager.h"
 
 CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, float _fShootingDist, bool _bIsReverse /*= false*/)
 	:
@@ -16,6 +21,9 @@ CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float
 	m_iCollideCount{ 0 }
 
 {
+	m_iDrawID = 0;
+	m_fStackTime = 0.f;
+	m_fBombStackTime = 0.f;
 	m_bIsCollide = false;
 	m_tInfo.vPos = { _fX , _fY , 0.f };
 	m_tInfo.vDir = { 1.f, 0.f, 0.f };
@@ -52,13 +60,16 @@ void CGrenade::Ready(void)
 
 int CGrenade::Update(float _fDeltaTime)
 {
-	if (m_fRotZAngle <= 300.f)
-		m_fRotZAngle += 4.6f;
+	if (m_iCollideCount <= 3)
+	{
+		if (m_fRotZAngle <= 300.f)
+			m_fRotZAngle += 4.6f;
 
-	if (m_bIsCollide == true)
-		MiniJump();
-	else
-		ShootGrenade();
+		if (m_bIsCollide == true)
+			MiniJump();
+		else
+			ShootGrenade();
+	}
 
 	return 0;
 }
@@ -83,8 +94,23 @@ void CGrenade::LateUpdate(void)
 		}
 	}
 
-	if(m_iCollideCount >= 3)
-		this->SetIsValid(false);
+	if (m_iCollideCount >= 3)
+	{
+		// 이안에서의 기간동안 Object들 Damage
+		m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+		m_fBombStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+		if (m_fBombStackTime > 0.6f)
+			TakeDamageToObejcts();
+
+		if (m_fStackTime > 0.1f)
+		{
+			m_iDrawID++;
+			m_fStackTime = 0.f;
+		}
+
+		if (m_iDrawID >= 11)
+			this->SetIsValid(false);
+	}
 }
 
 void CGrenade::Release(void)
@@ -99,6 +125,12 @@ void CGrenade::Render(const HDC& _hdc)
 	Rectangle(_hdc, int(m_tInfo.vPos.x - m_fBombX), int(m_tInfo.vPos.y - m_fBombY),
 			int(m_tInfo.vPos.x + m_fBombX), int(m_tInfo.vPos.y + m_fBombY));
 
+
+	if (m_iCollideCount >= 3)
+	{
+		DrawBombParticle();
+		return;
+	}
 
 	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Grenade");
 
@@ -125,14 +157,58 @@ void CGrenade::Render(const HDC& _hdc)
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 }
 
-void CGrenade::BombGrenade(void)
+void CGrenade::TakeDamageToObejcts(void)
 {
-	// 폭파 범위
-	if (m_fBombX >= 160.f)
-		this->SetIsValid(false);
+	// 일단 몬스터
+	for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
+	{
+		float fWidth  = 260.f;
+		float fHeight = 250.f;
+		if (pMonster->GetX() < this->GetX() + (fWidth * 0.5f) && this->GetX() - (fWidth * 0.5f) < pMonster->GetX() &&
+			pMonster->GetY() < this->GetY() + (fHeight * 0.5f) && this->GetY() - (fHeight * 0.5f) < pMonster->GetY())
+		{
+			CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
+			if (pMonst->IsDead() == false)
+			{
+				pMonst->SetState(new AttackedState());
+				pMonst->SetHp(pMonst->GetHp() - 200.f);
+			}
+		}
+	}
 
-	m_fBombX += 8.f;
-	m_fBombY += 4.f;
+	// 구조물
+	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
+	{
+		float fWidth = 260.f;
+		float fHeight = 250.f;
+		if (pObj->GetX() < this->GetX() + (fWidth * 0.5f) && this->GetX() - (fWidth * 0.5f) < pObj->GetX() &&
+			pObj->GetY() < this->GetY() + (fHeight * 0.5f) && this->GetY() - (fHeight * 0.5f) < pObj->GetY())
+		{
+			CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
+			pStructure->SetCurHp(pStructure->GetCurHp() - 1);
+			if (pStructure->GetCurDrawID() >= pStructure->GetMaxDrawID())
+				continue;
+			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
+		}
+	}
+
+
+}
+
+void CGrenade::DrawBombParticle(void)
+{
+	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Particle", L"Bomb", m_iDrawID);
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 }
 
 

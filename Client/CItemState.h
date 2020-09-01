@@ -27,6 +27,9 @@ public:
 	// CItemState을(를) 통해 상속됨
 	virtual CItemState* Update(CItem* _pItem) override;
 	virtual void Render(CItem* _pItem)		 override;
+
+private:
+	float m_fAddSpeed = 0.f;
 };
 
 class CItemStartState : public CItemState
@@ -41,3 +44,20 @@ public:
 	virtual void Render(CItem * _pItem)		 override;
 };
 
+class CItemDropState : public CItemState
+{
+public:
+	explicit CItemDropState() = default;
+	virtual ~CItemDropState() = default;
+
+public:
+	// CItemState을(를) 통해 상속됨
+	virtual CItemState* Update(CItem * _pItem) override;
+	virtual void Render(CItem * _pItem)		 override;
+
+public:
+	void ActiveGravity(void);
+private:
+	float m_fGravity = 0.f;
+
+};

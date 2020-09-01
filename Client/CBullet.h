@@ -17,6 +17,9 @@ public:
 	virtual void Render(const HDC& _hdc)		 override;
 	virtual void Release(void)					 override;
 
+public:
+	float GetDamage(void) const { return m_fDamage; }
+
 protected:
 	float m_fDamage;
 	// πÊ«‚

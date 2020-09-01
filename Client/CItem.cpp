@@ -937,3 +937,59 @@ void SniperGun::Render(const HDC& _hdc)
         CInteractionManager::Render(this);
     }
 }
+
+CStarCoin::CStarCoin(float _fX, float _fY, float _fWidth, float _fHeight, IMAGE::ID _eID, float _fDropDegree)
+{
+    m_iDrawID = 0;
+    m_pAnimation = nullptr;
+    m_pNextState = nullptr;
+    m_pImageSetting = nullptr;
+
+    m_tInfo.vPos = { _fX, _fY, 0.f };
+    m_tInfo.vSize = { _fWidth, _fHeight, 0.f };
+    m_tInfo.vDir = { 1.0f, 0.f, 0.f };
+    m_tInfo.vLook = { 1.f, 0.f, 0.f };
+
+    m_eImageID = _eID;
+    m_fDropDegree = _fDropDegree;
+}
+
+CStarCoin::~CStarCoin()
+{
+    Release();
+}
+
+void CStarCoin::Ready(void)
+{
+    m_iDrawID = 0;
+    m_pImageSetting = make_unique<CImageSetting>(this, "StarCoinAnimation");
+    if (!m_pImageSetting->Ready())
+        return;
+
+    m_pNextState = new CItemDropState;
+}
+
+int CStarCoin::Update(float _fDeltaTime)
+{
+    // 플레이어가 근처에 가면 빨려들어가게 - Idle 상태
+    // 몬스터 주위도 코인 떨어지기         - Drop 상태
+
+    CItemState* pCurState = m_pNextState->Update(this);
+    if (pCurState != nullptr)
+    {
+        Safe_Delete(m_pNextState);
+        m_pNextState = pCurState;
+    }
+
+    return 0;
+}
+
+void CStarCoin::Release(void)
+{
+    Safe_Delete(m_pNextState);
+}
+
+void CStarCoin::Render(const HDC& _hdc)
+{
+    m_pNextState->Render(this);
+}

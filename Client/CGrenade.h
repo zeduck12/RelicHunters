@@ -25,8 +25,8 @@ public:
     void SetCollideCount(int _iCount) { m_iCollideCount += _iCount; }
     
 public:
-
-    void BombGrenade(void);
+    void TakeDamageToObejcts(void);
+    void DrawBombParticle(void);
     void ShootGrenade(void);
     void MiniJump(void);
 
@@ -34,6 +34,10 @@ public:
     void Reflection(void);
 
 private:
+    int m_iDrawID;
+    float m_fStackTime;
+    float m_fBombStackTime;
+
     int m_iCollideCount;
     bool m_bIsReverse;
     float m_fRotZAngle;

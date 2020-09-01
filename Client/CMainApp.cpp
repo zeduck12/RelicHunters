@@ -43,7 +43,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_MENU);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
 }
 
 void CMainApp::Update()
@@ -106,6 +106,8 @@ void CMainApp::SetImages(void)
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Duck/Move/move_%d.png", L"Duck", L"Move", 13))
 		return;
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Duck/Attacked/attacked_%d.png", L"Duck", L"Attacked", 2))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Duck/Death/spr_duck_death_%d.png", L"Duck", L"Death", 12))
 		return;
 
 	// Kamikaze Image
@@ -307,6 +309,16 @@ void CMainApp::SetImages(void)
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Mouse/CrossHair/spr_crosshair_%d.png", L"Mouse", L"CrossHair", 3)))
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Mouse/Reload/spr_crosshair_reload_%d.png", L"Mouse", L"Reload", 12)))
+		return;
+
+	// Coin
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Coin/Drop/spr_coin_drop_%d.png", L"Coin", L"Drop", 5)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Coin/Idle/spr_coin_ground_%d.png", L"Coin", L"Idle", 14)))
+		return;
+
+	// Particle
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Particle/Bomb/spr_grenade_exp1_%d.png", L"Particle", L"Bomb", 11)))
 		return;
 }
 

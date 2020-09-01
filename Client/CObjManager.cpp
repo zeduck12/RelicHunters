@@ -97,6 +97,7 @@ bool CObjManager::Ready(void)
 	pItem->Ready();
 	m_listBullets.emplace_back(pItem);
 
+
 	// 보스생성
 	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 1400.f, 120.f, 120.f,
 	//	cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);

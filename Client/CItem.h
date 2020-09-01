@@ -75,6 +75,27 @@ public:
     virtual void Render(const HDC& _hdc) override;
 };
 
+class CStarCoin : public CItem
+{
+public:
+    explicit CStarCoin() = default;
+    CStarCoin(float _fX, float _fY, float _fWidth, float _fHeight, IMAGE::ID _eID, float _fDropDegree = 0.f);
+    virtual ~CStarCoin();
+
+public:
+    virtual void Ready(void) override;
+    virtual int  Update(float _fDeltaTime = 0.f) override;
+    virtual void LateUpdate(void) {}
+    virtual void Release(void) override;
+    virtual void Render(const HDC& _hdc) override;
+
+public:
+    float GetDropDegree(void) const { return m_fDropDegree; }
+
+private:
+    float m_fDropDegree = 0.f;
+};
+
 //DEFAULT,			    // ÇÃ·¹ÀÌ¾î ±âº»ÃÑ - ¿¬¹ß x
 //HIGH_MAG,			    // ºÎ¸Þ¶û ÃÑ
 //SHOTGUN,			    // ¼¦°Ç 

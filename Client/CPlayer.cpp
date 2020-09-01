@@ -20,6 +20,7 @@
 #include "CPlayerState.h"
 #include "CImageSetting.h"
 #include "CShadow.h"
+#include "CItem.h"
 
 CPlayer::CPlayer()
 	:
@@ -321,6 +322,17 @@ void CPlayer::CheckKeyState(void)
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_SHIFT)) // 플레이어 대쉬
 		m_bIsDash = true;
 
+
+	// Test용
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_G))
+	{
+		float fRandom = GetNumberMinBetweenMax(0.f, 360.f);
+		// 아이템 드랍되게
+		shared_ptr<CObj> pItem = make_shared<CStarCoin>(m_tInfo.vPos.x, m_tInfo.vPos.y, 30.f, 30.f, IMAGE::COIN, fRandom);
+		pItem->Ready();
+		GET_SINGLE(CObjManager)->GetItems().emplace_back(pItem);
+	}
+
 }
 
 void CPlayer::DetectDirection(void)
@@ -345,17 +357,6 @@ void CPlayer::DetectDirection(void)
 	m_fShootingDegree = fDegree;
 	m_fShootingDist = fDist;
 
-	//if (135.f < fDegree && fDegree < 225.f)
-	//	m_eDir = DIRECTION::LEFT;
-	//else if (315.f <= fDegree && fDegree <= 360.f ||
-	//	0 <= fDegree && fDegree <= 45.f)
-	//	m_eDir = DIRECTION::RIGHT;
-	//else if (45.f < fDegree && fDegree <= 135.f)
-	//	m_eDir = DIRECTION::UP;
-	//else if (225.f < fDegree && fDegree < 315.f)
-	//	m_eDir = DIRECTION::DOWN;
-
-
 	if (90.f < fDegree && fDegree < 270.f)
 		m_eDir = DIRECTION::LEFT;
 	else
@@ -374,14 +375,14 @@ void CPlayer::UpdatePosinInfo(void)
 
 void CPlayer::Dash(void)
 {
-	if (m_fAddSpeed >= 18.f)
+	if (m_fAddSpeed >= 14.f)
 	{
 		m_fAddSpeed = 0.f;
 		m_bIsDash = false;
 		return;
 	}
 
-	m_fAddSpeed += 0.5f;
+	m_fAddSpeed += 0.8f;
 	m_tInfo.vPos += m_tInfo.vDir * m_fAddSpeed;
 }
 
@@ -402,7 +403,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 		else
 			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
 
-		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 75.f);
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 40.f);
 		vSpectrumPos.y -= 20.f;
 
 		// 20은 렉트 중심에 이미지 맞추기 위해.
@@ -410,7 +411,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(150, 255, 255, 255));
 
 	}
 	
@@ -427,7 +428,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 		else
 			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
 
-		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 45.f);
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 20.f);
 		vSpectrumPos.y -= 20.f;
 
 		// 20은 렉트 중심에 이미지 맞추기 위해.
@@ -435,7 +436,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(150, 255, 255, 255));
 	}
 
 	if (m_fAddSpeed >= 1.f && m_fAddSpeed <= 10.f)
@@ -451,7 +452,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 		else
 			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
 
-		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 15.f);
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 10.f);
 		vSpectrumPos.y -= 20.f;
 
 		// 20은 렉트 중심에 이미지 맞추기 위해.
@@ -459,7 +460,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(150, 255, 255, 255));
 	}
 
 	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", L"Dash", 0);

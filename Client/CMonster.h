@@ -29,6 +29,7 @@ public:
 	void UpdateMonsterDirection(void);
 	void DetectDirection(void);
 	void EquipWeapon(void);
+	void DropItems(void);
 
 public:
 	// 어택관련
@@ -83,12 +84,15 @@ public:
 	D3DXVECTOR3 GetOldPos(void) const { return m_vOldPos; }
 	D3DXVECTOR3 GetGap(void) const { return m_vGap; }
 	void SetGap(D3DXVECTOR3 _vGap) { m_vGap = _vGap; }
+	bool IsDead(void) const { return m_bIsDead; }
+	void SetIsDead(bool _bIsDead) { m_bIsDead = _bIsDead; }
 
 public:
 	void SetState(CMonsterState* _pState);
 
 	
 protected:
+	bool m_bIsDead = false;
 	float m_fStackTime;
 
     float m_fCurHp;

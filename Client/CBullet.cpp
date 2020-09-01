@@ -97,11 +97,16 @@ void CBullet::LateUpdate()
 				{
 					CBoss* pBoss = dynamic_cast<CBoss*>(pMonster.get());
 					pBoss->SetState(new BossAttackedState());
+					pBoss->SetHp(pBoss->GetHp() - m_fDamage);
 				}
 				else
 				{
 					CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
-					pMonst->SetState(new AttackedState());
+					if (pMonst->IsDead() == false)
+					{
+						pMonst->SetState(new AttackedState());
+						pMonst->SetHp(pMonst->GetHp() - m_fDamage);
+					}
 				}
 
 			}

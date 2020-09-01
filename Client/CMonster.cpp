@@ -14,7 +14,7 @@
 #include "CTimeManager.h"
 #include "CAnimation.h"
 #include "CMapManager.h"
-
+#include "CItem.h"
 
 
 // 삼각형 몬스터 
@@ -301,6 +301,23 @@ void CMonster::EquipWeapon(void)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+}
+
+void CMonster::DropItems(void)
+{
+	// 코인 드랍되게
+	float fRandom = 0.f;
+	int iCount = GetNumberMinBetweenMax(1, 3);
+
+	for (int i = 0; i < iCount; i++)
+	{
+		fRandom = GetNumberMinBetweenMax(0.f, 360.f);
+		shared_ptr<CObj> pItem = make_shared<CStarCoin>(this->GetX(), this->GetY(),
+			30.f, 30.f, IMAGE::COIN, fRandom);
+		pItem->Ready();
+		GET_SINGLE(CObjManager)->GetItems().emplace_back(pItem);
+	}
+
 }
 
 // 총알 발사
