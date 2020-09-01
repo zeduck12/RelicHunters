@@ -65,6 +65,37 @@ bool CObjManager::Ready(void)
 	pItem->Ready();
 	m_listBullets.emplace_back(pItem);
 
+	pItem = make_shared<SniperGun>(500.f, 600.f, 50.f, 50.f, GUN::SNIPER);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+	pItem = make_shared<MachineGun>(500.f, 700.f, 50.f, 50.f, GUN::MACHINEGUN);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+	pItem = make_shared<FlameGun>(600.f, 700.f, 50.f, 50.f, GUN::FLAME);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+	pItem = make_shared<AssaultGun>(700.f, 700.f, 50.f, 50.f, GUN::ASSAULT);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+	pItem = make_shared<KeytarGun>(800.f, 700.f, 50.f, 50.f, GUN::KEYTAR);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+	pItem = make_shared<PistolAssualtGun>(900.f, 700.f, 50.f, 50.f, GUN::PISTOL_ASSUALT);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+	pItem = make_shared<PistolHeavyGun>(1000.f, 700.f, 50.f, 50.f, GUN::PISTOL_HEAVY);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
+
+	pItem = make_shared<PlasmaGun>(1100.f, 700.f, 50.f, 50.f, GUN::PLASMA);
+	pItem->Ready();
+	m_listBullets.emplace_back(pItem);
 
 	// 보스생성
 	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 1400.f, 120.f, 120.f,

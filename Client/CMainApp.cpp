@@ -188,6 +188,8 @@ void CMainApp::SetImages(void)
 		return;
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Bullet/Plasma/spr_bullet_plasma_%d.png", L"Bullet", L"Plasma", 12))
 		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Bullet/SonicBoom/sonicboom_%d.png", L"Bullet", L"SonicBoom", 2))
+		return;
 
 	// Casing
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Casing/Lite/casing_0.png", L"CasingLite"))

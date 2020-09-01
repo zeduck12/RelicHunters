@@ -76,16 +76,16 @@ public:
 };
 
 //DEFAULT,			    // 플레이어 기본총 - 연발 x
-//FLAME,				// 몬스터   기본총
 //HIGH_MAG,			    // 부메랑 총
+//SHOTGUN,			    // 샷건 
+//MACHINEGUN,			// 연속발사 되는 총
+//SNIPER,				// 스나이퍼 총 단발 원샷총
+//FLAME,				// 몬스터   기본총
 //ASSAULT,			    // 3발 연속으로 나가는 총
 //KEYTAR,				// 2발 연속으로 나가는 총
-//MACHINEGUN,			// 연속발사 되는 총
 //PISTOL_ASSUALT,		// 연속발사 되는 총 (총알만 다름
 //PISTOL_HEAVY,		    // 데미지 쌘 연속발사 총
 //PLASMA,				// 플라즈마 볼 총
-//SHOTGUN,			    // 샷건 
-//SNIPER,				// 스나이퍼 총 단발 원샷총
 
 class DefaultGun : public CItem
 {

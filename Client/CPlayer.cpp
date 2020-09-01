@@ -192,21 +192,6 @@ void CPlayer::Release()
 	PlayerAttacked::Destroy_Instance();
 }
 
-void CPlayer::ShootBoomerang(void)
-{
-	shared_ptr<CBullet> pBoomerang = make_shared<CBoomerang>(m_tInfo.vPos.x + m_tInfo.vDir.x * 100.f,
-		m_tInfo.vPos.y + m_tInfo.vDir.y * 100.f, m_tInfo.vDir);
-	pBoomerang->Ready();
-	GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBoomerang);
-	GET_SINGLE(CCameraManager)->SetIsShooting(true);
-
-	// 탄피 생성
-	shared_ptr<CCasing> pCasing = make_shared<CCasing>(m_tInfo.vPos.x,
-		m_tInfo.vPos.y, m_tInfo.vDir, 10.f, m_fShootingDegree);
-	pCasing->Ready();
-	GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
-}
-
 void CPlayer::TrackMousePos(void)
 {
 	// 목적지 - 출발지
@@ -263,10 +248,6 @@ void CPlayer::CheckKeyState(void)
 	for (int i = 0; i < 4; i++)
 		D3DXVec3TransformCoord(&m_vRealVertex[i], &m_vRotVertex[i], &matWorld);
 
-
-	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_G))
-		ShootBoomerang();
-
 	// 수류탄
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_F))
 	{
@@ -291,12 +272,26 @@ void CPlayer::CheckKeyState(void)
 			// 무기에서 총알 발사
 			m_pWeapon->Shoot();
 		}
-		
 	}
 
 	// 단발
-	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_LBUTTON) && m_pWeapon->GetCurWeaponID() != GUN::MACHINEGUN)
-		m_pWeapon->Shoot();
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_LBUTTON))
+	{
+		if (m_pWeapon->GetCurWeaponID() == GUN::SNIPER)
+		{
+			m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+			if (m_fStackTime >= 0.2f)
+			{
+				m_fStackTime = 0.f;
+				// 무기에서 총알 발사
+				m_pWeapon->Shoot();
+			}
+		}
+
+		if(m_pWeapon->GetCurWeaponID() != GUN::SNIPER)
+			m_pWeapon->Shoot();
+	}
+
 
 	// 무기 교체
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_TAB))

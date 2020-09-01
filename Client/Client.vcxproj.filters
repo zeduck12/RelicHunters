@@ -178,6 +178,9 @@
     <Filter Include="08.UI\084.StatBox\StatBoxButton">
       <UniqueIdentifier>{bdd443ce-ca59-4d3b-8478-08d025ec4956}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\012.Projectile\Bullet\06.Plasma">
+      <UniqueIdentifier>{d2396772-3760-41c9-9229-585b48f5d0a7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -357,6 +360,9 @@
     <ClInclude Include="CStatBoxButton.h">
       <Filter>08.UI\084.StatBox\StatBoxButton</Filter>
     </ClInclude>
+    <ClInclude Include="CPlasma.h">
+      <Filter>01.CObj\012.Projectile\Bullet\06.Plasma</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -511,6 +517,9 @@
     </ClCompile>
     <ClCompile Include="CStatBoxButton.cpp">
       <Filter>08.UI\084.StatBox\StatBoxButton</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlasma.cpp">
+      <Filter>01.CObj\012.Projectile\Bullet\06.Plasma</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

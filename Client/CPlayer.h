@@ -76,6 +76,7 @@ public:
 
 private:
 	bool m_bIsAttacked;
+	bool m_bIsFirst;
 
 	float m_fStackTime; // 누적시간 담는 용도의 변수.
 

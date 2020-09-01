@@ -18,10 +18,11 @@
 #include "CStructure.h"
 
 CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree,
-	OBJ::ID _eID, const wstring& _strBulletName /*= L"Small"*/)
+	OBJ::ID _eID, const wstring& _strBulletName /*= L"Small"*/,float _fDamage/* = 10.f*/)
 	:
 	m_eObjID{ _eID },
-	m_strBulletName{ _strBulletName }
+	m_strBulletName{ _strBulletName },
+	m_fDamage{ _fDamage }
 {
 	m_fDegree = _fShootingDegree;
 	m_fSpeed = _fSpeed;
@@ -154,6 +155,9 @@ void CBullet::Render(const HDC& _hdc)
 	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
 
 
+	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+
 	// Bullet ±×¸®±â
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", m_strBulletName, 1);
 	if (nullptr == pTexInfo)
@@ -163,7 +167,10 @@ void CBullet::Render(const HDC& _hdc)
 
 	D3DXMATRIX matWorld, matScale, matRev, matParent;
 
-	D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
+	if(pPlayer->GetDirection() == DIRECTION::LEFT)
+		D3DXMatrixScaling(&matScale, 1.f, -1.f, 1.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
 	D3DXMatrixRotationZ(&matRev, D3DXToRadian(m_fDegree));
 	D3DXMatrixTranslation(&matParent, m_tInfo.vPos.x, m_tInfo.vPos.y, m_tInfo.vPos.z);
 
@@ -172,7 +179,7 @@ void CBullet::Render(const HDC& _hdc)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
-	CShadow::RenderSheetProjectile(this, pTexInfo, m_fDegree);
+	//CShadow::RenderSheetProjectile(this, pTexInfo, m_fDegree);
 }
 
 void CBullet::Release()

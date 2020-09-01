@@ -6,7 +6,9 @@ class CBullet
 {
 public:
 	CBullet() = default;
-	CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed = cfDefaultBulletSpeed, float _fShootingDegree = 0.f, OBJ::ID _eID = OBJ::PLAYER, const wstring& _strBulletName = L"Small");
+	CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed = cfDefaultBulletSpeed,
+		float _fShootingDegree = 0.f, OBJ::ID _eID = OBJ::PLAYER, 
+		const wstring& _strBulletName = L"Small", float _fDamage = 10.f);
 	virtual ~CBullet();
 public:
 	virtual void Ready(void)					 override;
@@ -16,6 +18,7 @@ public:
 	virtual void Release(void)					 override;
 
 protected:
+	float m_fDamage;
 	// πÊ«‚
 	D3DXVECTOR3 m_vDir;
 

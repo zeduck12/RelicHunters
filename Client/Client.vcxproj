@@ -183,6 +183,7 @@
     <ClInclude Include="CObj.h" />
     <ClInclude Include="CObjManager.h" />
     <ClInclude Include="Const.h" />
+    <ClInclude Include="CPlasma.h" />
     <ClInclude Include="CPlayer.h" />
     <ClInclude Include="CPlayerManager.h" />
     <ClInclude Include="CPlayerState.h" />
@@ -242,6 +243,7 @@
     <ClCompile Include="CMultiTexture.cpp" />
     <ClCompile Include="CObj.cpp" />
     <ClCompile Include="CObjManager.cpp" />
+    <ClCompile Include="CPlasma.cpp" />
     <ClCompile Include="CPlayer.cpp" />
     <ClCompile Include="CPlayerManager.cpp" />
     <ClCompile Include="CPlayerState.cpp" />

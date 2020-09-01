@@ -5,7 +5,8 @@ class CRocket :
 {
 public:
 	explicit CRocket() = default;
-	CRocket(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed = cfDefaultBulletSpeed, float _fShootingDegree = 0.f, OBJ::ID _eID = OBJ::PLAYER);
+	CRocket(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed = cfDefaultBulletSpeed, 
+		float _fShootingDegree = 0.f, OBJ::ID _eID = OBJ::PLAYER);
 	virtual ~CRocket();
 
 public:

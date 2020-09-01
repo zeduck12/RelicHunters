@@ -27,6 +27,13 @@ public:
     void ShootDefault(void);
     void ShootShotGun(void);
     void ShootBoomerang(void);
+    void ShootSniper(void);
+    void ShootFlame(void);
+    void ShootAssault(void);
+    void ShootPistolAssault(void);
+    void ShootPistolHeavy(void);
+    void ShootKeytar(void);
+    void ShootPlasma(void);
 
 public:
     void DrawCurGun(void);

@@ -287,6 +287,16 @@ FlameGun::~FlameGun()
 
 int FlameGun::Update(float _fDeltaTime)
 {
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        {
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::FLAME);
+            this->SetIsValid(false);
+        }
+    }
     return 0;
 }
 
@@ -412,6 +422,16 @@ AssaultGun::~AssaultGun()
 
 int AssaultGun::Update(float _fDeltaTime)
 {
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        {
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::ASSAULT);
+            this->SetIsValid(false);
+        }
+    }
     return 0;
 }
 
@@ -469,6 +489,16 @@ KeytarGun::~KeytarGun()
 
 int KeytarGun::Update(float _fDeltaTime)
 {
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        {
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::KEYTAR);
+            this->SetIsValid(false);
+        }
+    }
     return 0;
 }
 
@@ -526,6 +556,17 @@ MachineGun::~MachineGun()
 
 int MachineGun::Update(float _fDeltaTime)
 {
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        {
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::MACHINEGUN);
+            this->SetIsValid(false);
+        }
+    }
+
     return 0;
 }
 
@@ -583,6 +624,16 @@ PistolAssualtGun::~PistolAssualtGun()
 
 int PistolAssualtGun::Update(float _fDeltaTime)
 {
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        {
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::PISTOL_ASSUALT);
+            this->SetIsValid(false);
+        }
+    }
     return 0;
 }
 
@@ -640,6 +691,16 @@ PistolHeavyGun::~PistolHeavyGun()
 
 int PistolHeavyGun::Update(float _fDeltaTime)
 {
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        {
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::PISTOL_HEAVY);
+            this->SetIsValid(false);
+        }
+    }
     return 0;
 }
 
@@ -697,6 +758,16 @@ PlasmaGun::~PlasmaGun()
 
 int PlasmaGun::Update(float _fDeltaTime)
 {
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        {
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::PLASMA);
+            this->SetIsValid(false);
+        }
+    }
     return 0;
 }
 
@@ -822,6 +893,17 @@ SniperGun::~SniperGun()
 
 int SniperGun::Update(float _fDeltaTime)
 {
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        {
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::SNIPER);
+            this->SetIsValid(false);
+        }
+    }
+
     return 0;
 }
 
