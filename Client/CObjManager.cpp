@@ -11,6 +11,7 @@
 #include "CEnemyManager.h"
 #include "CInteractionManager.h"
 #include "CItem.h"
+#include "CSceneManager.h"
 
 DEFINITION_SINGLETON(CObjManager)
 
@@ -20,7 +21,8 @@ CObjManager::CObjManager()
 	m_listGrenades{ },
 	m_listCasings{ },
 	m_listMonsters{ },
-	m_listItems{ }
+	m_listItems{ },
+	m_bIsInstall{ false }
 {
 }
 
@@ -40,69 +42,22 @@ bool CObjManager::Ready(void)
 	if (!GET_SINGLE(CMapManager)->Ready())
 		return false;
 
-
 	// 몬스터 생성.
 	CEnemyManager::LoadMonsterData();
-
-	//Test 아이템 
-	shared_ptr<CObj> pItem = make_shared<CPickUpLight>(800.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_LIGHT);
+	// 플레이어가 스폰되는 장소에 텔레포트 설치
+	shared_ptr<CObj> pItem = make_shared<CTeleporter>(
+		GET_SINGLE(CPlayerManager)->GetPlayer()->GetX(),
+		GET_SINGLE(CPlayerManager)->GetPlayer()->GetY(),
+		150.f, 100.f, IMAGE::TELEPORTER);
 	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<CPickUpLight>(900.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_MEDIUM);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<CPickUpLight>(1000.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_HEAVY);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<ShotGun>(700.f, 600.f, 50.f, 50.f, GUN::SHOTGUN);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<HighMagGun>(600.f, 600.f, 50.f, 50.f, GUN::HIGH_MAG);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<SniperGun>(500.f, 600.f, 50.f, 50.f, GUN::SNIPER);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<MachineGun>(500.f, 700.f, 50.f, 50.f, GUN::MACHINEGUN);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<FlameGun>(600.f, 700.f, 50.f, 50.f, GUN::FLAME);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<AssaultGun>(700.f, 700.f, 50.f, 50.f, GUN::ASSAULT);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<KeytarGun>(800.f, 700.f, 50.f, 50.f, GUN::KEYTAR);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<PistolAssualtGun>(900.f, 700.f, 50.f, 50.f, GUN::PISTOL_ASSUALT);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<PistolHeavyGun>(1000.f, 700.f, 50.f, 50.f, GUN::PISTOL_HEAVY);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
-
-	pItem = make_shared<PlasmaGun>(1100.f, 700.f, 50.f, 50.f, GUN::PLASMA);
-	pItem->Ready();
-	m_listBullets.emplace_back(pItem);
+	m_listItems.emplace_back(pItem);
 
 
 	// 보스생성
-	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 1400.f, 120.f, 120.f,
-	//	cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);
-	//pMonster->Ready();
-	//m_listMonsters.emplace_back(pMonster);
+	shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 800.f, 120.f, 120.f,
+		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);
+	pMonster->Ready();
+	m_listMonsters.emplace_back(pMonster);
 
 	return true;
 }
@@ -117,6 +72,10 @@ void CObjManager::Update(void)
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Update(); } }
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Update(); } }
 	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Update(); } }
+
+
+	InstallTeleporter();
+	SceneChange(); // Scene 체인지
 }
 
 void CObjManager::LateUpdate(void)
@@ -148,13 +107,14 @@ void CObjManager::Render(const HDC& _hdc)
 	SetWorldTransform(_hdc, &xfWorld);
 
 	GET_SINGLE(CMapManager)->Render(_hdc);
+	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Render(_hdc); } }
+
 	GET_SINGLE(CPlayerManager)->Render(_hdc);
 	
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Render(_hdc); } }
 	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Render(_hdc); } }
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Render(_hdc); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }
-	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Render(_hdc); } }
 
 
 	// 카메라 움직임 결과
@@ -164,6 +124,102 @@ void CObjManager::Render(const HDC& _hdc)
 	
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);
+}
+
+void CObjManager::InstallTeleporter(void)
+{
+	if (m_listMonsters.size() <= 0 && m_bIsInstall == false)
+	{
+		m_bIsInstall = true;
+		if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME3)
+		{
+			shared_ptr<CObj> pItem = make_shared<CTeleporter>(
+				815.f,
+				1260.f,
+				150.f, 100.f, IMAGE::TELEPORTER, TELEPORTER::SPAWN);
+			pItem->Ready();
+			m_listItems.emplace_back(pItem);
+		}
+		else
+		{
+			shared_ptr<CObj> pItem = make_shared<CTeleporter>(
+				900.f,
+				600.f,
+				150.f, 100.f, IMAGE::TELEPORTER, TELEPORTER::SPAWN);
+			pItem->Ready();
+			m_listItems.emplace_back(pItem);
+		}
+	}
+}
+
+void CObjManager::SceneChange(void)
+{
+	if (GET_SINGLE(CSceneManager)->IsChangeScene() == true)
+	{
+		GET_SINGLE(CSceneManager)->SetIsChangeScene(false);
+		if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME)
+			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME2);
+		else if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME2)
+			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME3);
+		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME3)
+			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
+	}
+}
+
+void CObjManager::TestWeapons(void)
+{
+	//Test 아이템 
+	//shared_ptr<CObj> pItem = make_shared<CPickUpLight>(900.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_LIGHT);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<CPickUpLight>(1000.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_MEDIUM);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<CPickUpLight>(1100.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_HEAVY);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<ShotGun>(700.f, 600.f, 50.f, 50.f, GUN::SHOTGUN);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<HighMagGun>(600.f, 600.f, 50.f, 50.f, GUN::HIGH_MAG);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<SniperGun>(500.f, 600.f, 50.f, 50.f, GUN::SNIPER);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<MachineGun>(500.f, 700.f, 50.f, 50.f, GUN::MACHINEGUN);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<FlameGun>(600.f, 700.f, 50.f, 50.f, GUN::FLAME);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<AssaultGun>(700.f, 700.f, 50.f, 50.f, GUN::ASSAULT);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<KeytarGun>(800.f, 700.f, 50.f, 50.f, GUN::KEYTAR);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<PistolAssualtGun>(900.f, 700.f, 50.f, 50.f, GUN::PISTOL_ASSUALT);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<PistolHeavyGun>(1000.f, 700.f, 50.f, 50.f, GUN::PISTOL_HEAVY);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
+
+	//pItem = make_shared<PlasmaGun>(1100.f, 700.f, 50.f, 50.f, GUN::PLASMA);
+	//pItem->Ready();
+	//m_listBullets.emplace_back(pItem);
 }
 
 void CObjManager::Release(void)
@@ -176,7 +232,6 @@ void CObjManager::Release(void)
 	CCameraManager::Destroy_Instance();
 	CPlayerManager::Destroy_Instance();
 	CMapManager::Destroy_Instance();
-	CTextureManager::Destroy_Instance();
 }
 
 

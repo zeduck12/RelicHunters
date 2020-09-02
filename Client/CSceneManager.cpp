@@ -24,7 +24,7 @@ void CSceneManager::ChangeScene(ID _eSceneID)
 	m_eNextScene = _eSceneID;
 	if (m_eCurScene != m_eNextScene)
 	{
-		SAFE_DELETE(m_pScene);
+		Safe_Delete(m_pScene);
 		switch (m_eNextScene)
 		{
 		case CSceneManager::SCENE_LOGO:
@@ -40,6 +40,15 @@ void CSceneManager::ChangeScene(ID _eSceneID)
 			m_pScene = new CMenu;
 			break;
 		case CSceneManager::SCENE_GAME:
+			m_pScene = new CGame;
+			break;
+		case CSceneManager::SCENE_GAME2:
+			m_pScene = new CGame;
+			break;
+		case CSceneManager::SCENE_GAME3:
+			m_pScene = new CGame;
+			break;
+		case CSceneManager::SCENE_GAME4:
 			m_pScene = new CGame;
 			break;
 		case CSceneManager::SCENE_END:

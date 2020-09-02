@@ -75,6 +75,27 @@ public:
     virtual void Render(const HDC& _hdc) override;
 };
 
+class CTeleporter : public CItem
+{
+public:
+    explicit CTeleporter() = default;
+    CTeleporter(float _fX, float _fY, float _fWidth, float _fHeight,
+        IMAGE::ID _eID, TELEPORTER::TYPE _eType = TELEPORTER::IDLE);
+    virtual ~CTeleporter();
+
+public:
+    // CItem을(를) 통해 상속됨
+    virtual void Ready(void) override;
+    virtual int  Update(float _fDeltaTime = 0.f) override;
+    virtual void LateUpdate(void) {}
+    virtual void Release(void) override;
+    virtual void Render(const HDC & _hdc) override;
+
+private:
+    TELEPORTER::TYPE m_eType;
+    int m_iEffectDrawID = 0;
+};
+
 class CStarCoin : public CItem
 {
 public:

@@ -43,7 +43,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
 }
 
 void CMainApp::Update()
@@ -77,8 +77,8 @@ void CMainApp::Release()
 	CKeyManager::Destroy_Instance();
 	CCollisionManager::Destroy_Instance();
 	CSceneManager::Destroy_Instance();
-	CObjManager::Destroy_Instance();
 	CGraphicDevice::Destroy_Instance();
+	CTextureManager::Destroy_Instance();
 }
 
 void CMainApp::SetImages(void)
@@ -223,6 +223,8 @@ void CMainApp::SetImages(void)
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/Root3/root_%d.png", L"Structure", L"Root3", 12)))
 		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Structure/LongBarrel/longbox_%d.png", L"Structure", L"LongBarrel", 14)))
+		return;
 
 	// ITEM
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Item/PickUp/Light/spr_pickup_light_%d.png", L"PickUpLight", L"Start", 16)))
@@ -319,6 +321,14 @@ void CMainApp::SetImages(void)
 
 	// Particle
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Particle/Bomb/spr_grenade_exp1_%d.png", L"Particle", L"Bomb", 11)))
+		return;
+
+	// Teleporter
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Teleporter/Idle/Idle_%d.png", L"Teleporter", L"Idle", 1)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Teleporter/Spawn/spr_teleporter_spawn_%d.png", L"Teleporter", L"Spawn", 11)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Teleporter/Effect/spr_teleporter_fx_%d.png", L"Teleporter", L"Effect", 17)))
 		return;
 }
 

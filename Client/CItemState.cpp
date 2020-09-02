@@ -166,3 +166,43 @@ void CItemDropState::ActiveGravity(void)
 		return;
 	m_fGravity += 0.1f;
 }
+
+CItemState* CItemSpawnState::Update(CItem* _pItem)
+{
+	CAnimation* pAnimation = _pItem->GetAnimation();
+	if (pAnimation)
+		pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
+
+	pAnimation->ChangeClip("Spawn");
+
+	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fStackTime >= 1.1f)
+		return new CItemIdleState;
+
+	return nullptr;
+}
+
+void CItemSpawnState::Render(CItem* _pItem)
+{
+	// 애니메이션 출력
+	int iFrame = 0;
+	CAnimation* pAnimation = _pItem->GetAnimation();
+	if (pAnimation)
+	{
+		ANIMATION_CLIP* pClip = pAnimation->GetCurrentClip();
+		iFrame = pClip->iFrame; // 인덱스
+	}
+
+	TEXINFO* pTexInfo = _pItem->GetTextureInfo()[iFrame];
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, _pItem->GetInfo()->vPos.x, _pItem->GetInfo()->vPos.y, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+}

@@ -7,6 +7,7 @@
 #include "CPlayer.h"
 #include "CCollisionManager.h"
 #include "CItem.h"
+#include "CSceneManager.h"
 
 DEFINITION_SINGLETON(CMapManager)
 
@@ -120,7 +121,6 @@ void CMapManager::Render(const HDC& _hdc)
 
 	// 아이템
 	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Render(_hdc); } }
-
 }
 
 void CMapManager::Release(void)
@@ -132,8 +132,19 @@ void CMapManager::Release(void)
 // 나중에 파일 경로 받아서 스테이지마다 다른 맵 생성되게 해주기.
 bool CMapManager::LoadFile(void)
 {
+	TCHAR szFilePath[MAX_PATH] = L"";
+	CSceneManager::ID eSceneID = GET_SINGLE(CSceneManager)->GetNextSceneID();
+
+	if (eSceneID == CSceneManager::SCENE_GAME)
+		lstrcpy(szFilePath, L"..\\Data\\Stage1.dat");
+	if (eSceneID == CSceneManager::SCENE_GAME2)
+		lstrcpy(szFilePath, L"..\\Data\\Stage2.dat");
+	if (eSceneID == CSceneManager::SCENE_GAME3)
+		lstrcpy(szFilePath, L"..\\Data\\Stage3.dat");
+	if (eSceneID == CSceneManager::SCENE_GAME4)
+		lstrcpy(szFilePath, L"..\\Data\\Stage4.dat");
+
 	// 맵툴에서 작업한 Data파일에 있는 맵 정보 벡터에 넣어주기.
-	TCHAR szFilePath[MAX_PATH] = L"..\\Data\\Stage1.dat";
 	HANDLE hFile = CreateFile(szFilePath, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);
 
 	if (hFile == INVALID_HANDLE_VALUE)
@@ -219,6 +230,59 @@ bool CMapManager::LoadFile(void)
 			pItem = make_shared<CPickUpMedium>(fX, fY, fWidth, fHeight, eID);
 		else if (eID == IMAGE::PICKUP_HEAVY)
 			pItem = make_shared<CPickUpHeavy>(fX, fY, fWidth, fHeight, eID);
+
+		pItem->Ready();
+		m_listItems.emplace_back(pItem);
+
+	}
+
+	GUN::ID eGunID = GUN::END;
+	ReadFile(hFile, &iTileCount, sizeof(int), &dwByte, nullptr);
+	for (int i = 0; i < iTileCount; i++)
+	{
+		ReadFile(hFile, &fX, sizeof(float), &dwByte, nullptr);
+		ReadFile(hFile, &fY, sizeof(float), &dwByte, nullptr);
+		ReadFile(hFile, &fWidth, sizeof(float), &dwByte, nullptr);
+		ReadFile(hFile, &fHeight, sizeof(float), &dwByte, nullptr);
+		ReadFile(hFile, &iDrawID, sizeof(int), &dwByte, nullptr);
+		ReadFile(hFile, &eGunID, sizeof(GUN::ID), &dwByte, nullptr);
+
+		switch (eGunID)
+		{
+		case GUN::DEFAULT:
+			pItem = make_shared<DefaultGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		case GUN::FLAME:
+			pItem = make_shared<FlameGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		case GUN::HIGH_MAG:
+			pItem = make_shared<HighMagGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		case GUN::ASSAULT:
+			pItem = make_shared<AssaultGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		case GUN::KEYTAR:
+			pItem = make_shared<KeytarGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		case GUN::MACHINEGUN:
+			pItem = make_shared<MachineGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		case GUN::PISTOL_ASSUALT:
+			pItem = make_shared<PistolAssualtGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		case GUN::PISTOL_HEAVY:
+			pItem = make_shared<PistolHeavyGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		case GUN::PLASMA:
+			pItem = make_shared<PlasmaGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		case GUN::SHOTGUN:
+			pItem = make_shared<ShotGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		case GUN::SNIPER:
+			pItem = make_shared<SniperGun>(fX, fY, fWidth, fHeight, eGunID);
+			break;
+		}
 
 		pItem->Ready();
 		m_listItems.emplace_back(pItem);

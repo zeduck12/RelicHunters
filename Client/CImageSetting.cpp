@@ -76,6 +76,11 @@ bool CImageSetting::Ready(void)
         m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 1.4f, 14, 0, 14, 0.f, L"Coin", L"Idle", L"../Texture/Coin/Idle/spr_coin_ground_%d.png");
         m_pOwner->AddAnimationClip("Drop", ANIMATION::LOOP, 1.f, 5, 0, 5, 0.f, L"Coin", L"Drop", L"../Texture/Coin/Drop/spr_coin_drop_%d.png");
         break;
+    case IMAGE::TELEPORTER:
+        m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 1.f, 1, 0, 1, 0.f, L"Teleporter", L"Idle", L"../Texture/Teleporter/Idle/Idle_%d.png");
+        m_pOwner->AddAnimationClip("Spawn", ANIMATION::LOOP, 1.1f, 11, 0, 11, 0.f, L"Teleporter", L"Spawn", L"../Texture/Teleporter/Spawn/spr_teleporter_spawn_%d.png");
+        m_pOwner->AddAnimationClip("Effect", ANIMATION::LOOP, 1.7f, 17, 0, 17, 0.f, L"Teleporter", L"Effect", L"../Texture/Teleporter/Effect/spr_teleporter_fx_%d.png");
+        break;
     }
           
     return true;

@@ -128,7 +128,7 @@ void CMouse::Render(const HDC& _hdc)
 		fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
 
 		matScale, matTrans, matWorld;
-		D3DXMatrixScaling(&matScale, 1.5f * m_fScale , 1.5f * m_fScale, 0.f);
+		D3DXMatrixScaling(&matScale, 1.6f * m_fScale , 1.6f * m_fScale, 0.f);
 		D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);
 		matWorld = matScale * matTrans;
 

@@ -10,6 +10,7 @@
 #include "CKeyManager.h"
 #include "CPlayerManager.h"
 #include "CInventory.h"
+#include "CSceneManager.h"
 
 CPickUpLight::CPickUpLight(float _fX, float _fY, float _fWidth, float _fHeight, IMAGE::ID _eID)
 {
@@ -992,4 +993,106 @@ void CStarCoin::Release(void)
 void CStarCoin::Render(const HDC& _hdc)
 {
     m_pNextState->Render(this);
+}
+
+CTeleporter::CTeleporter(float _fX, float _fY, float _fWidth, float _fHeight,
+    IMAGE::ID _eID, TELEPORTER::TYPE _eType)
+{
+    m_tInfo.vPos = { _fX, _fY, 0.f };
+    m_tInfo.vSize = { _fWidth, _fHeight, 0.f };
+    m_tInfo.vDir = { 1.0f, 0.f, 0.f };
+    m_tInfo.vLook = { 1.f, 0.f, 0.f };
+
+    m_eType = _eType;
+    m_eImageID = _eID;
+    m_pNextState = nullptr;
+    m_pImageSetting = nullptr;
+}
+
+CTeleporter::~CTeleporter()
+{
+    Release();
+}
+
+void CTeleporter::Ready(void)
+{
+    m_iDrawID = 0;
+    m_pImageSetting = make_unique<CImageSetting>(this, "StarCoinAnimation");
+    if (!m_pImageSetting->Ready())
+        return;
+
+    if(m_eType == TELEPORTER::IDLE)
+        m_pNextState = new CItemIdleState;
+    else if(m_eType == TELEPORTER::SPAWN)
+        m_pNextState = new CItemSpawnState;
+}
+
+int CTeleporter::Update(float _fDeltaTime)
+{
+    m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+    if (m_fStackTime >= 0.1f)
+    {
+        m_iEffectDrawID++;
+        m_fStackTime = 0.f;
+    }
+
+    if (m_iEffectDrawID >= 17)
+        m_iEffectDrawID = 0;
+
+    CItemState* pCurState = m_pNextState->Update(this);
+    if (pCurState != nullptr)
+    {
+        Safe_Delete(m_pNextState);
+        m_pNextState = pCurState;
+    }
+
+    if (m_eType == TELEPORTER::SPAWN)
+    {
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E)) 
+             GET_SINGLE(CSceneManager)->SetIsChangeScene(true);
+    }
+
+    return 0;
+}
+
+void CTeleporter::Release(void)
+{
+    Safe_Delete(m_pNextState);
+}
+
+void CTeleporter::Render(const HDC& _hdc)
+{
+    m_pNextState->Render(this);
+
+    if (m_eType == TELEPORTER::IDLE)
+        return;
+
+    // 상호작용
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+        if (m_fStackTime >= m_fCoolTime)
+        {
+            m_fStackTime = 0.f;
+            this->SetDrawID(this->GetDrawID() + 1);
+        }
+
+        CInteractionManager::Render(this);
+    }
+
+    const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Teleporter", L"Effect", m_iEffectDrawID);
+    if (nullptr == pTexInfo)
+        return;
+    float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+    float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+    D3DXMATRIX matScale, matTrans, matWorld;
+    D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+    D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);
+    matWorld = matScale * matTrans;
+
+    CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+    CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
 }

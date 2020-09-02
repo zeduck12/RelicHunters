@@ -26,6 +26,7 @@ CStructure::CStructure(D3DXVECTOR3 _vPos, D3DXVECTOR3 _vSize, D3DXVECTOR3 _vImag
 	// 1 - ÀÜµð1
 	// 2 - ÀÜµð2
 	// 3 - ÀÜµð3
+	// 4 - ±äÅë
 
 	if (m_iDrawID == 0)
 	{
@@ -46,6 +47,11 @@ CStructure::CStructure(D3DXVECTOR3 _vPos, D3DXVECTOR3 _vSize, D3DXVECTOR3 _vImag
 	{
 		m_strStateKey = L"Root3";
 		m_iMaxDrawID = 11;
+	}
+	else if (m_iDrawID == 4)
+	{
+		m_strStateKey = L"LongBarrel";
+		m_iMaxDrawID = 13;
 	}
 }
 

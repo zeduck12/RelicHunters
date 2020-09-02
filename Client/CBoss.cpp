@@ -17,6 +17,9 @@ CBoss::CBoss(float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed,
 	:
 	m_pBossNextState{ nullptr }
 {
+	m_fAddSpeed = 0.f;
+	m_bIsDash = false;
+	m_bIsCrack = false;
 	m_fDegree = 0.f;
 	m_fMaxHp = _fHp;
 	m_fStackTime = 0.f;
@@ -62,7 +65,7 @@ void CBoss::Ready(void)
 	if (!m_pImageSetting->Ready())
 		return;
 
-	m_pBossNextState = new BossIdleState;
+	m_pBossNextState = new EggIdleState;
 	m_eDir = DIRECTION::RIGHT;
 }
 
@@ -81,6 +84,9 @@ int CBoss::Update(float _fDeltaTime)
 
 	// 몬스터 방향 플레이어 기준으로 설정. 나중에 이미지 넣으면 그때는 좌우만
 	UpdateMonsterDirection();
+
+	if (m_bIsDash == true)
+		Dash();
 
 	return 0;
 }
@@ -113,9 +119,12 @@ void CBoss::LateUpdate(void)
 
 void CBoss::Render(const HDC& _hdc)
 {
+	if (m_bIsDash == true)
+		ShowBossSpectrum();
 	m_pBossNextState->Render(this);
-
-	EquipWeapon(); // 총 장착
+	
+	if(m_bIsCrack == true)
+		EquipWeapon(); // 총 장착
 
 	// 삼각형 그리기
 	MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
@@ -213,6 +222,151 @@ void CBoss::ShootShotgun(void)
 		GET_SINGLE(CObjManager)->GetBullets().emplace_back(pShotGun);
 	}
 
+}
+
+void CBoss::ShowBossSpectrum(void)
+{
+	if (m_fAddSpeed >= 6.f && m_fAddSpeed <= 8.f)
+	{
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Boss", L"Move", 5);
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		if (this->GetDirection() == DIRECTION::LEFT)
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 60.f);
+		vSpectrumPos.y -= 20.f;
+
+		// 20은 렉트 중심에 이미지 맞추기 위해.
+		D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
+	}
+
+	if (m_fAddSpeed >= 5.f && m_fAddSpeed <= 9.f)
+	{
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Boss", L"Move", 4);
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		if (this->GetDirection() == DIRECTION::LEFT)
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 50.f);
+		vSpectrumPos.y -= 20.f;
+
+		// 20은 렉트 중심에 이미지 맞추기 위해.
+		D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
+	}
+
+	if (m_fAddSpeed >= 4.f && m_fAddSpeed <= 10.f)
+	{
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Boss", L"Move", 3);
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		if (this->GetDirection() == DIRECTION::LEFT)
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 40.f);
+		vSpectrumPos.y -= 20.f;
+
+		// 20은 렉트 중심에 이미지 맞추기 위해.
+		D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
+	}
+
+	if (m_fAddSpeed >= 3.f && m_fAddSpeed <= 11.f)
+	{
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Boss", L"Move", 2);
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		if (this->GetDirection() == DIRECTION::LEFT)
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 30.f);
+		vSpectrumPos.y -= 20.f;
+
+		D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
+	}
+
+	if (m_fAddSpeed >= 2.f && m_fAddSpeed <= 12.f)
+	{
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Boss", L"Move", 1);
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		if (this->GetDirection() == DIRECTION::LEFT)
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 20.f);
+		vSpectrumPos.y -= 20.f;
+
+		D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
+	}
+
+	if (m_fAddSpeed >= 1.f && m_fAddSpeed <= 13.f)
+	{
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Boss", L"Move", 0);
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		if (this->GetDirection() == DIRECTION::LEFT)
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+
+		D3DXVECTOR3 vSpectrumPos = this->GetInfo()->vPos - (this->GetInfo()->vDir * 10.f);
+		vSpectrumPos.y -= 20.f;
+
+		// 20은 렉트 중심에 이미지 맞추기 위해.
+		D3DXMatrixTranslation(&matTrans, vSpectrumPos.x, vSpectrumPos.y, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
+	}
 }
 
 bool CBoss::IsDetectPlayerBossVersion(void)

@@ -25,11 +25,18 @@ private:
 	~CObjManager();
 
 private:
+	void InstallTeleporter(void);
+	void SceneChange(void);
+	void TestWeapons(void);
+
+private:
 	list<shared_ptr<CObj>> m_listBullets;
 	list<shared_ptr<CObj>> m_listGrenades;
 	list<shared_ptr<CObj>> m_listCasings;
 	list<shared_ptr<CObj>> m_listMonsters;
 	list<shared_ptr<CObj>> m_listItems;
 
+private:
+	bool m_bIsInstall;
 };
 

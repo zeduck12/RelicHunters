@@ -21,6 +21,7 @@
 #include "CImageSetting.h"
 #include "CShadow.h"
 #include "CItem.h"
+#include "CSceneManager.h"
 
 CPlayer::CPlayer()
 	:
@@ -51,7 +52,16 @@ void CPlayer::Ready()
 {
 	m_eImageID =IMAGE::PLAYER;
 
-	m_tInfo.vPos = {800.f, 600.f, 0.f};
+	CSceneManager::ID eSceneID = GET_SINGLE(CSceneManager)->GetNextSceneID();
+	if(eSceneID == CSceneManager::SCENE_GAME)
+		m_tInfo.vPos = {800.f, 600.f, 0.f};
+	else if (eSceneID == CSceneManager::SCENE_GAME2)
+		m_tInfo.vPos = { 450.f, 500.f, 0.f };
+	else if (eSceneID == CSceneManager::SCENE_GAME3)
+		m_tInfo.vPos = { 830.f, 576.f, 0.f };
+	else if (eSceneID == CSceneManager::SCENE_GAME4)
+		m_tInfo.vPos = { 548.f, 767.f, 0.f };
+
 	m_tInfo.vDir = {1.0f, 0.f, 0.f};
 	m_tInfo.vSize = { 50.f, 50.f, 0.f };
 	m_tInfo.vLook = {1.f, 0.f, 0.f};

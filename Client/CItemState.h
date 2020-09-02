@@ -61,3 +61,16 @@ private:
 	float m_fGravity = 0.f;
 
 };
+
+class CItemSpawnState : public CItemState
+{
+public:
+	explicit CItemSpawnState() = default;
+	virtual ~CItemSpawnState() = default;
+
+public:
+	// CItemState을(를) 통해 상속됨
+	virtual CItemState* Update(CItem * _pItem) override;
+	virtual void Render(CItem * _pItem)		 override;
+
+};

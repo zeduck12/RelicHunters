@@ -5,6 +5,7 @@
 #include "CBullet.h"
 #include "CPlayer.h"
 #include "CMonster.h"
+#include "CMapManager.h"
 
 CGame::CGame()
 {
@@ -12,6 +13,7 @@ CGame::CGame()
 
 CGame::~CGame()
 {
+	Release();
 }
 
 bool CGame::Ready(void)
@@ -39,4 +41,5 @@ void CGame::Render(const HDC& _hdc)
 
 void CGame::Release(void)
 {
+	CObjManager::Destroy_Instance();
 }

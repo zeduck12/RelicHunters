@@ -25,7 +25,8 @@ CMonster::CMonster(float _fX, float _fY, float _fWidth, float _fHeight,
 	m_pNextState{ nullptr },
 	m_pImageSetting{ nullptr },
 	m_fStackTime{ 0.f },
-	m_bIsFlying{ false }
+	m_bIsFlying{ false },
+	m_fAddY{ 0.f }
 {
 	m_eImageID = _eID;
 

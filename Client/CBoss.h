@@ -20,6 +20,8 @@ public:
 	void Release(void);
 
 public:
+	bool IsCrack(void) const { return m_bIsCrack; }
+	void SetIsCrack(bool _bIsCrack) { m_bIsCrack = _bIsCrack; }
 	void SetState(CBossState* _pState) { m_pBossNextState = _pState; }
 	void ShootRocket(void);
 	void ShootShotgun(void);
@@ -27,8 +29,10 @@ public:
 public:
 	bool IsDetectPlayerBossVersion(void);
 	bool IsInAttackRangePlayerBossVersion(void);
+	void ShowBossSpectrum(void);
 
 private:
+	bool m_bIsCrack;
 
 	CBossState* m_pBossNextState ; 
 

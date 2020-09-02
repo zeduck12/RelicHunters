@@ -59,7 +59,7 @@ bool CInteractionManager::InteractPlayerItem(CObj* _pPlayer, CObj* _pItem)
 	m_fY = fItemY;
 
 	if (fItemX - (fItemWidth  * 2.f) > fPlayerX || fPlayerX > fItemX + (fItemWidth  * 2.f) ||
-		fItemY - (fItemHeight * 2.f) > fPlayerY || fPlayerY > fItemY + (fItemHeight * 2.f))
+		fItemY - (fItemHeight * 2.5f) > fPlayerY || fPlayerY > fItemY + (fItemHeight * 2.5f))
 	{
 		pItem->SetDrawID(0);
 		return false;

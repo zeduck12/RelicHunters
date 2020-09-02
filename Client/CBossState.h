@@ -26,8 +26,8 @@ protected:
 class EggIdleState : public CBossState
 {
 public:
-	explicit EggIdleState() = default;
-	virtual ~EggIdleState() = default;
+	EggIdleState() = default;
+	virtual ~EggIdleState() {}
 
 public:
 	// CBossState을(를) 통해 상속됨
@@ -38,8 +38,8 @@ public:
 class EggStartState : public CBossState
 {
 public:
-	explicit EggStartState() = default;
-	virtual ~EggStartState() = default;
+	EggStartState() = default;
+	virtual ~EggStartState() {}
 
 public:
 	// CBossState을(를) 통해 상속됨
@@ -50,8 +50,8 @@ public:
 class EggCrackState : public CBossState
 {
 public:
-	explicit EggCrackState() = default;
-	virtual ~EggCrackState() = default;
+	EggCrackState() = default;
+	virtual ~EggCrackState() {}
 
 public:
 	// CBossState을(를) 통해 상속됨
@@ -62,8 +62,8 @@ public:
 class BossIdleState : public CBossState
 {
 public:
-	explicit BossIdleState() = default;
-	virtual ~BossIdleState() = default;
+	BossIdleState() = default;
+	virtual ~BossIdleState() {}
 
 public:
 	// CBossState을(를) 통해 상속됨
@@ -74,8 +74,8 @@ public:
 class BossMoveState : public CBossState
 {
 public:
-	explicit BossMoveState() = default;
-	virtual ~BossMoveState() = default;
+	BossMoveState() = default;
+	virtual ~BossMoveState() {}
 
 public:
 	// CBossState을(를) 통해 상속됨
@@ -86,8 +86,8 @@ public:
 class BossAttackedState : public CBossState
 {
 public:
-	explicit BossAttackedState() = default;
-	virtual ~BossAttackedState() = default;
+	BossAttackedState() = default;
+	virtual ~BossAttackedState() {}
 
 public:
 	// CBossState을(를) 통해 상속됨
@@ -98,8 +98,8 @@ public:
 class BossDeathState : public CBossState
 {
 public:
-	explicit BossDeathState() = default;
-	virtual ~BossDeathState() = default;
+	BossDeathState() = default;
+	virtual ~BossDeathState() {}
 
 public:
 	// CBossState을(를) 통해 상속됨
@@ -110,8 +110,8 @@ public:
 class BossAttackState : public CBossState
 {
 public:
-	explicit BossAttackState() = default;
-	virtual ~BossAttackState() = default;
+	BossAttackState() = default;
+	virtual ~BossAttackState() {}
 
 public:
 	// CBossState을(를) 통해 상속됨
@@ -125,8 +125,8 @@ private:
 class BossRocketAttackState : public CBossState
 {
 public:
-	explicit BossRocketAttackState() = default;
-	virtual ~BossRocketAttackState() = default;
+	BossRocketAttackState() = default;
+	virtual ~BossRocketAttackState() {}
 
 public:
 	// CBossState을(를) 통해 상속됨
@@ -140,13 +140,43 @@ private:
 class BossShotGunState : public CBossState
 {
 public:
-	explicit BossShotGunState() = default;
-	virtual ~BossShotGunState() = default;
+	BossShotGunState() = default;
+	virtual ~BossShotGunState() {}
 
 public:
 	// CBossState을(를) 통해 상속됨
 	virtual CBossState* Update(CBoss* _pBoss) override;
 	virtual void Render(CBoss* _pBoss) override;
+
+private:
+	int m_iCount = 0;
+};
+
+class BossRapidAttack : public CBossState
+{
+public:
+	BossRapidAttack() = default;
+	virtual ~BossRapidAttack() {}
+
+public:
+	// CBossState을(를) 통해 상속됨
+	virtual CBossState* Update(CBoss * _pBoss) override;
+	virtual void Render(CBoss * _pBoss) override;
+
+private:
+	int m_iCount = 0;
+};
+
+class BossDashAttack : public CBossState
+{
+public:
+	BossDashAttack() = default;
+	virtual ~BossDashAttack() {}
+
+public:
+	// CBossState을(를) 통해 상속됨
+	virtual CBossState* Update(CBoss * _pBoss) override;
+	virtual void Render(CBoss * _pBoss) override;
 
 private:
 	int m_iCount = 0;

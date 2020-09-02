@@ -16,7 +16,8 @@ void CShadow::RenderFlyShadow(CObj* _pOwner)
 	float fSizeX = _pOwner->GetInfo()->vSize.x;
 	float fSizeY = _pOwner->GetInfo()->vSize.y;
 
-	fAddY += 1.5f;
+	pMonster->SetAddY(pMonster->GetAddY() + 0.8f);
+	//fAddY += 1.5f;
 
 	int iFrame = 0;
 	CAnimation* pAnimation = _pOwner->GetAnimation();
@@ -37,8 +38,8 @@ void CShadow::RenderFlyShadow(CObj* _pOwner)
 	else
 		D3DXMatrixScaling(&matScale, 1.f, -0.6f, 0.f);
 
-	D3DXMatrixTranslation(&matTrans, vOldPos.x, vOldPos.y + fAddY, 0.f);
-	vOldPos = { vOldPos.x , vOldPos.y + fAddY , 0.f};
+	D3DXMatrixTranslation(&matTrans, vOldPos.x, vOldPos.y + pMonster->GetAddY(), 0.f);
+	vOldPos = { vOldPos.x , vOldPos.y + pMonster->GetAddY() , 0.f};
 
 	matWorld = matScale * matTrans;
 
@@ -96,7 +97,8 @@ void CShadow::RenderLandingShadow(CObj* _pOwner)
 	float fSizeX = _pOwner->GetInfo()->vSize.x;
 	float fSizeY = _pOwner->GetInfo()->vSize.y;
 
-	fAddY -= 1.5f;
+	pMonster->SetAddY(pMonster->GetAddY() - 0.8f);
+	//fAddY -= 1.5f;
 
 	int iFrame = 0;
 	CAnimation* pAnimation = _pOwner->GetAnimation();
@@ -119,7 +121,7 @@ void CShadow::RenderLandingShadow(CObj* _pOwner)
 
 	D3DXVECTOR3 vResultPos = vOldPos + vGap;
 
-	D3DXMatrixTranslation(&matTrans, vResultPos.x, vResultPos.y + fAddY, 0.f);
+	D3DXMatrixTranslation(&matTrans, vResultPos.x, vResultPos.y + pMonster->GetAddY(), 0.f);
 	matWorld = matScale * matTrans;
 
 	matWorld._23 = 10.f;

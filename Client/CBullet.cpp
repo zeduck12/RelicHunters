@@ -96,8 +96,11 @@ void CBullet::LateUpdate()
 				if (pMonster->GetImageID() == IMAGE::BOSS)
 				{
 					CBoss* pBoss = dynamic_cast<CBoss*>(pMonster.get());
-					pBoss->SetState(new BossAttackedState());
-					pBoss->SetHp(pBoss->GetHp() - m_fDamage);
+					if (pBoss->IsDead() == false && pBoss->IsCrack() == true)
+					{
+						pBoss->SetState(new BossAttackedState);
+						pBoss->SetHp(pBoss->GetHp() - m_fDamage);
+					}
 				}
 				else
 				{

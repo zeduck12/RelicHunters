@@ -86,13 +86,18 @@ public:
 	void SetGap(D3DXVECTOR3 _vGap) { m_vGap = _vGap; }
 	bool IsDead(void) const { return m_bIsDead; }
 	void SetIsDead(bool _bIsDead) { m_bIsDead = _bIsDead; }
+	void SetAddY(float _fY) { m_fAddY = _fY; }
+	float GetAddY(void) const { return m_fAddY; }
 
 public:
 	void SetState(CMonsterState* _pState);
 
 	
 protected:
-	bool m_bIsDead = false;
+	bool  m_bIsDash;
+	float m_fAddSpeed;
+	float m_fAddY ;
+	bool  m_bIsDead = false;
 	float m_fStackTime;
 
     float m_fCurHp;
@@ -106,9 +111,7 @@ protected:
 	// 이미지 셋팅
 	unique_ptr<CImageSetting> m_pImageSetting = nullptr;
 private:
-	bool  m_bIsDash;
 	bool  m_bIsFlying;
-	float m_fAddSpeed;
 
 	D3DXVECTOR3 m_vOldPos;
 	D3DXVECTOR3 m_vGap;
