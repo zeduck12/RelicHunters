@@ -11,6 +11,7 @@
 #include "CTextureManager.h"
 #include "CTimeManager.h"
 #include "CMouse.h"
+#include "UICameraManager.h"
 
 CMainApp::CMainApp()
 	:
@@ -66,7 +67,14 @@ void CMainApp::Render()
 	GET_SINGLE(CSceneManager)->Render(m_hDC);
 	m_pMouse->Render(m_hDC);
 	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
+	GET_SINGLE(CGraphicDevice)->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
+	GET_SINGLE(UICameraManager)->Render();
+	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
 	GET_SINGLE(CGraphicDevice)->RenderEnd();
+
+
+
+
 }
 
 void CMainApp::Release()
@@ -312,6 +320,8 @@ void CMainApp::SetImages(void)
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Mouse/Reload/spr_crosshair_reload_%d.png", L"Mouse", L"Reload", 12)))
 		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Mouse/ReloadChar/spr_reload_char_%d.png", L"Mouse", L"ReloadChar", 12)))
+		return;
 
 	// Coin
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Coin/Drop/spr_coin_drop_%d.png", L"Coin", L"Drop", 5)))
@@ -329,6 +339,18 @@ void CMainApp::SetImages(void)
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Teleporter/Spawn/spr_teleporter_spawn_%d.png", L"Teleporter", L"Spawn", 11)))
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Teleporter/Effect/spr_teleporter_fx_%d.png", L"Teleporter", L"Effect", 17)))
+		return;
+
+	// Player UI ฐüทร
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/UI/Emoticon/Jimmy/spr_hud_face_jimmy_%d.png", L"Emoticon", L"Jimmy", 3)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/UI/DashBar/Dash_%d.png", L"DashBar", L"DashBar", 2)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/UI/Icon/icon_%d.png", L"Icon", L"Icon", 2)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/UI/CoinBar/spr_dynamic_bounty_0.png", L"CoinBar")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/UI/Hp/spr_hud_hp_0.png", L"HpBar")))
 		return;
 }
 

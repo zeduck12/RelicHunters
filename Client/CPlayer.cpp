@@ -36,7 +36,11 @@ CPlayer::CPlayer()
 	m_pCurState{ nullptr },
 	m_bIsAttacked{ false },
 	m_pImageSetting{ nullptr },
-	m_bIsReloading{ false }
+	m_bIsReloading{ false },
+	m_fCurHp{ 0.f },
+	m_fMaxHp{ 0.f },
+	m_fShieldCurHp{ 0.f },
+	m_fShieldMaxHp{ 0.f }
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tPosin, sizeof(LINEINFO));
@@ -68,6 +72,10 @@ void CPlayer::Ready()
 
 	m_fSpeed = 4.f;
 	m_fDegree = 0.f;
+	m_fMaxHp = 200.f;
+	m_fShieldMaxHp = 150.f;
+	m_fCurHp = m_fMaxHp;
+	m_fShieldCurHp = m_fShieldMaxHp;
 
 	// 회전할 버텍스 좌표
 	m_vRotVertex[0].x = - (m_tInfo.vSize.x * 0.5f);
@@ -263,6 +271,14 @@ void CPlayer::CheckKeyState(void)
 	// 수류탄
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_F))
 	{
+		int iBombsCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetBombsCount();
+		if (GET_SINGLE(CPlayerManager)->GetInventory()->GetBombsCount() <= 0)
+		{
+			GET_SINGLE(CPlayerManager)->GetInventory()->SetBombsCount(0);
+			return;
+		}
+
+		GET_SINGLE(CPlayerManager)->GetInventory()->SetBombsCount(iBombsCount - 1);
 		shared_ptr<CGrenade> pGrenade = make_shared<CGrenade>(m_tInfo.vPos.x + m_tInfo.vDir.x * 50.f,
 			m_tInfo.vPos.y + m_tInfo.vDir.y * 50.f, m_tInfo.vDir, 20.f, m_fShootingDegree, m_fShootingDist);
 		pGrenade->Ready();

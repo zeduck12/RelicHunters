@@ -19,6 +19,11 @@ public:
 	virtual void Release()						override;
 
 public:
+	CWeapon* GetCurWeapon(void) { return m_pWeapon.get(); }
+	void  SetCurShieldHp(float _fHp) { m_fShieldCurHp = _fHp; if (m_fShieldCurHp <= 0.f) { m_fShieldCurHp = 0.f; } }
+	float GetCurShieldHp(void) const { return m_fShieldCurHp; }
+	void  SetCurHp(float _fHp) { m_fCurHp = _fHp; if (m_fCurHp <= 0.f) { m_fCurHp = 0.f; } }
+	float GetCurHp(void) const { return m_fCurHp; }
 	bool IsReloading(void) const { return m_bIsReloading; }
 	void SetIsReloading(bool _bIsReloading) { m_bIsReloading = _bIsReloading; }
 	bool IsAttacked(void) const { return m_bIsAttacked; }
@@ -80,8 +85,11 @@ private:
 	bool m_bIsReloading;
 	bool m_bIsAttacked;
 
+	float m_fCurHp;
+	float m_fMaxHp;
+	float m_fShieldCurHp;
+	float m_fShieldMaxHp;
 	float m_fStackTime; // 누적시간 담는 용도의 변수.
-
 	float m_fShootingDegree;
 	float m_fShootingDist;
 

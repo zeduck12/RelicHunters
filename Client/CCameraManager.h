@@ -14,6 +14,7 @@ public:
 
 public:
 
+	float GetCameraScale(void) const { return m_fScale; }
 	float GetCameraDeltaX(void) const { return m_fDeltaX; }
 	float GetCameraDeltaY(void) const { return m_fDeltaY; }
 

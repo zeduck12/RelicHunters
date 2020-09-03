@@ -7,6 +7,8 @@ CInventory::~CInventory()
 
 bool CInventory::Ready(void)
 {
+	m_iOwnBombs = 5;
+	m_iCoins = 0;
 	m_iOwnBullets = 9999;
 	m_iCapacity = 2;
 	// 인벤토리 크기 2개 예약

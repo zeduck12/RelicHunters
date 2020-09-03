@@ -139,6 +139,7 @@ void CBullet::LateUpdate()
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 			pPlayer->SetState(GET_SINGLE(PlayerAttacked));
 			pPlayer->SetIsAttacked(true);
+			pPlayer->SetCurHp(pPlayer->GetCurHp() - m_fDamage);
 		}
 
 		for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())

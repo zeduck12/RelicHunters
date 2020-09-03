@@ -21,6 +21,8 @@ public:
 public:
     void    SetCurWeaponID(GUN::ID _eID) { m_eCurWeaponID = _eID; }
     GUN::ID GetCurWeaponID(void) const { return m_eCurWeaponID; }
+    int     GetGunCapacity(void) const { return m_iCurCapacity; }
+    int     GetReloadedBullets(void) const { return m_iReloadedBullets; }
 
 public:
     void Shoot(void);

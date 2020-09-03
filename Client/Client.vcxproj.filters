@@ -184,6 +184,12 @@
     <Filter Include="09.Mouse">
       <UniqueIdentifier>{bb219053-15d4-4a3d-82ac-eb0a64b2e659}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Manager\UICameraManager">
+      <UniqueIdentifier>{b52e9054-a7fc-4e11-ba7d-eeebd960d0a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="08.UI\085.PlayerInfo">
+      <UniqueIdentifier>{17ef0c26-b507-4cf7-b4cb-c23020b67e58}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -369,6 +375,12 @@
     <ClInclude Include="CMouse.h">
       <Filter>09.Mouse</Filter>
     </ClInclude>
+    <ClInclude Include="UICameraManager.h">
+      <Filter>97.Manager\UICameraManager</Filter>
+    </ClInclude>
+    <ClInclude Include="CPlayerInfo.h">
+      <Filter>08.UI\085.PlayerInfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -529,6 +541,12 @@
     </ClCompile>
     <ClCompile Include="CMouse.cpp">
       <Filter>09.Mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="UICameraManager.cpp">
+      <Filter>97.Manager\UICameraManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CPlayerInfo.cpp">
+      <Filter>08.UI\085.PlayerInfo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

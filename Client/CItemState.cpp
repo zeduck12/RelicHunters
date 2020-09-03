@@ -34,7 +34,12 @@ CItemState* CItemIdleState::Update(CItem* _pItem)
 			_pItem->SetPosVector(_pItem->GetPosVector() + vDist * m_fAddSpeed);
 
 			// 플레이어와 부딫히면 사라지게
-			CCollisionManager::CollideBullet(pPlayer, _pItem);
+			if (CCollisionManager::CollideBullet(pPlayer, _pItem) == true)
+			{
+				int iCurCoins = GET_SINGLE(CPlayerManager)->GetInventory()->GetCoins();
+				GET_SINGLE(CPlayerManager)->GetInventory()->SetCoins(iCurCoins + 10);
+			}
+			
 		}
 		
 	}

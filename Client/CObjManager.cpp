@@ -12,6 +12,7 @@
 #include "CInteractionManager.h"
 #include "CItem.h"
 #include "CSceneManager.h"
+#include "UICameraManager.h"
 
 DEFINITION_SINGLETON(CObjManager)
 
@@ -39,8 +40,12 @@ bool CObjManager::Ready(void)
 	if (!GET_SINGLE(CCameraManager)->Ready())
 		return false;
 
+	if (!GET_SINGLE(UICameraManager)->Ready())
+		return false;
+
 	if (!GET_SINGLE(CMapManager)->Ready())
 		return false;
+	
 
 	// 몬스터 생성.
 	CEnemyManager::LoadMonsterData();
@@ -53,11 +58,11 @@ bool CObjManager::Ready(void)
 	m_listItems.emplace_back(pItem);
 
 
-	// 보스생성
-	shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 800.f, 120.f, 120.f,
-		cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);
-	pMonster->Ready();
-	m_listMonsters.emplace_back(pMonster);
+	// Test 보스생성
+	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 800.f, 120.f, 120.f,
+	//	cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);
+	//pMonster->Ready();
+	//m_listMonsters.emplace_back(pMonster);
 
 	return true;
 }
@@ -67,6 +72,7 @@ void CObjManager::Update(void)
 	GET_SINGLE(CMapManager)->Update();
 	GET_SINGLE(CPlayerManager)->Update();
 	GET_SINGLE(CCameraManager)->Update();
+	GET_SINGLE(UICameraManager)->Update();
 	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Update(); } }
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Update(); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Update(); } }
@@ -115,13 +121,13 @@ void CObjManager::Render(const HDC& _hdc)
 	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Render(_hdc); } }
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Render(_hdc); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }
-
+	//GET_SINGLE(UICameraManager)->Render();
 
 	// 카메라 움직임 결과
 	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();
-	GET_SINGLE(CGraphicDevice)->GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);
-	
-	
+	GET_SINGLE(CGraphicDevice)->GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);	
+
+
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);
 }
@@ -230,6 +236,7 @@ void CObjManager::Release(void)
 	m_listMonsters.clear();
 
 	CCameraManager::Destroy_Instance();
+	UICameraManager::Destroy_Instance();
 	CPlayerManager::Destroy_Instance();
 	CMapManager::Destroy_Instance();
 }
