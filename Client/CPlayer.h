@@ -20,6 +20,8 @@ public:
 
 public:
 	CWeapon* GetCurWeapon(void) { return m_pWeapon.get(); }
+	void  SetCurDashHp(float _fHp) { m_fDashCurHp = _fHp; if (m_fDashCurHp <= 0.f) { m_fDashCurHp = 0.f; } }
+	float GetCurDashHp(void) const { return m_fDashCurHp; }
 	void  SetCurShieldHp(float _fHp) { m_fShieldCurHp = _fHp; if (m_fShieldCurHp <= 0.f) { m_fShieldCurHp = 0.f; } }
 	float GetCurShieldHp(void) const { return m_fShieldCurHp; }
 	void  SetCurHp(float _fHp) { m_fCurHp = _fHp; if (m_fCurHp <= 0.f) { m_fCurHp = 0.f; } }
@@ -74,11 +76,12 @@ public:
 	void ShootBoomerang(void);
 
 public:
+	void Dash(void);
+	void RecoverDashHp(void);
 	void UpdatePosinInfo(void);
 	void TrackMousePos(void);
 	void CheckKeyState(void);
 	void DetectDirection(void);
-	void Dash(void);
 	void ShowSpectrum(const HDC& _hdc);
 
 private:
@@ -89,6 +92,9 @@ private:
 	float m_fMaxHp;
 	float m_fShieldCurHp;
 	float m_fShieldMaxHp;
+	float m_fDashCurHp;
+	float m_fDashMaxHp;
+
 	float m_fStackTime; // 누적시간 담는 용도의 변수.
 	float m_fShootingDegree;
 	float m_fShootingDist;

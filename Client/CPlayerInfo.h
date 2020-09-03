@@ -22,6 +22,7 @@ private:
 	void DrawSubWeapon(void);
 	void DrawBulletCount(void);
 	void DrawBombsCount(void);
+	void DrawDashBar(void);
 
 private:
 	wstring m_strCharacterName;

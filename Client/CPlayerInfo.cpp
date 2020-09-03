@@ -31,6 +31,7 @@ void CPlayerInfo::Render(void)
 	DrawWeapon();
 	DrawBulletCount();
 	DrawBombsCount();
+	DrawDashBar();
 }
 
 void CPlayerInfo::DrawCharacterEmoticon(void)
@@ -48,7 +49,6 @@ void CPlayerInfo::DrawCharacterEmoticon(void)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-
 }
 
 void CPlayerInfo::DrawCharacterShieldBar(void)
@@ -347,4 +347,45 @@ void CPlayerInfo::DrawBombsCount(void)
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
+}
+
+void CPlayerInfo::DrawDashBar(void)
+{
+	float fCurDashHp = 0.f;
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer());
+	if (GET_SINGLE(CPlayerManager)->GetPlayer() != nullptr)
+	{
+		fCurDashHp = pPlayer->GetCurDashHp();
+	}
+
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"DashBar", L"DashBar", 0);
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 2.f, 1.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 183.f, 80.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(100, 0, 0, 0));
+
+
+	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"DashBar", L"DashBar", 0);
+	if (nullptr == pTexInfo)
+		return;
+	fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 2.f, 1.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 183.f, 80.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	RECT rc = { 0, 0, LONG(81 * (fCurDashHp / 200.f)), 18 };
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 }

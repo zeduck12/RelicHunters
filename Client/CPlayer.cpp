@@ -73,8 +73,10 @@ void CPlayer::Ready()
 	m_fSpeed = 4.f;
 	m_fDegree = 0.f;
 	m_fMaxHp = 200.f;
+	m_fDashMaxHp = 200.f;
 	m_fShieldMaxHp = 150.f;
 	m_fCurHp = m_fMaxHp;
+	m_fDashCurHp = m_fDashMaxHp;
 	m_fShieldCurHp = m_fShieldMaxHp;
 
 	// 회전할 버텍스 좌표
@@ -114,6 +116,7 @@ int CPlayer::Update(float _fDeltaTime)
 {
 	// 포신좌표 갱신
 	UpdatePosinInfo();
+	RecoverDashHp();
 
 	// 방향감지
 	DetectDirection();
@@ -346,7 +349,13 @@ void CPlayer::CheckKeyState(void)
 
 
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_SHIFT)) // 플레이어 대쉬
+	{
+		if (m_fDashCurHp < 50.f)
+			return;
+
 		m_bIsDash = true;
+		m_fDashCurHp -= 50.f;
+	}
 
 
 	// Test용
@@ -410,6 +419,14 @@ void CPlayer::Dash(void)
 
 	m_fAddSpeed += 0.8f;
 	m_tInfo.vPos += m_tInfo.vDir * m_fAddSpeed;
+}
+
+void CPlayer::RecoverDashHp(void)
+{
+	if (m_fDashCurHp >= m_fDashMaxHp)
+		return;
+
+	m_fDashCurHp += 5.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
 }
 
 // 대쉬 잔상
