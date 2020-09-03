@@ -26,7 +26,6 @@ void CWeapon::Ready(void)
 	m_iCurCapacity	   = 50;
 	m_iReloadedBullets = 50;
 
-	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 	m_tInfo.vPos = { 0.f, 0.f, 0.f };
 	m_tInfo.vDir = { 1.0f, 0.f, 0.f };
 	m_tInfo.vSize = { 100.f, 50.f, 0.f };

@@ -81,6 +81,7 @@ void CMainApp::Release()
 {
 	ReleaseDC(g_hWND, m_hDC);
 	
+	UICameraManager::Destroy_Instance();
 	CTimeManager::Destroy_Instance();
 	CKeyManager::Destroy_Instance();
 	CCollisionManager::Destroy_Instance();
@@ -241,6 +242,10 @@ void CMainApp::SetImages(void)
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Item/PickUp/Heavy/spr_pickup_heavy_%d.png", L"PickUpHeavy", L"Start", 16)))
 		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Item/PickUp/Shield/pickup_shield_0.png", L"PickUpShield")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Item/PickUp/Health/pickup_health_0.png", L"PickUpHealth")))
+		return;
 
 	// Prompt E
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Prompt/spr_prompt_e_%d.png", L"Prompt", L"PromptE", 8)))
@@ -351,6 +356,12 @@ void CMainApp::SetImages(void)
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/UI/CoinBar/spr_dynamic_bounty_0.png", L"CoinBar")))
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/UI/Hp/spr_hud_hp_0.png", L"HpBar")))
+		return;
+
+	// Shield
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Shield/Active/spr_shield_blue_%d.png", L"Shield", L"Active", 6)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Shield/Explosion/spr_shield_explosion_blue_%d.png", L"Shield", L"Explosion", 9)))
 		return;
 }
 

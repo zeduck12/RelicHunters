@@ -51,6 +51,18 @@ int CPickUpLight::Update(float _fDeltaTime)
         m_pNextState = pCurState;
     }
 
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     return 0;
 }
 
@@ -115,6 +127,17 @@ int CPickUpMedium::Update(float _fDeltaTime)
     {
         Safe_Delete(m_pNextState);
         m_pNextState = pCurState;
+    }
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
     }
 
     return 0;
@@ -182,6 +205,18 @@ int CPickUpHeavy::Update(float _fDeltaTime)
         m_pNextState = pCurState;
     }
 
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     return 0;
 }
 
@@ -231,6 +266,18 @@ DefaultGun::~DefaultGun()
 
 int DefaultGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     return 0;
 }
 
@@ -288,6 +335,18 @@ FlameGun::~FlameGun()
 
 int FlameGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
@@ -355,6 +414,18 @@ HighMagGun::~HighMagGun()
 
 int HighMagGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
@@ -423,6 +494,18 @@ AssaultGun::~AssaultGun()
 
 int AssaultGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
@@ -490,6 +573,18 @@ KeytarGun::~KeytarGun()
 
 int KeytarGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
@@ -557,6 +652,18 @@ MachineGun::~MachineGun()
 
 int MachineGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
@@ -625,6 +732,18 @@ PistolAssualtGun::~PistolAssualtGun()
 
 int PistolAssualtGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
@@ -692,6 +811,18 @@ PistolHeavyGun::~PistolHeavyGun()
 
 int PistolHeavyGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
@@ -759,6 +890,18 @@ PlasmaGun::~PlasmaGun()
 
 int PlasmaGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
@@ -826,6 +969,18 @@ ShotGun::~ShotGun()
 
 int ShotGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
@@ -894,6 +1049,18 @@ SniperGun::~SniperGun()
 
 int SniperGun::Update(float _fDeltaTime)
 {
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
@@ -1095,4 +1262,148 @@ void CTeleporter::Render(const HDC& _hdc)
     CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
     CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
+}
+
+CPickUpShield::CPickUpShield(float _fX, float _fY, float _fWidth, float _fHeight, IMAGE::ID _eID)
+{
+    m_tInfo.vPos = { _fX, _fY, 0.f };
+    m_tInfo.vSize = { _fWidth, _fHeight, 0.f };
+    m_tInfo.vDir = { 1.0f, 0.f, 0.f };
+    m_tInfo.vLook = { 1.f, 0.f, 0.f };
+
+    m_eImageID = _eID;
+    m_pNextState = nullptr;
+    m_pImageSetting = nullptr;
+}
+
+CPickUpShield::~CPickUpShield()
+{
+    Release();
+}
+
+void CPickUpShield::Ready(void)
+{
+    m_iDrawID = 0;
+}
+
+int CPickUpShield::Update(float _fDeltaTime)
+{
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
+    // Interaction Manager 만들어서 근처에 오면 E누르면 아이템 획득할수 있게하기
+    // 그리고 아이템 획득
+    return 0;
+}
+
+void CPickUpShield::Render(const HDC& _hdc)
+{
+    const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"PickUpShield");
+    if (nullptr == pTexInfo)
+        return;
+    float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+    float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+    D3DXMATRIX matScale, matTrans, matWorld;
+    D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+    D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);
+    matWorld = matScale * matTrans;
+
+    CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+    CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+    // 상호작용
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+        if (m_fStackTime >= m_fCoolTime)
+        {
+            m_fStackTime = 0.f;
+            this->SetDrawID(this->GetDrawID() + 1);
+        }
+
+        CInteractionManager::Render(this);
+    }
+}
+
+CPickUpHealth::CPickUpHealth(float _fX, float _fY, float _fWidth, float _fHeight, IMAGE::ID _eID)
+{
+    m_tInfo.vPos = { _fX, _fY, 0.f };
+    m_tInfo.vSize = { _fWidth, _fHeight, 0.f };
+    m_tInfo.vDir = { 1.0f, 0.f, 0.f };
+    m_tInfo.vLook = { 1.f, 0.f, 0.f };
+
+    m_eImageID = _eID;
+    m_pNextState = nullptr;
+    m_pImageSetting = nullptr;
+}
+
+CPickUpHealth::~CPickUpHealth()
+{
+    Release();
+}
+
+void CPickUpHealth::Ready(void)
+{
+    m_iDrawID = 0;
+}
+
+int CPickUpHealth::Update(float _fDeltaTime)
+{
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
+    // Interaction Manager 만들어서 근처에 오면 E누르면 아이템 획득할수 있게하기
+    // 그리고 아이템 획득
+    return 0;
+}
+
+void CPickUpHealth::Render(const HDC& _hdc)
+{
+    const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"PickUpHealth");
+    if (nullptr == pTexInfo)
+        return;
+    float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+    float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+    D3DXMATRIX matScale, matTrans, matWorld;
+    D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+    D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);
+    matWorld = matScale * matTrans;
+
+    CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+    CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+    // 상호작용
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+        if (m_fStackTime >= m_fCoolTime)
+        {
+            m_fStackTime = 0.f;
+            this->SetDrawID(this->GetDrawID() + 1);
+        }
+
+        CInteractionManager::Render(this);
+    }
 }

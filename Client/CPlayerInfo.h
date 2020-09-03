@@ -27,5 +27,9 @@ private:
 private:
 	wstring m_strCharacterName;
 	// 캐릭터 이름에 따라 사진 다르게 띄워주기 위해
+	float m_fAddValue = 0.f;
+
+	bool m_bIsRecover = false;
+	float m_fStackTime = 0.f;
 };
 

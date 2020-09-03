@@ -190,6 +190,9 @@
     <Filter Include="08.UI\085.PlayerInfo">
       <UniqueIdentifier>{17ef0c26-b507-4cf7-b4cb-c23020b67e58}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\011.Player\Shield">
+      <UniqueIdentifier>{35e5ba29-88db-4549-abc5-133f51713b37}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -381,6 +384,9 @@
     <ClInclude Include="CPlayerInfo.h">
       <Filter>08.UI\085.PlayerInfo</Filter>
     </ClInclude>
+    <ClInclude Include="CShield.h">
+      <Filter>01.CObj\011.Player\Shield</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -547,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="CPlayerInfo.cpp">
       <Filter>08.UI\085.PlayerInfo</Filter>
+    </ClCompile>
+    <ClCompile Include="CShield.cpp">
+      <Filter>01.CObj\011.Player\Shield</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

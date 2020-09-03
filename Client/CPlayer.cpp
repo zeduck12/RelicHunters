@@ -22,6 +22,7 @@
 #include "CShadow.h"
 #include "CItem.h"
 #include "CSceneManager.h"
+#include "CShield.h"
 
 CPlayer::CPlayer()
 	:
@@ -32,15 +33,14 @@ CPlayer::CPlayer()
 	m_fAddSpeed{ 1.f },
 	m_bIsDash{ false },
 	m_pWeapon{ nullptr },
+	m_pShield{ nullptr },
 	m_fStackTime{ 0.f },
 	m_pCurState{ nullptr },
 	m_bIsAttacked{ false },
 	m_pImageSetting{ nullptr },
 	m_bIsReloading{ false },
 	m_fCurHp{ 0.f },
-	m_fMaxHp{ 0.f },
-	m_fShieldCurHp{ 0.f },
-	m_fShieldMaxHp{ 0.f }
+	m_fMaxHp{ 0.f }
 {
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tPosin, sizeof(LINEINFO));
@@ -74,10 +74,8 @@ void CPlayer::Ready()
 	m_fDegree = 0.f;
 	m_fMaxHp = 200.f;
 	m_fDashMaxHp = 200.f;
-	m_fShieldMaxHp = 150.f;
 	m_fCurHp = m_fMaxHp;
 	m_fDashCurHp = m_fDashMaxHp;
-	m_fShieldCurHp = m_fShieldMaxHp;
 
 	// 회전할 버텍스 좌표
 	m_vRotVertex[0].x = - (m_tInfo.vSize.x * 0.5f);
@@ -98,6 +96,10 @@ void CPlayer::Ready()
 	// 무기 생성
 	m_pWeapon = make_unique<CWeapon>();
 	m_pWeapon->Ready();
+
+	// 쉴드 생성
+	m_pShield = make_unique<CShield>();
+	m_pShield->Ready();
 
 	// 애니메이션 생성
 	m_pImageSetting = make_unique<CImageSetting>(this, "PlayerAnimation");
@@ -126,6 +128,7 @@ int CPlayer::Update(float _fDeltaTime)
 	if(m_bIsDash == true)
 		Dash();
 
+	m_pShield->Update();
 	m_pWeapon->Update();
 	m_pCurState->Update(this); // 상태 업데이트
 
@@ -173,6 +176,7 @@ void CPlayer::Render(const HDC& _hdc)
 
 	// 무기 그리기
 	m_pWeapon->Render(_hdc);
+	m_pShield->Render(_hdc);
 
 	if (GET_SINGLE(CCameraManager)->IsPressing() == true)
 	{
@@ -208,6 +212,7 @@ void CPlayer::Render(const HDC& _hdc)
 void CPlayer::Release()
 {
 	m_pWeapon.reset();
+	m_pShield.reset();
 	m_pImageSetting.reset();
 
 	PlayerIdleState::Destroy_Instance();

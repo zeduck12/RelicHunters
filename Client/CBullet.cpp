@@ -16,6 +16,7 @@
 #include "CBoss.h"
 #include "CBossState.h"
 #include "CStructure.h"
+#include "CShield.h"
 
 CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree,
 	OBJ::ID _eID, const wstring& _strBulletName /*= L"Small"*/,float _fDamage/* = 10.f*/)
@@ -139,7 +140,7 @@ void CBullet::LateUpdate()
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 			pPlayer->SetState(GET_SINGLE(PlayerAttacked));
 			pPlayer->SetIsAttacked(true);
-			pPlayer->SetCurHp(pPlayer->GetCurHp() - m_fDamage);
+			pPlayer->TakeDamage(m_fDamage);
 		}
 
 		for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())

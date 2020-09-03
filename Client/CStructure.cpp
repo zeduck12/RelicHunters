@@ -3,6 +3,8 @@
 #include "CGraphicDevice.h"
 #include "CTextureManager.h"
 #include "CTexture.h"
+#include "CMapManager.h"
+#include "CItem.h"
 
 CStructure::CStructure(D3DXVECTOR3 _vPos, D3DXVECTOR3 _vSize, D3DXVECTOR3 _vImageSize, int _iDrawID)
 	:
@@ -78,6 +80,16 @@ void CStructure::LateUpdate(void)
 		m_iCurHp = 0;
 		m_iCurDrawID = m_iMaxDrawID;
 		this->SetIsValid(false);
+		for (auto& pItem : GET_SINGLE(CMapManager)->GetItems())
+		{
+			if (pItem->GetX() > m_tInfo.vPos.x - (m_tInfo.vSize.x * 0.5f) && m_tInfo.vPos.x + (m_tInfo.vSize.x * 0.5f) > pItem->GetX() &&
+				pItem->GetY() > m_tInfo.vPos.y - (m_tInfo.vSize.y * 0.5f) && m_tInfo.vPos.y + (m_tInfo.vSize.y * 0.5f) > pItem->GetY())
+			{
+				dynamic_cast<CItem*>(pItem.get())->SetIsDrop(true);
+			}
+		}
+	
+
 		return;
 	}
 

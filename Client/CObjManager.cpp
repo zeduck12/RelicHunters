@@ -58,6 +58,20 @@ bool CObjManager::Ready(void)
 	m_listItems.emplace_back(pItem);
 
 
+	pItem = make_shared<CPickUpHealth>(
+		1000.f,
+		800.f,
+		50.f, 50.f, IMAGE::PICKUP_HEALTH);
+	pItem->Ready();
+	m_listItems.emplace_back(pItem);
+
+	pItem = make_shared<CPickUpShield>(
+		1100.f,
+		800.f,
+		50.f, 50.f, IMAGE::PICKUP_SHIELD);
+	pItem->Ready();
+	m_listItems.emplace_back(pItem);
+
 	// Test 보스생성
 	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 800.f, 120.f, 120.f,
 	//	cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);
@@ -113,8 +127,8 @@ void CObjManager::Render(const HDC& _hdc)
 	SetWorldTransform(_hdc, &xfWorld);
 
 	GET_SINGLE(CMapManager)->Render(_hdc);
-	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Render(_hdc); } }
 
+	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Render(_hdc); } }
 	GET_SINGLE(CPlayerManager)->Render(_hdc);
 	
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Render(_hdc); } }
@@ -236,7 +250,6 @@ void CObjManager::Release(void)
 	m_listMonsters.clear();
 
 	CCameraManager::Destroy_Instance();
-	UICameraManager::Destroy_Instance();
 	CPlayerManager::Destroy_Instance();
 	CMapManager::Destroy_Instance();
 }

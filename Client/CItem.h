@@ -13,11 +13,16 @@ public:
 public:
     int  GetDrawID(void) const { return m_iDrawID; }
     void SetDrawID(int _iDrawID) { m_iDrawID = _iDrawID; }
+    bool IsDrop(void) const { return m_bIsDrop; }
+    void SetIsDrop(bool _bIsDrop) { m_bIsDrop = _bIsDrop; }
 
 protected:
     int m_iDrawID; // 상호작용에 쓰이는 DrawID
     float m_fStackTime = 0.f;
     float m_fCoolTime  = 0.2f;
+
+    bool m_bIsDrop = false;
+    float m_fAddY = 0.f;
 
     CItemState* m_pNextState;
     unique_ptr<CImageSetting> m_pImageSetting;	// 이미지 셋팅 객체
@@ -73,6 +78,38 @@ public:
     virtual void LateUpdate(void) {}
     virtual void Release(void) override;
     virtual void Render(const HDC& _hdc) override;
+};
+
+class CPickUpShield : public CItem
+{
+public:
+    explicit CPickUpShield() = default;
+    CPickUpShield(float _fX, float _fY, float _fWidth, float _fHeight, IMAGE::ID _eID);
+    virtual ~CPickUpShield();
+
+public:
+    // CItem을(를) 통해 상속됨
+    virtual void Ready(void) override;
+    virtual int  Update(float _fDeltaTime = 0.f) override;
+    virtual void LateUpdate(void) {}
+    virtual void Release(void) {}
+    virtual void Render(const HDC & _hdc) override;
+};
+
+class CPickUpHealth :public CItem
+{
+public:
+    explicit CPickUpHealth() = default;
+    CPickUpHealth(float _fX, float _fY, float _fWidth, float _fHeight, IMAGE::ID _eID);
+    virtual ~CPickUpHealth();
+
+public:
+    // CItem을(를) 통해 상속됨
+    virtual void Ready(void) override;
+    virtual int  Update(float _fDeltaTime = 0.f) override;
+    virtual void LateUpdate(void) {}
+    virtual void Release(void) {}
+    virtual void Render(const HDC & _hdc) override;
 };
 
 class CTeleporter : public CItem

@@ -5,6 +5,7 @@
 #include "CPlayerManager.h"
 #include "CPlayer.h"
 #include "CCameraManager.h"
+#include "CTimeManager.h"
 
 CPlayerInfo::CPlayerInfo(const wstring& _strName)
 {
@@ -53,6 +54,15 @@ void CPlayerInfo::DrawCharacterEmoticon(void)
 
 void CPlayerInfo::DrawCharacterShieldBar(void)
 {
+	float fCurShieldHp = 0.f;
+	float fDelta = 0.f;
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer());
+	if (GET_SINGLE(CPlayerManager)->GetPlayer() != nullptr)
+	{
+		fCurShieldHp = pPlayer->GetShield()->GetCurShieldHp();
+		
+	}
+
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"HpBar");
 	if (nullptr == pTexInfo)
 		return;
@@ -65,7 +75,32 @@ void CPlayerInfo::DrawCharacterShieldBar(void)
 	matWorld = matScale * matTrans;
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(100, 0, 0, 0));
+
+
+	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"HpBar");
+	if (nullptr == pTexInfo)
+		return;
+	fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.2f, 1.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 170.f, 50.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	RECT rc = { 0, 0, LONG(114.f * (fCurShieldHp / 100.f)), 30 };
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	
+	TCHAR szBuf[MAX_PATH] = L"";
+	wsprintf(szBuf, L"%d", int(fCurShieldHp));
+
+	D3DXMatrixTranslation(&matTrans, 180.f, 40.f, 0.f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
 
 }
 

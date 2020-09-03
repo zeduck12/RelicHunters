@@ -1,6 +1,7 @@
 #pragma once
 #include "CObj.h"
 #include "CWeapon.h"
+#include "CShield.h"
 
 class CImageSetting;
 class CPlayerState;
@@ -19,12 +20,24 @@ public:
 	virtual void Release()						override;
 
 public:
+	CShield* GetShield(void) { return m_pShield.get(); }
 	CWeapon* GetCurWeapon(void) { return m_pWeapon.get(); }
 	void  SetCurDashHp(float _fHp) { m_fDashCurHp = _fHp; if (m_fDashCurHp <= 0.f) { m_fDashCurHp = 0.f; } }
 	float GetCurDashHp(void) const { return m_fDashCurHp; }
-	void  SetCurShieldHp(float _fHp) { m_fShieldCurHp = _fHp; if (m_fShieldCurHp <= 0.f) { m_fShieldCurHp = 0.f; } }
-	float GetCurShieldHp(void) const { return m_fShieldCurHp; }
-	void  SetCurHp(float _fHp) { m_fCurHp = _fHp; if (m_fCurHp <= 0.f) { m_fCurHp = 0.f; } }
+	void  TakeDamage(float _fHp) 
+	{
+		if (m_pShield->GetCurShieldHp() <= 0.f)
+		{
+			m_fCurHp -= _fHp; 
+			if (m_fCurHp <= 0.f) 
+				m_fCurHp = 0.f; 
+		}
+		else
+		{
+			float fCurHp = m_pShield->GetCurShieldHp();
+			m_pShield->SetCurShieldHp(fCurHp - _fHp);
+		}
+	}
 	float GetCurHp(void) const { return m_fCurHp; }
 	bool IsReloading(void) const { return m_bIsReloading; }
 	void SetIsReloading(bool _bIsReloading) { m_bIsReloading = _bIsReloading; }
@@ -90,8 +103,6 @@ private:
 
 	float m_fCurHp;
 	float m_fMaxHp;
-	float m_fShieldCurHp;
-	float m_fShieldMaxHp;
 	float m_fDashCurHp;
 	float m_fDashMaxHp;
 
@@ -110,6 +121,7 @@ private:
 	bool m_bIsDash;
 	float m_fAddSpeed;
 
+	unique_ptr<CShield> m_pShield;
 	unique_ptr<CWeapon> m_pWeapon;				// 현재 보유하고 있는 무기
 	unique_ptr<CImageSetting> m_pImageSetting;	// 이미지 셋팅 객체
 private:
