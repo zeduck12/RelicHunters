@@ -8,6 +8,8 @@
 #include "CCollisionManager.h"
 #include "CPlayerState.h"
 #include "CTimeManager.h"
+#include "CMapManager.h"
+#include "CStructure.h"
 
 
 CRocket::CRocket(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID)
@@ -101,6 +103,23 @@ void CRocket::LateUpdate(void)
 		pPlayer->SetState(GET_SINGLE(PlayerAttacked));
 		pPlayer->SetIsAttacked(true);
 	}
+
+	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
+	{
+		if (CCollisionManager::CollideBullet(pObj.get(), this) == true)
+		{
+			CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
+			pStructure->SetCurHp(pStructure->GetCurHp() - 10);
+			if (pStructure->GetCurDrawID() >= pStructure->GetMaxDrawID())
+				continue;
+
+			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
+		}
+
+	}
+
+	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
+		CCollisionManager::CollideTileBullet(pTile, this);
 }
 
 void CRocket::Render(const HDC& _hdc)

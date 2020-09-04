@@ -59,8 +59,8 @@ int CMouse::Update(float _fDeltaTime)
 
 	}
 
-	m_tInfo.vPos.x = float(pt.x) + fPlayerX;
-	m_tInfo.vPos.y = float(pt.y) + fPlayerY;
+	m_tInfo.vPos.x = float(pt.x); //+ fPlayerX;
+	m_tInfo.vPos.y = float(pt.y); //+ fPlayerY;
 
 	float fX = m_tInfo.vPos.x;
 	float fY = m_tInfo.vPos.y;
@@ -84,6 +84,9 @@ int CMouse::Update(float _fDeltaTime)
 			return 0;
 		}
 	}
+
+	if (m_bIsReloading == true)
+		return 0;
 
 	m_iDrawID = 0;
 

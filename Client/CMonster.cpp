@@ -119,26 +119,26 @@ void CMonster::LateUpdate(void)
 		CCollisionManager::CollideCharacterStructure(this, pStruc.get());
 
 	// 플레이어 출동 선과 선 충돌
-	//CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
-	//LINEINFO* pPlayerLineArray = dynamic_cast<CPlayer*>(pPlayer)->GetLinesInfo();
-	//LINEINFO* pMonsterLineArray = GetLinesInfo();
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	LINEINFO* pPlayerLineArray = dynamic_cast<CPlayer*>(pPlayer)->GetLinesInfo();
+	LINEINFO* pMonsterLineArray = GetLinesInfo();
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (CCollisionManager::CollideLineToLine( pPlayerLineArray[i], pMonsterLineArray[j]))
+			{
+				// 충돌이 일어났다면 방향벡터 쪽으로 밀기
+				pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
+				pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
+				dynamic_cast<CPlayer*>(pPlayer)->SetState(GET_SINGLE(PlayerAttacked));
+			}
 
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	for (int j = 0; j < 3; j++)
-	//	{
-	//		if (CCollisionManager::CollideLineToLine( pPlayerLineArray[i], pMonsterLineArray[j]))
-	//		{
-	//			// 충돌이 일어났다면 방향벡터 쪽으로 밀기
-	//			pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
-	//			pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
-	//			dynamic_cast<CPlayer*>(pPlayer)->SetState(GET_SINGLE(PlayerAttacked));
-	//		}
-	//	}
-	//}
+		}
+	}
 
-	
-
+	delete[] pPlayerLineArray;
+	delete[] pMonsterLineArray;
 }
 
 void CMonster::Release(void)

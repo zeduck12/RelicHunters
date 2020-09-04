@@ -23,13 +23,15 @@ public:
     void  SetIncidenceDegree(float _fDegree) { m_fDegree = _fDegree; }
     bool  GetIsCollide(void) const { return m_bIsCollide; }
     void  SetIsCollide(bool _bIsCollide) { m_bIsCollide = _bIsCollide; }
+    const D3DXVECTOR3& GetShadowPos(void) const { return m_vShadowPos; }
+    void  SetGravity(float _fValue) { m_fGravity = 0.f; }
 
 public:
     void ActiveGravity(void);
-    void ShootCasing(void);
-
     void ActiveMiniGravity(void);
+    void ShootCasing(void);
     void MiniJump(void);
+
 
     // 반사각으로 보내는 함수.
     void Reflection(void);
@@ -37,6 +39,7 @@ public:
 private:
     D3DXVECTOR3 m_vRotVertex[2];
     D3DXVECTOR3 m_vRealVertex[2];
+    D3DXVECTOR3 m_vShadowPos;
 
     // 방향
     D3DXVECTOR3 m_vDir;
@@ -58,5 +61,6 @@ private:
     float m_fAddValue;
     float m_fAddAngle;
     float m_fRotDegree;
+    float m_fReflectValue;
 };
 

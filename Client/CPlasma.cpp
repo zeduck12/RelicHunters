@@ -89,7 +89,6 @@ int CPlasma::Update(float _fDeltaTime)
 
 void CPlasma::LateUpdate(void)
 {
-	
 	for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
 	{
 		// 몬스터가 하늘을 나는 중이면 충돌판정 PASS !
@@ -101,12 +100,20 @@ void CPlasma::LateUpdate(void)
 			if (pMonster->GetImageID() == IMAGE::BOSS)
 			{
 				CBoss* pBoss = dynamic_cast<CBoss*>(pMonster.get());
-				pBoss->SetState(new BossAttackedState());
+				if (pBoss->IsDead() == false && pBoss->IsCrack() == true)
+				{
+					pBoss->SetState(new BossAttackedState);
+					pBoss->SetHp(pBoss->GetHp() - m_fDamage);
+				}
 			}
 			else
 			{
 				CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
-				pMonst->SetState(new AttackedState());
+				if (pMonst->IsDead() == false)
+				{
+					pMonst->SetState(new AttackedState());
+					pMonst->SetHp(pMonst->GetHp() - m_fDamage);
+				}
 			}
 
 		}

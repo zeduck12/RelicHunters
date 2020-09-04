@@ -44,7 +44,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME3);
 }
 
 void CMainApp::Update()
@@ -66,22 +66,17 @@ void CMainApp::Render()
 	GET_SINGLE(CGraphicDevice)->RenderBegin();
 	GET_SINGLE(CSceneManager)->Render(m_hDC);
 	m_pMouse->Render(m_hDC);
-	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
+	/*GET_SINGLE(CGraphicDevice)->GetSprite()->End();
 	GET_SINGLE(CGraphicDevice)->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
-	GET_SINGLE(UICameraManager)->Render();
+	GET_SINGLE(UICameraManager)->Render();*/
 	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
 	GET_SINGLE(CGraphicDevice)->RenderEnd();
-
-
-
-
 }
 
 void CMainApp::Release()
 {
 	ReleaseDC(g_hWND, m_hDC);
 	
-	UICameraManager::Destroy_Instance();
 	CTimeManager::Destroy_Instance();
 	CKeyManager::Destroy_Instance();
 	CCollisionManager::Destroy_Instance();
@@ -363,6 +358,17 @@ void CMainApp::SetImages(void)
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Shield/Explosion/spr_shield_explosion_blue_%d.png", L"Shield", L"Explosion", 9)))
 		return;
+
+	//Stage
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Stage/Stage1/spr_stage1_1_%d.png", L"Stage", L"Stage1", 13)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Stage/Stage2/spr_stage2_1_%d.png", L"Stage", L"Stage2", 13)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Stage/Stage3/spr_stage3_1_%d.png", L"Stage", L"Stage3", 13)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Stage/Stage4/spr_stage_boss_%d.png", L"Stage", L"Stage4", 13)))
+		return;
+
 }
 
 

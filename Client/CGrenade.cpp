@@ -11,6 +11,7 @@
 #include "CMonsterState.h"
 #include "CStructure.h"
 #include "CMapManager.h"
+#include "CShadow.h"
 
 CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, float _fShootingDist, bool _bIsReverse /*= false*/)
 	:
@@ -25,6 +26,7 @@ CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float
 	m_fStackTime = 0.f;
 	m_fBombStackTime = 0.f;
 	m_bIsCollide = false;
+	m_vShadowPos = { _fX, _fY, 0 };
 	m_tInfo.vPos = { _fX , _fY , 0.f };
 	m_tInfo.vDir = { 1.f, 0.f, 0.f };
 	m_tInfo.vSize = { 10.f, 10.f, 0.f };
@@ -33,12 +35,12 @@ CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float
 
 	m_fDegree = _fShootingDegree;
 	m_fSaveDegree = _fShootingDegree;
-	m_fSpeed = _fSpeed;
+	m_fSpeed = 0.f;
 	m_fShootingDist = _fShootingDist;
 
 	m_fGravity = 0.f;
 	m_fJumpPower = 0.f;
-	m_fJumpPowerOrigin = 4.f; 
+	m_fJumpPowerOrigin = 4.f;
 
 	m_eDir = DIRECTION::END;
 
@@ -46,7 +48,6 @@ CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float
 	m_fMiniJumpPower = 0.f;
 	m_fMiniJumpPowerOrigin = 1.5f;
 
-	m_fReflectDegree = 0.f;
 }
 
 void CGrenade::Ready(void)
@@ -90,7 +91,7 @@ void CGrenade::LateUpdate(void)
 				m_iCollideCount++;
 				dynamic_cast<CGrenade*>(pGrenade.get())->SetCollideCount(1);
 			}
-			
+
 		}
 	}
 
@@ -123,7 +124,7 @@ void CGrenade::Render(const HDC& _hdc)
 
 	// 폭발 범위 그리기
 	Rectangle(_hdc, int(m_tInfo.vPos.x - m_fBombX), int(m_tInfo.vPos.y - m_fBombY),
-			int(m_tInfo.vPos.x + m_fBombX), int(m_tInfo.vPos.y + m_fBombY));
+		int(m_tInfo.vPos.x + m_fBombX), int(m_tInfo.vPos.y + m_fBombY));
 
 
 	if (m_iCollideCount >= 3)
@@ -150,8 +151,8 @@ void CGrenade::Render(const HDC& _hdc)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 
-	
-	if(m_bIsReverse == true)
+
+	if (m_bIsReverse == true)
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 100, 100, 100));
 	else
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
@@ -162,7 +163,7 @@ void CGrenade::TakeDamageToObejcts(void)
 	// 일단 몬스터
 	for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
 	{
-		float fWidth  = 260.f;
+		float fWidth = 260.f;
 		float fHeight = 250.f;
 		if (pMonster->GetX() < this->GetX() + (fWidth * 0.5f) && this->GetX() - (fWidth * 0.5f) < pMonster->GetX() &&
 			pMonster->GetY() < this->GetY() + (fHeight * 0.5f) && this->GetY() - (fHeight * 0.5f) < pMonster->GetY())
@@ -192,7 +193,6 @@ void CGrenade::TakeDamageToObejcts(void)
 		}
 	}
 
-
 }
 
 void CGrenade::DrawBombParticle(void)
@@ -217,29 +217,29 @@ void CGrenade::ShootGrenade(void)
 	m_fJumpPower -= 0.1f;
 	if (m_fShootingDist > 120.f)
 		m_fShootingDist = 120.f;
-	
+
 	if (m_bIsReverse == false)
 	{
 		if (m_eDir == DIRECTION::LEFT)
 		{
-			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree + 20.f)) * 2.f; 
-			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 20.f)) * 2.f; 
+			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree + 20.f)) * 2.f;
+			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 20.f)) * 2.f;
 
-			m_tInfo.vPos -= D3DXVECTOR3(m_vDir.y, -m_vDir.x, 0.f) * m_fJumpPower  * 2.f;
+			m_tInfo.vPos -= D3DXVECTOR3(m_vDir.y, -m_vDir.x, 0.f) * m_fJumpPower * 2.f;
 			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 		}
 		else if (m_eDir == DIRECTION::RIGHT)
 		{
-			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree - 20.f)) * 2.f; 
-			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 20.f)) * 2.f; 
+			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree - 20.f)) * 2.f;
+			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 20.f)) * 2.f;
 
 			m_tInfo.vPos += D3DXVECTOR3(m_vDir.y, -m_vDir.x, 0.f) * m_fJumpPower * 2.f;
 			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 
 		}
-	
+
 	}
-	else 
+	else
 	{
 		if (m_eDir == DIRECTION::LEFT)
 		{
@@ -251,8 +251,8 @@ void CGrenade::ShootGrenade(void)
 		}
 		else if (m_eDir == DIRECTION::RIGHT)
 		{
-			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree + 20.f)) * 2.f; 
-			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 20.f)) * 2.f; 
+			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree + 20.f)) * 2.f;
+			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 20.f)) * 2.f;
 
 			m_tInfo.vPos += D3DXVECTOR3(-m_vDir.y, m_vDir.x, 0.f) * m_fJumpPower * 2.f;
 			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
@@ -279,8 +279,8 @@ void CGrenade::MiniJump(void)
 		}
 		else if (m_eDir == DIRECTION::RIGHT)
 		{
-			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree - 40.f)) * 2.f; 
-			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 40.f)) * 2.f; 
+			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree - 40.f)) * 2.f;
+			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 40.f)) * 2.f;
 
 			m_tInfo.vPos += D3DXVECTOR3(m_vDir.y, -m_vDir.x, 0.f) * m_fMiniJumpPower * 3.f;
 			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
@@ -290,16 +290,16 @@ void CGrenade::MiniJump(void)
 	{
 		if (m_eDir == DIRECTION::LEFT)
 		{
-			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fSaveDegree - 40.f)) * 2.f; 
-			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fSaveDegree - 40.f)) * 2.f; 
-			
+			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fSaveDegree - 40.f)) * 2.f;
+			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fSaveDegree - 40.f)) * 2.f;
+
 			m_tInfo.vPos += D3DXVECTOR3(m_vDir.y, -m_vDir.x, 0.f) * m_fMiniJumpPower * 3.f;
 			m_tInfo.vPos += m_vDir * 3.8f * (m_fShootingDist / 100);
 		}
 		else if (m_eDir == DIRECTION::RIGHT)
 		{
-			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree + 40.f)) * 2.f; 
-			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 40.f)) * 2.f; 
+			m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree + 40.f)) * 2.f;
+			m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 40.f)) * 2.f;
 
 
 			m_tInfo.vPos += D3DXVECTOR3(-m_vDir.y, m_vDir.x, 0.f) * m_fMiniJumpPower * 3.f;
@@ -308,15 +308,6 @@ void CGrenade::MiniJump(void)
 	}
 }
 
-void CGrenade::Reflection(void)
-{
-	m_fShootingDist -= 0.1f;
-	m_fSpeed -= 3.f;
-
-	m_tInfo.vPos.y += sinf(D3DXToRadian(m_fReflectDegree )) * m_fShootingDist / 100  ;
-	m_tInfo.vPos.x += cosf(D3DXToRadian(m_fReflectDegree )) * m_fShootingDist / 100 ;
-
-}
 
 
 

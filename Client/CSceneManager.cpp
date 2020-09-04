@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CSceneManager.h"
+#include "UICameraManager.h"
 #include "CGame.h"
 #include "CIntro.h"
 #include "CLogo.h"

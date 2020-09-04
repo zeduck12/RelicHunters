@@ -21,13 +21,26 @@ public:
 public:
     void RecoverShield(void);
     void UpdateShieldPos(void);
+    void CheckExplosionAnimation(void);
 public:
     float GetCurShieldHp(void) const { return m_fShieldCurHp; }
-    void  SetCurShieldHp(float _fHp) { m_fShieldCurHp = _fHp; if (m_fShieldCurHp <= 0.f) { m_fShieldCurHp = 0.f; } }
+    void  SetCurShieldHp(float _fHp)
+    { 
+        m_fShieldCurHp = _fHp; 
+        if (m_fShieldCurHp <= 0.f) 
+            m_fShieldCurHp = 0.f; 
+
+        if (m_fShieldCurHp >= m_fShieldMaxHp)
+            m_fShieldCurHp = m_fShieldMaxHp;
+    }
+  
 
 private:
-    int m_iDrawID;
+    int   m_iDrawID;
+    bool  m_bIsExplosion;         // 현재 쉴드가 터졌는지 않터졌는지 확인하는 변수
     float m_fStackTime;
+    float m_fCheckTime = 0.f;     // 쉴드 터지는 애니매이션 체크용 변수
+    bool  m_bIsChecking = false;  // 쉴드 애니매이션 체크가 끝났는지 않끝났는지 확인용
 
     float m_fShieldCurHp;
     float m_fShieldMaxHp;

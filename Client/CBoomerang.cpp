@@ -5,6 +5,13 @@
 #include "CPlayerManager.h"
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
+#include "CMapManager.h"
+#include "CStructure.h"
+#include "CMonster.h"
+#include "CBoss.h"
+#include "CMonsterState.h"
+#include "CBossState.h"
+
 
 CBoomerang::CBoomerang(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed,
 	OBJ::ID _eID /*= OBJ::PLAYER*/, const wstring& _strBulletName /*= L"Small"*/)
@@ -107,8 +114,53 @@ int CBoomerang::Update(float _fDeltaTime)
 
 void CBoomerang::LateUpdate(void)
 {
-	for (auto& pMonster : CObjManager::Get_Instance()->GetMonsters())
-		CCollisionManager::CollideBullet(pMonster.get(), this);
+	for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
+	{
+		// 몬스터가 하늘을 나는 중이면 충돌판정 PASS !
+		if (dynamic_cast<CMonster*>(pMonster.get())->IsFlying() == true)
+			continue;
+
+		if (CCollisionManager::CollideBullet(pMonster.get(), this) == true)
+		{
+			if (pMonster->GetImageID() == IMAGE::BOSS)
+			{
+				CBoss* pBoss = dynamic_cast<CBoss*>(pMonster.get());
+				if (pBoss->IsDead() == false && pBoss->IsCrack() == true)
+				{
+					pBoss->SetState(new BossAttackedState);
+					pBoss->SetHp(pBoss->GetHp() - m_fDamage);
+				}
+			}
+			else
+			{
+				CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
+				if (pMonst->IsDead() == false)
+				{
+					pMonst->SetState(new AttackedState());
+					pMonst->SetHp(pMonst->GetHp() - m_fDamage);
+				}
+			}
+
+		}
+	}
+
+	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
+	{
+		if (CCollisionManager::CollideBullet(pObj.get(), this) == true)
+		{
+			CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
+			pStructure->SetCurHp(pStructure->GetCurHp() - 10);
+			if (pStructure->GetCurDrawID() >= pStructure->GetMaxDrawID())
+				continue;
+
+			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
+		}
+
+	}
+
+	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
+		CCollisionManager::CollideTileBullet(pTile, this);
+
 }
 
 void CBoomerang::Render(const HDC& _hdc)

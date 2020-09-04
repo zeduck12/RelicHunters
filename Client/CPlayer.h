@@ -39,16 +39,17 @@ public:
 		}
 	}
 	float GetCurHp(void) const { return m_fCurHp; }
+	void  SetCurHp(float _fHp) { m_fCurHp = _fHp; if (m_fCurHp >= m_fMaxHp) { m_fCurHp = m_fMaxHp; } }
 	bool IsReloading(void) const { return m_bIsReloading; }
 	void SetIsReloading(bool _bIsReloading) { m_bIsReloading = _bIsReloading; }
 	bool IsAttacked(void) const { return m_bIsAttacked; }
 	void SetIsAttacked(bool _bIsAttacked) { m_bIsAttacked = _bIsAttacked; }
 	float GetShootingDegree(void) const { return m_fShootingDegree; }
 	const D3DXVECTOR3& GetDirectionVector(void) const { return (const D3DXVECTOR3&)m_tInfo.vDir; }
+	const LINEINFO& GetPosinPos(void) const { return m_tPosin; }
 	LINEINFO* GetLinesInfo(void)
 	{
-		//LINEINFO* pLineArray = new LINEINFO[4];
-		LINEINFO pLineArray[4] = {};
+		LINEINFO* pLineArray = new LINEINFO[4];
 
 		// 플레이어 보유 선분 업데이트
 		// 첫번째 선분
@@ -57,28 +58,28 @@ public:
 		LINEINFO tInfo = { tLeftPoint, tRightPoint };
 		pLineArray[0].tLPoint = tInfo.tLPoint;
 		pLineArray[0].tRPoint = tInfo.tRPoint;
-		
+
 		// 두번째 선분
 		tLeftPoint = { m_vRealVertex[1].x, m_vRealVertex[1].y };
 		tRightPoint = { m_vRealVertex[2].x, m_vRealVertex[2].y };
 		tInfo = { tLeftPoint, tRightPoint };
 		pLineArray[1].tLPoint = tInfo.tLPoint;
 		pLineArray[1].tRPoint = tInfo.tRPoint;
-		
+
 		// 세번째 선분
 		tLeftPoint = { m_vRealVertex[2].x, m_vRealVertex[2].y };
 		tRightPoint = { m_vRealVertex[3].x, m_vRealVertex[3].y };
 		tInfo = { tLeftPoint, tRightPoint };
 		pLineArray[2].tLPoint = tInfo.tLPoint;
 		pLineArray[2].tRPoint = tInfo.tRPoint;
-		
+
 		// 네번째 선분
 		tLeftPoint = { m_vRealVertex[3].x, m_vRealVertex[3].y };
 		tRightPoint = { m_vRealVertex[0].x, m_vRealVertex[0].y };
 		tInfo = { tLeftPoint, tRightPoint };
 		pLineArray[3].tLPoint = tInfo.tLPoint;
 		pLineArray[3].tRPoint = tInfo.tRPoint;
-	
+
 		return pLineArray;
 	}
 

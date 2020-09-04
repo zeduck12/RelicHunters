@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "CItem.h"
+#include "CPlayer.h"
 #include "CItemState.h"
 #include "CImageSetting.h"
 #include "CInteractionManager.h"
@@ -43,6 +44,16 @@ int CPickUpLight::Update(float _fDeltaTime)
 {
     // Interaction Manager 만들어서 근처에 오면 E누르면 아이템 획득할수 있게하기
     // 그리고 아이템 획득
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+        {
+            this->SetIsValid(false);
+            int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetOwnBullets();
+            GET_SINGLE(CPlayerManager)->GetInventory()->SetOwnBellets(iCount + 30);
+        }
+    }
    
     CItemState* pCurState = m_pNextState->Update(this);
     if (pCurState != nullptr)
@@ -120,7 +131,17 @@ void CPickUpMedium::Ready(void)
 int CPickUpMedium::Update(float _fDeltaTime)
 {
     // Interaction Manager 만들어서 근처에 오면 E누르면 아이템 획득할수 있게하기
-   // 그리고 아이템 획득
+    // 그리고 아이템 획득
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+        {
+            this->SetIsValid(false);
+            int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetOwnBullets();
+            GET_SINGLE(CPlayerManager)->GetInventory()->SetOwnBellets(iCount + 50);
+        }
+    }
 
     CItemState* pCurState = m_pNextState->Update(this);
     if (pCurState != nullptr)
@@ -197,6 +218,16 @@ int CPickUpHeavy::Update(float _fDeltaTime)
 {
     // Interaction Manager 만들어서 근처에 오면 E누르면 아이템 획득할수 있게하기
     // 그리고 아이템 획득
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+        {
+            this->SetIsValid(false);
+            int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetOwnBullets();
+            GET_SINGLE(CPlayerManager)->GetInventory()->SetOwnBellets(iCount + 100);
+        }
+    }
 
     CItemState* pCurState = m_pNextState->Update(this);
     if (pCurState != nullptr)
@@ -1302,6 +1333,16 @@ int CPickUpShield::Update(float _fDeltaTime)
 
     // Interaction Manager 만들어서 근처에 오면 E누르면 아이템 획득할수 있게하기
     // 그리고 아이템 획득
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+        {
+            this->SetIsValid(false);
+            pRealPlayer->GetShield()->SetCurShieldHp(pRealPlayer->GetShield()->GetCurShieldHp() + 20.f);
+        }
+    }
     return 0;
 }
 
@@ -1374,6 +1415,16 @@ int CPickUpHealth::Update(float _fDeltaTime)
 
     // Interaction Manager 만들어서 근처에 오면 E누르면 아이템 획득할수 있게하기
     // 그리고 아이템 획득
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+        {
+            this->SetIsValid(false);
+            pRealPlayer->SetCurHp(pRealPlayer->GetCurHp() + 40.f);
+        }
+    }
     return 0;
 }
 

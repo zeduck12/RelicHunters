@@ -78,7 +78,7 @@ void CCameraManager::Update(void)
 void CCameraManager::LateUpdate(void)
 {
 	// 총알을 쐈다면 true >> 카메라 진동. But 조준 중에는 이 함수 안들어오게 !
-	if (m_bIsShooting && m_bIsPressing == false)
+	if (m_bIsShooting)
 		EarthquakeCamera();
 
 }

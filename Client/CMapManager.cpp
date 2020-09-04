@@ -164,6 +164,13 @@ bool CMapManager::LoadFile(void)
 		ReadFile(hFile, &pTile->iOption, sizeof(int), &dwByte, nullptr);
 		ReadFile(hFile, &pTile->iFrameX, sizeof(int), &dwByte, nullptr);
 		ReadFile(hFile, &pTile->iFrameY, sizeof(int), &dwByte, nullptr);
+
+		if (pTile->iDrawID == 3)
+		{
+			Safe_Delete(pTile);
+			continue;
+		}
+
 		m_vecTile.emplace_back(pTile);
 	}
 
@@ -177,6 +184,7 @@ bool CMapManager::LoadFile(void)
 		ReadFile(hFile, &pTile->iOption, sizeof(int), &dwByte, nullptr);
 		ReadFile(hFile, &pTile->iFrameX, sizeof(int), &dwByte, nullptr);
 		ReadFile(hFile, &pTile->iFrameY, sizeof(int), &dwByte, nullptr);
+		pTile->Ready();
 		m_vecCreateTile.emplace_back(pTile);
 	}
 
@@ -230,6 +238,10 @@ bool CMapManager::LoadFile(void)
 			pItem = make_shared<CPickUpMedium>(fX, fY, fWidth, fHeight, eID);
 		else if (eID == IMAGE::PICKUP_HEAVY)
 			pItem = make_shared<CPickUpHeavy>(fX, fY, fWidth, fHeight, eID);
+		else if(eID == IMAGE::PICKUP_SHIELD)
+			pItem = make_shared<CPickUpShield>(fX, fY, fWidth, fHeight, eID);
+		else if (eID == IMAGE::PICKUP_HEALTH)
+			pItem = make_shared<CPickUpHealth>(fX, fY, fWidth, fHeight, eID);
 
 		pItem->Ready();
 		m_listItems.emplace_back(pItem);

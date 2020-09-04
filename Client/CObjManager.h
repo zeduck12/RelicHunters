@@ -28,6 +28,7 @@ private:
 	void InstallTeleporter(void);
 	void SceneChange(void);
 	void TestWeapons(void);
+	void DrawLine(void);
 
 private:
 	list<shared_ptr<CObj>> m_listBullets;

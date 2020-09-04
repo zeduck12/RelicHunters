@@ -23,6 +23,15 @@ CStructure::CStructure(D3DXVECTOR3 _vPos, D3DXVECTOR3 _vSize, D3DXVECTOR3 _vImag
 	m_tInfo.vLook = { 1.f ,0.f , 0.f };
 	D3DXMatrixIdentity(&m_tInfo.mat);
 
+	m_vRealVertex[0].x = m_tInfo.vPos.x - (m_tInfo.vSize.x * 0.5f);
+	m_vRealVertex[0].y = m_tInfo.vPos.y - (m_tInfo.vSize.y * 0.5f);
+	m_vRealVertex[1].x = m_tInfo.vPos.x + (m_tInfo.vSize.x * 0.5f);
+	m_vRealVertex[1].y = m_tInfo.vPos.y - (m_tInfo.vSize.y * 0.5f);
+	m_vRealVertex[2].x = m_tInfo.vPos.x + (m_tInfo.vSize.x * 0.5f);
+	m_vRealVertex[2].y = m_tInfo.vPos.y + (m_tInfo.vSize.y * 0.5f);
+	m_vRealVertex[3].x = m_tInfo.vPos.x - (m_tInfo.vSize.x * 0.5f);
+	m_vRealVertex[3].y = m_tInfo.vPos.y + (m_tInfo.vSize.y * 0.5f);
+
 	// Draw ID 
 	// 0 - Ελ
 	// 1 - ΐάµπ1

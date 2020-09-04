@@ -25,6 +25,41 @@ public:
     int GetDrawID(void) const { return m_iDrawID; }
     int GetCurHp(void) const { return m_iCurHp; }
     int GetMaxHp(void) const { return m_iMaxHp; }
+	LINEINFO* GetLinesInfo(void)
+	{
+		LINEINFO* pLineArray = new LINEINFO[4];
+
+		// 플레이어 보유 선분 업데이트
+		// 첫번째 선분
+		LINEPOS tLeftPoint = { m_vRealVertex[0].x, m_vRealVertex[0].y };
+		LINEPOS tRightPoint = { m_vRealVertex[1].x, m_vRealVertex[1].y };
+		LINEINFO tInfo = { tLeftPoint, tRightPoint };
+		pLineArray[0].tLPoint = tInfo.tLPoint;
+		pLineArray[0].tRPoint = tInfo.tRPoint;
+
+		// 두번째 선분
+		tLeftPoint = { m_vRealVertex[1].x, m_vRealVertex[1].y };
+		tRightPoint = { m_vRealVertex[2].x, m_vRealVertex[2].y };
+		tInfo = { tLeftPoint, tRightPoint };
+		pLineArray[1].tLPoint = tInfo.tLPoint;
+		pLineArray[1].tRPoint = tInfo.tRPoint;
+
+		// 세번째 선분
+		tLeftPoint = { m_vRealVertex[2].x, m_vRealVertex[2].y };
+		tRightPoint = { m_vRealVertex[3].x, m_vRealVertex[3].y };
+		tInfo = { tLeftPoint, tRightPoint };
+		pLineArray[2].tLPoint = tInfo.tLPoint;
+		pLineArray[2].tRPoint = tInfo.tRPoint;
+
+		// 네번째 선분
+		tLeftPoint = { m_vRealVertex[3].x, m_vRealVertex[3].y };
+		tRightPoint = { m_vRealVertex[0].x, m_vRealVertex[0].y };
+		tInfo = { tLeftPoint, tRightPoint };
+		pLineArray[3].tLPoint = tInfo.tLPoint;
+		pLineArray[3].tRPoint = tInfo.tRPoint;
+
+		return pLineArray;
+	}
 
 public:
 
@@ -42,5 +77,6 @@ private:
     int m_iMaxHp;
 
     wstring m_strStateKey;
+    D3DXVECTOR3 m_vRealVertex[4];
 };
 

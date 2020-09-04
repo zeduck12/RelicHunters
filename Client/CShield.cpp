@@ -9,6 +9,7 @@
 void CShield::Ready(void)
 {
 	m_iDrawID = 0;
+	m_bIsExplosion = false;
 	m_fStackTime = 0.f;
 	m_fShieldMaxHp = 100.f;
 	m_fShieldCurHp = m_fShieldMaxHp;
@@ -32,8 +33,13 @@ void CShield::Ready(void)
 int CShield::Update(float _fDeltaTime )
 {
 	// 쉴드가 데미지를 입는다면 쉴드 조금씩 회복
-	RecoverShield();
+	if(m_bIsChecking == false)
+		RecoverShield();
 	UpdateShieldPos();
+
+	if (m_bIsExplosion == true)
+		CheckExplosionAnimation();
+
     return 0;
 }
 
@@ -47,14 +53,21 @@ void CShield::Release(void)
 
 void CShield::Render(const HDC& _hdc)
 {
+	if (m_fShieldCurHp <= 0.f && m_bIsExplosion != true)
+	{
+		DrawShieldExplosion();
+	}
+
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer());
 	if (pPlayer->IsAttacked() == true)
 		DrawShieldActive(); // 맞을때 쉴드발동
 	else
-		m_iDrawID = 0;
+	{
+		if (m_bIsExplosion != true)
+			return;
 
-	if (m_fShieldCurHp <= 0.f)
-		DrawShieldExplosion();
+		m_iDrawID = 0;
+	}
 }
 
 void CShield::DrawShieldActive(void)
@@ -101,7 +114,10 @@ void CShield::DrawShieldExplosion(void)
 	}
 
 	if (m_iDrawID >= 9)
+	{
 		m_iDrawID = 8;
+		m_bIsExplosion = true;
+	}
 
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Shield", L"Explosion", m_iDrawID);
 	if (nullptr == pTexInfo)
@@ -130,6 +146,18 @@ void CShield::RecoverShield(void)
 		return;
 
 	m_fShieldCurHp += 5.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+}
+
+void CShield::CheckExplosionAnimation(void)
+{
+	m_bIsChecking = true;
+	m_fCheckTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fCheckTime >= 5.f)
+	{
+		m_fCheckTime = 0.f;
+		m_bIsChecking = false;
+		m_bIsExplosion = false;
+	}
 }
 
 void CShield::UpdateShieldPos(void)

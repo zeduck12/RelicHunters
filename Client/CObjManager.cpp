@@ -58,19 +58,19 @@ bool CObjManager::Ready(void)
 	m_listItems.emplace_back(pItem);
 
 
-	pItem = make_shared<CPickUpHealth>(
-		1000.f,
-		800.f,
-		50.f, 50.f, IMAGE::PICKUP_HEALTH);
-	pItem->Ready();
-	m_listItems.emplace_back(pItem);
+	//pItem = make_shared<CPickUpHealth>(
+	//	1000.f,
+	//	800.f,
+	//	50.f, 50.f, IMAGE::PICKUP_HEALTH);
+	//pItem->Ready();
+	//m_listItems.emplace_back(pItem);
 
-	pItem = make_shared<CPickUpShield>(
-		1100.f,
-		800.f,
-		50.f, 50.f, IMAGE::PICKUP_SHIELD);
-	pItem->Ready();
-	m_listItems.emplace_back(pItem);
+	//pItem = make_shared<CPickUpShield>(
+	//	1100.f,
+	//	800.f,
+	//	50.f, 50.f, IMAGE::PICKUP_SHIELD);
+	//pItem->Ready();
+	//m_listItems.emplace_back(pItem);
 
 	// Test 보스생성
 	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 800.f, 120.f, 120.f,
@@ -140,8 +140,14 @@ void CObjManager::Render(const HDC& _hdc)
 	// 카메라 움직임 결과
 	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();
 	GET_SINGLE(CGraphicDevice)->GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);	
+	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
+	GET_SINGLE(CGraphicDevice)->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
+	GET_SINGLE(UICameraManager)->Render();
 
-
+	// 여기서 포신 그려주기
+	if (GET_SINGLE(CCameraManager)->IsPressing() == true)
+		DrawLine();
+	
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);
 }
@@ -242,6 +248,36 @@ void CObjManager::TestWeapons(void)
 	//m_listBullets.emplace_back(pItem);
 }
 
+void CObjManager::DrawLine(void)
+{
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
+		return;
+	CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
+	LINEINFO tPosinPos = pRealPlayer->GetPosinPos();
+
+	LPD3DXLINE pLine = nullptr;
+	D3DXCreateLine(GET_SINGLE(CGraphicDevice)->GetDevice(), &pLine);
+
+	float fPlayerX = 0.f;
+	float fPlayerY = 0.f;
+	fPlayerX = GET_SINGLE(CPlayerManager)->GetPlayer()->GetX();
+	fPlayerY = GET_SINGLE(CPlayerManager)->GetPlayer()->GetY();
+	fPlayerX -= float(WINCX >> 1) + GET_SINGLE(CCameraManager)->GetCameraDeltaX();
+	fPlayerY -= float(WINCY >> 1) + GET_SINGLE(CCameraManager)->GetCameraDeltaY();
+
+	D3DXVECTOR2 vecList[2] =
+	{
+		D3DXVECTOR2(float(int(tPosinPos.tLPoint.fX) - fPlayerX), float(int(tPosinPos.tLPoint.fY) - fPlayerY)),
+		D3DXVECTOR2(float(int(tPosinPos.tRPoint.fX) - fPlayerX) , float(int(tPosinPos.tRPoint.fY) - fPlayerY))
+	};
+
+	pLine->Begin();
+	pLine->Draw(vecList, 2, D3DCOLOR_ARGB(255, 255, 0, 0));
+	pLine->End();
+	pLine->Release();
+}
+
 void CObjManager::Release(void)
 {
 	m_listGrenades.clear();
@@ -249,6 +285,7 @@ void CObjManager::Release(void)
 	m_listBullets.clear();
 	m_listMonsters.clear();
 
+	UICameraManager::Destroy_Instance();
 	CCameraManager::Destroy_Instance();
 	CPlayerManager::Destroy_Instance();
 	CMapManager::Destroy_Instance();

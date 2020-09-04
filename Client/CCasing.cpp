@@ -4,17 +4,23 @@
 #include "CPlayer.h"
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
+#include "CShadow.h"
+#include "CMapManager.h"
+#include "CCollisionManager.h"
+#include "CTimeManager.h"
 
 CCasing::CCasing(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree)
 {
+	m_vShadowPos = { _fX, _fY, 0 };
     m_tInfo.vPos = { _fX, _fY, 0 };
     m_tInfo.vDir = { 1.f, 0.f, 0.f };
     m_tInfo.vSize = { 5.f, 5.f, 0.f };
 
     // 방향벡터
     m_vDir = _vDir;
-    m_fSpeed = _fSpeed;
+    m_fSpeed = 0.f;
     m_fDegree = _fShootingDegree  + 180.f;
+	m_fReflectValue = 3.f;
 
     m_fGravity = 0.f;
     m_fJumpPower = 0.f;
@@ -58,10 +64,14 @@ int CCasing::Update(float _fDeltaTime )
 {
 	if (m_bIsCollide == true)
 	{
-		if (m_fSpeed <= -4.f)
+		if (m_fSpeed >= 10.f)
+		{
+			this->SetIsValid(false);
 			return 0;
+		}
 
 		// 반사각으로 보내기.
+		//ActiveGravity();
 		Reflection();
 	}
 	else
@@ -104,6 +114,8 @@ void CCasing::LateUpdate(void)
 	for(int i = 0; i < 2; i++)
 		D3DXVec3TransformCoord(&m_vRealVertex[i], &m_vRotVertex[i], &matWorld);
 
+	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
+		CCollisionManager::CollideTileCasing(pTile, this);
 }
 
 void CCasing::Release(void)
@@ -112,11 +124,6 @@ void CCasing::Release(void)
 
 void CCasing::Render(const HDC& _hdc)
 {
-
-	//// 탄피
-	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-	//LineTo(_hdc, (int)m_vRealVertex[1].x, (int)m_vRealVertex[1].y);
-
 	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"CasingLite");
 
 	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
@@ -135,6 +142,8 @@ void CCasing::Render(const HDC& _hdc)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	CShadow::RenderCasing(this);
 }
 
 void CCasing::ActiveGravity(void)
@@ -156,21 +165,33 @@ void CCasing::ShootCasing(void)
 	{
 		m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fJumpPower * 2.f + m_fAddValue;
 		m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fJumpPower * 2.f;
+		
+		m_vShadowPos.x += cosf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fJumpPower * 2.f + m_fAddValue;
+		m_vShadowPos.y += sinf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fJumpPower * 2.f;
 	}
 	else if (m_eDir == DIRECTION::RIGHT)
 	{
 		m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fJumpPower * 2.f - m_fAddValue;
 		m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fJumpPower * 2.f;
+
+		m_vShadowPos.x += cosf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fJumpPower * 2.f - m_fAddValue;
+		m_vShadowPos.y += sinf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fJumpPower * 2.f;
 	}
 	else if (m_eDir == DIRECTION::UP)
 	{
 		m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fJumpPower * 2.f;
 		m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fJumpPower * 2.f - m_fAddValue;
+
+		m_vShadowPos.x += cosf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fJumpPower * 2.f;
+		m_vShadowPos.y += sinf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fJumpPower * 2.f - m_fAddValue;
 	}
 	else if (m_eDir == DIRECTION::DOWN)
 	{
 		m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fJumpPower * 2.f;
 		m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fJumpPower * 2.f + m_fAddValue;
+
+		m_vShadowPos.x += cosf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fJumpPower * 2.f;
+		m_vShadowPos.y += sinf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fJumpPower * 2.f + m_fAddValue;
 	}
 }
 
@@ -193,28 +214,50 @@ void CCasing::MiniJump(void)
 	{
 		m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f + m_fAddValue;
 		m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f;
+
+		m_vShadowPos.x += cosf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f + m_fAddValue;
+		m_vShadowPos.y += sinf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f;
 	}
 	else if (m_eDir == DIRECTION::RIGHT)
 	{
 		m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f - m_fAddValue;
 		m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f;
+
+		m_vShadowPos.x += cosf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f - m_fAddValue;
+		m_vShadowPos.y += sinf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f;
 	}
 	else if (m_eDir == DIRECTION::UP)
 	{
 		m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f;
 		m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f - m_fAddValue;
+
+		m_vShadowPos.x += cosf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f;
+		m_vShadowPos.y += sinf(D3DXToRadian(m_fDegree - 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f - m_fAddValue;
 	}
 	else if (m_eDir == DIRECTION::DOWN)
 	{
 		m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f;
 		m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f + m_fAddValue;
+
+		m_vShadowPos.x += cosf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f;
+		m_vShadowPos.y += sinf(D3DXToRadian(m_fDegree + 40.f + m_fAddAngle)) * m_fMiniJumpPower * 2.f + m_fAddValue;
 	}
 }
 
 void CCasing::Reflection(void)
 {
-	m_fSpeed -= 3.f;
+	if (m_fReflectValue <= 0.f)
+		return;
 
-	m_tInfo.vPos.y += sinf(D3DXToRadian(m_fReflectDegree)) * m_fSpeed ;
-	m_tInfo.vPos.x += cosf(D3DXToRadian(m_fReflectDegree)) * m_fSpeed ;
+	m_fSpeed += 0.1f;
+
+	m_tInfo.vPos.x += cosf(D3DXToRadian(m_fReflectDegree)) * m_fReflectValue * 1.7f;
+	m_tInfo.vPos.y += sinf(D3DXToRadian(m_fReflectDegree)) * m_fReflectValue * 0.8f;
+
+	m_vShadowPos.x += cosf(D3DXToRadian(m_fReflectDegree)) * m_fReflectValue * 1.7f;
+	m_vShadowPos.y += sinf(D3DXToRadian(m_fReflectDegree)) * m_fReflectValue * 0.8f;
+
+	m_fReflectValue -= 0.1;
+	m_tInfo.vPos.y += m_fSpeed;
+	//m_vShadowPos.y += m_fSpeed;
 }

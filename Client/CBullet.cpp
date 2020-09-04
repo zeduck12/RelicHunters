@@ -116,19 +116,6 @@ void CBullet::LateUpdate()
 			}
 		}
 
-		for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
-		{
-			if (CCollisionManager::CollideBullet(pObj.get(), this) == true)
-			{
-				CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
-				pStructure->SetCurHp(pStructure->GetCurHp() - 10);
-				if (pStructure->GetCurDrawID() >= pStructure->GetMaxDrawID())
-					continue;
-
-				pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
-			}
-
-		}
 	}
 	
 	if (m_eObjID == OBJ::MONSTER)
@@ -149,6 +136,19 @@ void CBullet::LateUpdate()
 	}
 
 	// °øÅë
+	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
+	{
+		if (CCollisionManager::CollideBullet(pObj.get(), this) == true)
+		{
+			CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
+			pStructure->SetCurHp(pStructure->GetCurHp() - 10);
+			if (pStructure->GetCurDrawID() >= pStructure->GetMaxDrawID())
+				continue;
+
+			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
+		}
+
+	}
 
 	for(auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
 		CCollisionManager::CollideTileBullet(pTile, this);

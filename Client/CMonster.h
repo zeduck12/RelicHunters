@@ -48,7 +48,7 @@ public:
 	float GetMaxHp(void) const { return m_fMaxHp; }
 	LINEINFO* GetLinesInfo(void)
 	{
-		LINEINFO pLineArray[3] = {};
+		LINEINFO* pLineArray = new LINEINFO[3];
 		// 첫번째 선분
 		LINEPOS tLeftPoint = { m_vRealVertex[0].x, m_vRealVertex[0].y };
 		LINEPOS tRightPoint = { m_vRealVertex[1].x, m_vRealVertex[1].y };

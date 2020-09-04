@@ -23,6 +23,8 @@
 #include "CItem.h"
 #include "CSceneManager.h"
 #include "CShield.h"
+#include "CMapManager.h"
+#include "CStructure.h"
 
 CPlayer::CPlayer()
 	:
@@ -138,25 +140,43 @@ int CPlayer::Update(float _fDeltaTime)
 
 void CPlayer::LateUpdate()
 {
-	// 벽과 충돌 했을때 (현재는 몬스터)
-	/*LINEINFO* pLineArray = nullptr;
-	for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
+	if (GET_SINGLE(CCameraManager)->IsPressing() == true)
 	{
-		DO_IF_IS_NOT_VALID_OBJ(pMonster)
-			continue;
-		
-		auto& pObj = static_cast<CMonster&>(*pMonster);
-		
-		pLineArray = pObj.GetLinesInfo();
-		for (int i = 0; i < 3; i++)
+		// 벽관 충돌했을때
+		LINEINFO* pLineArray = nullptr;
+		for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
 		{
-			if (CCollisionManager::CollideLineToLineReturn(pLineArray[i], m_tPosin, &m_tCrossPos))
+			pLineArray = pTile->GetLinesInfo();
+			for (int i = 0; i < 4; i++)
 			{
-				m_tPosin.tRPoint.fX = m_tCrossPos.fX;
-				m_tPosin.tRPoint.fY = m_tCrossPos.fY;
+				if (CCollisionManager::CollideLineToLineReturn(pLineArray[i], m_tPosin, &m_tCrossPos))
+				{
+					m_tPosin.tRPoint.fX = m_tCrossPos.fX;
+					m_tPosin.tRPoint.fY = m_tCrossPos.fY;
+				}
 			}
-		}
-	};*/
+
+			Safe_Delete(pLineArray);
+		};
+
+		// 구조물과 충돌했을때
+		for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
+		{
+			CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
+			pLineArray = pStructure->GetLinesInfo();
+			for (int i = 0; i < 4; i++)
+			{
+				if (CCollisionManager::CollideLineToLineReturn(pLineArray[i], m_tPosin, &m_tCrossPos))
+				{
+					m_tPosin.tRPoint.fX = m_tCrossPos.fX;
+					m_tPosin.tRPoint.fY = m_tCrossPos.fY;
+				}
+			}
+
+			Safe_Delete(pLineArray);
+		};
+	}
+
 
 }
 
@@ -431,7 +451,7 @@ void CPlayer::RecoverDashHp(void)
 	if (m_fDashCurHp >= m_fDashMaxHp)
 		return;
 
-	m_fDashCurHp += 5.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+	m_fDashCurHp += 10.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
 }
 
 // 대쉬 잔상
@@ -534,4 +554,6 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 
 	CShadow::RenderSheetShadow(this, pTexInfo);
 }
+
+
 

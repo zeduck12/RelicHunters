@@ -193,6 +193,9 @@
     <Filter Include="01.CObj\011.Player\Shield">
       <UniqueIdentifier>{35e5ba29-88db-4549-abc5-133f51713b37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="08.UI\086.StageTitle">
+      <UniqueIdentifier>{4d8ffe43-264f-4962-a5bb-ef9830194e30}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">

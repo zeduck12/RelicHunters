@@ -18,6 +18,9 @@ public:
 	// 낱장 이미지 그림자
 	static void RenderSheetShadow(CObj* _pOwner, const TEXINFO*& _pTexInfo);
 	static void RenderSheetProjectile(CObj* _pOwner, const TEXINFO*& _pTexInfo, const float& _fDegree);
+	// 탄피 그림자
+	static void RenderCasing(CObj* _pOwner);
+	static void RenderGrenader(CObj* _pOwner);
 
 private:
 	static D3DXVECTOR3 vOldPos;

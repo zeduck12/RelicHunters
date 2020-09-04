@@ -15,25 +15,23 @@ public:
     virtual void Render(const HDC& _hdc)        override;
 
 public:
-    float GetReflectDegree(void) const { return m_fReflectDegree; }
-    void  SetReflectDegree(float _fDegree) { m_fReflectDegree = _fDegree; }
     float GetIncidenceDegree(void) const { return m_fDegree; }
     void  SetIncidenceDegree(float _fDegree) { m_fDegree = _fDegree; }
     bool  GetIsCollide(void) const { return m_bIsCollide; }
     void  SetIsCollide(bool _bIsCollide) { m_bIsCollide = _bIsCollide; }
     bool IsReverse(void) const { return m_bIsReverse; }
     void SetCollideCount(int _iCount) { m_iCollideCount += _iCount; }
-    
+    const D3DXVECTOR3& GetShadowPos(void) const { return m_vShadowPos; }
+
 public:
     void TakeDamageToObejcts(void);
     void DrawBombParticle(void);
     void ShootGrenade(void);
     void MiniJump(void);
 
-    // 반사각으로 보내는 함수.
-    void Reflection(void);
-
 private:
+    float m_fAddValue;
+    float m_fAddAngle;
     int m_iDrawID;
     float m_fStackTime;
     float m_fBombStackTime;
@@ -48,14 +46,13 @@ private:
 
     // 방향
     D3DXVECTOR3 m_vDir;
+    D3DXVECTOR3 m_vShadowPos;
 
     float m_fShootingDist;
 
     DIRECTION::ID m_eDir;
     // 충돌 확인 변수
     bool m_bIsCollide;
-    // 반사각
-    float m_fReflectDegree;
     //기본 중력, 점프
     float m_fGravity;
     float m_fJumpPower;
