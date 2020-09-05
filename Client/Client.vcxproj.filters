@@ -196,6 +196,12 @@
     <Filter Include="08.UI\086.StageTitle">
       <UniqueIdentifier>{4d8ffe43-264f-4962-a5bb-ef9830194e30}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\018.Particle">
+      <UniqueIdentifier>{40f0f765-8f55-43c6-a527-ccb27e566d48}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\015.Boss\HpBar">
+      <UniqueIdentifier>{68ad5369-e80e-4f31-b969-f078f862a280}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -390,6 +396,12 @@
     <ClInclude Include="CShield.h">
       <Filter>01.CObj\011.Player\Shield</Filter>
     </ClInclude>
+    <ClInclude Include="CParticle.h">
+      <Filter>01.CObj\018.Particle</Filter>
+    </ClInclude>
+    <ClInclude Include="CBossHpBar.h">
+      <Filter>01.CObj\015.Boss\HpBar</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -559,6 +571,12 @@
     </ClCompile>
     <ClCompile Include="CShield.cpp">
       <Filter>01.CObj\011.Player\Shield</Filter>
+    </ClCompile>
+    <ClCompile Include="CParticle.cpp">
+      <Filter>01.CObj\018.Particle</Filter>
+    </ClCompile>
+    <ClCompile Include="CBossHpBar.cpp">
+      <Filter>01.CObj\015.Boss\HpBar</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

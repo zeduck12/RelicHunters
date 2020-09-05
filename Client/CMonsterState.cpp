@@ -486,7 +486,7 @@ CMonsterState* DeathState::Update(CMonster* _pMonster)
 
 	pAnimation->ChangeClip("Death");
 
-	m_fCoolTime = 3.f;
+	m_fCoolTime = 1.2f;
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStackTime >= m_fCoolTime)
 	{

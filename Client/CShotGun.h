@@ -14,8 +14,12 @@ public:
 	virtual void Render(const HDC& _hdc)		 override;
 	virtual void Release(void) { }
 
+public:
+	void CheckValidTime(void);
+
 private:
 	float m_fAddDegree;
+	float m_fStackTime;
 
 };
 

@@ -5,6 +5,7 @@
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
 #include "CTimeManager.h"
+#include "CBossHpBar.h"
 
 DEFINITION_SINGLETON(UICameraManager)
 
@@ -24,6 +25,10 @@ bool UICameraManager::Ready(void)
 void UICameraManager::Update(void)
 {
 	m_pPlayerInfo->Update();
+	if (m_pBossHpBar != nullptr && m_pBossHpBar->IsValid() == true)
+	{
+		m_pBossHpBar->Update();
+	}
 
 	m_fStartTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStartTime >= 1.f)
@@ -52,6 +57,14 @@ void UICameraManager::LateUpdate(void)
 void UICameraManager::Render(void)
 {
 	m_pPlayerInfo->Render();
+	if (m_pBossHpBar != nullptr && m_pBossHpBar->IsValid() == true)
+	{
+		if(m_pBossHpBar->IsFinish() == true)
+			m_pBossHpBar->Render_HpBar();
+		else 
+			m_pBossHpBar->StartDrawHpBar();
+	}
+
 	if (m_fStartTime >= 1.f)
 		DrawStageTitle();
 }

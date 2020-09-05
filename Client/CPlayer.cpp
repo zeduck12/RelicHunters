@@ -25,6 +25,8 @@
 #include "CShield.h"
 #include "CMapManager.h"
 #include "CStructure.h"
+#include "CParticle.h"
+
 
 CPlayer::CPlayer()
 	:
@@ -44,6 +46,7 @@ CPlayer::CPlayer()
 	m_fCurHp{ 0.f },
 	m_fMaxHp{ 0.f }
 {
+	ZeroMemory(&m_rcShadowRect, sizeof(RECT));
 	ZeroMemory(&m_tInfo, sizeof(INFO));
 	ZeroMemory(&m_tPosin, sizeof(LINEINFO));
 	ZeroMemory(&m_tCrossPos, sizeof(LINEPOS));
@@ -380,7 +383,13 @@ void CPlayer::CheckKeyState(void)
 
 		m_bIsDash = true;
 		m_fDashCurHp -= 50.f;
+
+		shared_ptr<CObj> pParticle = make_shared<CParticle>(this->GetX(), this->GetY()
+			,CParticle::DASH, 6, L"Dash", this);
+		pParticle->Ready();
+		GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 	}
+
 
 
 	// Test¿ë

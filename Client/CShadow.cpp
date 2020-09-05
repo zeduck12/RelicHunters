@@ -5,6 +5,7 @@
 #include "CTextureManager.h"
 #include "CMonster.h"
 #include "CCasing.h"
+#include "CPlayer.h"
 
 D3DXVECTOR3 CShadow::vOldPos = { 0.f, 0.f, 0.f };
 float CShadow::fAddY = 0.f;
@@ -265,6 +266,45 @@ void CShadow::RenderGrenader(CObj* _pOwner)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 100, 100, 100));
+
+}
+
+void CShadow::RenderShadowPlayer(CObj* _pOwner)
+{
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(_pOwner);
+
+	int iFrame = 0;
+	CAnimation* pAnimation = _pOwner->GetAnimation();
+	if (pAnimation)
+	{
+		ANIMATION_CLIP* pClip = pAnimation->GetCurrentClip();
+		iFrame = pClip->iFrame; // 인덱스
+	}
+
+	TEXINFO* pTexInfo = _pOwner->GetTextureInfo()[iFrame];
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	if (_pOwner->GetDirection() == DIRECTION::LEFT)
+	{
+		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+		D3DXMatrixTranslation(&matTrans, _pOwner->GetInfo()->vPos.x - 35.5f, _pOwner->GetInfo()->vPos.y - 10.f, 0.f);
+	}
+	else
+	{
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+		D3DXMatrixTranslation(&matTrans, _pOwner->GetInfo()->vPos.x + 35.5f, _pOwner->GetInfo()->vPos.y - 10.f, 0.f);
+
+	}
+
+
+	// 20은 렉트 중심에 이미지 맞추기 위해.
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &pPlayer->GetShadowRect(), &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 100, 100, 100));
 
 }
 

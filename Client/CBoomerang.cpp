@@ -11,6 +11,7 @@
 #include "CBoss.h"
 #include "CMonsterState.h"
 #include "CBossState.h"
+#include "CParticle.h"
 
 
 CBoomerang::CBoomerang(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed,
@@ -141,6 +142,10 @@ void CBoomerang::LateUpdate(void)
 				}
 			}
 
+			shared_ptr<CObj> pParticle = make_shared<CParticle>(pMonster->GetX(), pMonster->GetY(), CParticle::HIT);
+			pParticle->Ready();
+			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
 		}
 	}
 
@@ -154,6 +159,11 @@ void CBoomerang::LateUpdate(void)
 				continue;
 
 			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
+
+			shared_ptr<CObj> pParticle = make_shared<CParticle>(pObj->GetX(), pObj->GetY(), CParticle::HIT);
+			pParticle->Ready();
+			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
 		}
 
 	}

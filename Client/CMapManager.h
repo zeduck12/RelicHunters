@@ -19,6 +19,7 @@ public:
 
 public:
 	bool LoadFile(void);
+	void CheckShadow(void);
 
 public:
 	list<TILE*>& GetTiles(void) { return m_vecTile; }
@@ -31,5 +32,7 @@ private:
 	list<TILE*>	m_vecCreateTile;	  // 기본타일 위에 깔리는 타일
 	list<shared_ptr<CObj>> m_listStructure;
 	list<shared_ptr<CObj>> m_listItems;
+
+	list<CObj*>  m_listSortObj;
 };
 

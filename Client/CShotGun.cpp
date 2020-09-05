@@ -13,6 +13,8 @@
 #include "CPlayerState.h"
 #include "CMapManager.h"
 #include "CStructure.h"
+#include "CParticle.h"
+#include "CTimeManager.h"
 
 CShotGun::CShotGun(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fAddDegree, float _fSpeed, float _fShootingDegree, OBJ::ID _eID /*= OBJ::PLAYER*/, const wstring& _strBulletName /*= L"Small"*/)
 	:
@@ -40,6 +42,7 @@ CShotGun::CShotGun(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fAddDegree, f
 
 	m_eObjID = _eID;
 	m_strBulletName = _strBulletName;
+	m_fStackTime = 0.f;
 }
 
 CShotGun::~CShotGun()
@@ -49,6 +52,7 @@ CShotGun::~CShotGun()
 
 int CShotGun::Update(float _fDeltaTime)
 {
+	CheckValidTime();
 	// 현재 방향벡터를 기준으로 3발 발사하기.
 	// 총알이 발사될 각도 구함.
 	D3DXMATRIX matWorld, matRev, matParent;
@@ -95,6 +99,9 @@ void CShotGun::LateUpdate(void)
 					pMonst->SetState(new AttackedState());
 				}
 
+				shared_ptr<CObj> pParticle = make_shared<CParticle>(pMonster->GetX(), pMonster->GetY(), CParticle::HIT);
+				pParticle->Ready();
+				GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 			}
 		}
 	}
@@ -122,6 +129,10 @@ void CShotGun::LateUpdate(void)
 				continue;
 
 			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
+
+			shared_ptr<CObj> pParticle = make_shared<CParticle>(pObj->GetX(), pObj->GetY(), CParticle::HIT);
+			pParticle->Ready();
+			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 		}
 
 	}
@@ -132,11 +143,11 @@ void CShotGun::LateUpdate(void)
 
 void CShotGun::Render(const HDC& _hdc)
 {
-	MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
+	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
 
-	for (int i = 1; i < 4; i++)
-		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
+	//for (int i = 1; i < 4; i++)
+	//	LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
+	//LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
 
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", m_strBulletName, 1);
 	if (nullptr == pTexInfo)
@@ -154,4 +165,14 @@ void CShotGun::Render(const HDC& _hdc)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+}
+
+void CShotGun::CheckValidTime(void)
+{
+	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fStackTime >= 0.4f)
+	{
+		m_fStackTime = 0.f;
+		this->SetIsValid(false);
+	}
 }

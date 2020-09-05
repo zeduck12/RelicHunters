@@ -17,6 +17,7 @@
 #include "CBossState.h"
 #include "CStructure.h"
 #include "CShield.h"
+#include "CParticle.h"
 
 CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree,
 	OBJ::ID _eID, const wstring& _strBulletName /*= L"Small"*/,float _fDamage/* = 10.f*/)
@@ -46,7 +47,13 @@ CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _
 
 	float fAddAngle = 0.f;
 	if (GET_SINGLE(CCameraManager)->IsPressing() == false)
-		fAddAngle = GetNumberMinBetweenMax(-7.f,7.f);
+	{
+		if(m_eObjID == OBJ::MONSTER)
+			fAddAngle = GetNumberMinBetweenMax(-40.f,40.f);
+		else
+			fAddAngle = GetNumberMinBetweenMax(-7.f, 7.f);
+
+	}
 
 	D3DXMATRIX matWorld, matRotZ;
 	D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(fAddAngle));
@@ -113,6 +120,10 @@ void CBullet::LateUpdate()
 					}
 				}
 
+				shared_ptr<CObj> pParticle = make_shared<CParticle>(pMonster->GetX(), pMonster->GetY(), CParticle::HIT);
+				pParticle->Ready();
+				GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
 			}
 		}
 
@@ -130,14 +141,19 @@ void CBullet::LateUpdate()
 			pPlayer->TakeDamage(m_fDamage);
 		}
 
-		for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
-			CCollisionManager::CollideBullet(pObj.get(), this);
+		/*for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
+			CCollisionManager::CollideBullet(pObj.get(), this);*/
 		
 	}
 
 	// °øÅë
 	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
 	{
+		CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+		if (pObj->GetInfo()->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pObj->GetInfo()->vPos.x ||
+			pObj->GetInfo()->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pObj->GetInfo()->vPos.y)
+			continue;
+
 		if (CCollisionManager::CollideBullet(pObj.get(), this) == true)
 		{
 			CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
@@ -146,6 +162,11 @@ void CBullet::LateUpdate()
 				continue;
 
 			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
+
+			shared_ptr<CObj> pParticle = make_shared<CParticle>(pObj->GetX(), pObj->GetY(), CParticle::HIT);
+			pParticle->Ready();
+			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
 		}
 
 	}

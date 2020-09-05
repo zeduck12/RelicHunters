@@ -16,6 +16,7 @@
 #include <iostream>
 #include <ctime>
 #include <string>
+//#include <algorithm>
 using namespace std;
 
 #include "d3d9.h"

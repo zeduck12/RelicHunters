@@ -22,6 +22,7 @@ public:
 	static void RenderCasing(CObj* _pOwner);
 	static void RenderGrenader(CObj* _pOwner);
 
+	static void RenderShadowPlayer(CObj* _pOwner);
 private:
 	static D3DXVECTOR3 vOldPos;
 	static float	   fAddY;

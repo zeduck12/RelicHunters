@@ -77,8 +77,8 @@ int CMouse::Update(float _fDeltaTime)
 		if (m_bIsReloading == true)
 			return 0;
 
-		if (pMonster->GetX() < fX + (fWidth * 0.5f) + 10.f && fX - (fWidth * 0.5f) - 10.f < pMonster->GetX() &&
-			pMonster->GetY() < fY + (fHeight * 0.5f) + 10.f && fY - (fHeight * 0.5f) - 10.f < pMonster->GetY())
+		if (pMonster->GetX() - fPlayerX < fX + (fWidth * 0.5f) + 10.f && fX - (fWidth * 0.5f) - 10.f < pMonster->GetX() - fPlayerX &&
+			pMonster->GetY() - fPlayerY < fY + (fHeight * 0.5f) + 10.f && fY - (fHeight * 0.5f) - 10.f < pMonster->GetY() - fPlayerY)
 		{
 			m_iDrawID = 1;
 			return 0;

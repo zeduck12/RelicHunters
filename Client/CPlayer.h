@@ -20,6 +20,7 @@ public:
 	virtual void Release()						override;
 
 public:
+	list<TILE*>& GetCollideWalls(void) { return m_listCollideWalls; }
 	CShield* GetShield(void) { return m_pShield.get(); }
 	CWeapon* GetCurWeapon(void) { return m_pWeapon.get(); }
 	void  SetCurDashHp(float _fHp) { m_fDashCurHp = _fHp; if (m_fDashCurHp <= 0.f) { m_fDashCurHp = 0.f; } }
@@ -47,6 +48,20 @@ public:
 	float GetShootingDegree(void) const { return m_fShootingDegree; }
 	const D3DXVECTOR3& GetDirectionVector(void) const { return (const D3DXVECTOR3&)m_tInfo.vDir; }
 	const LINEINFO& GetPosinPos(void) const { return m_tPosin; }
+	RECT GetShadowRect(void) const { return m_rcShadowRect; }
+	void SetShadowRect(RECT _rcRect)
+	{
+		LONG lWidth = _rcRect.right - _rcRect.left;
+		LONG lHeight = _rcRect.bottom - _rcRect.top;
+
+		m_rcShadowRect = { 36, 10, lWidth, lHeight };
+	}
+	void SetShadowRect2(RECT _rcRect)
+	{
+		LONG lHeight = _rcRect.bottom - _rcRect.top;
+
+		m_rcShadowRect = { 36, 10, 100, lHeight };
+	}
 	LINEINFO* GetLinesInfo(void)
 	{
 		LINEINFO* pLineArray = new LINEINFO[4];
@@ -99,6 +114,9 @@ public:
 	void ShowSpectrum(const HDC& _hdc);
 
 private:
+	RECT m_rcShadowRect;
+	list<TILE*> m_listCollideWalls;
+
 	bool m_bIsReloading;
 	bool m_bIsAttacked;
 

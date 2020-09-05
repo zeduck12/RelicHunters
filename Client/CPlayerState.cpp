@@ -48,6 +48,7 @@ void PlayerIdleState::Render(CPlayer* _pPlayer)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
+	CShadow::RenderShadowPlayer(_pPlayer);
 	CShadow::RenderShadow(_pPlayer);
 }
 

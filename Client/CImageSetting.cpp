@@ -30,7 +30,7 @@ bool CImageSetting::Ready(void)
         m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 1.4f, 7, 0, 7, 0.f, L"Duck", L"Idle", L"../Texture/Monster/Duck/Idle/idle_%d.png");
         m_pOwner->AddAnimationClip("Move", ANIMATION::ONCE_RETURN, 1.3f, 13, 0, 13, 0.f, L"Duck", L"Move", L"../Texture/Monster/Duck/Move/move_%d.png");
         m_pOwner->AddAnimationClip("Attacked", ANIMATION::ONCE_RETURN, 0.2f, 2, 0, 2, 0.f, L"Duck", L"Attacked", L"../Texture/Monster/Duck/Attacked/attacked_%d.png");
-        m_pOwner->AddAnimationClip("Death", ANIMATION::ONCE_RETURN, 3.f, 12, 0, 12, 0.f, L"Duck", L"Death", L"../Texture/Monster/Duck/Death/spr_duck_death_%d.png");
+        m_pOwner->AddAnimationClip("Death", ANIMATION::ONCE_RETURN, 1.2f, 12, 0, 12, 0.f, L"Duck", L"Death", L"../Texture/Monster/Duck/Death/spr_duck_death_%d.png");
         break;
     case IMAGE::TURTLE:
         m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 1.2f, 12, 0, 12, 0.f, L"Turtle", L"Idle", L"../Texture/Monster/Turtle/Idle/spr_turtle_idle_%d.png");

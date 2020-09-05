@@ -21,19 +21,22 @@ public:
 
 public:
 	bool IsCrack(void) const { return m_bIsCrack; }
+	bool IsPhase2(void) const { return m_bIsPhase2; }
+	void SetIsPhase2(bool _bIsPhase2) { m_bIsPhase2 = _bIsPhase2; }
 	void SetIsCrack(bool _bIsCrack) { m_bIsCrack = _bIsCrack; }
 	void SetState(CBossState* _pState) { m_pBossNextState = _pState; }
 	void ShootRocket(void);
 	void ShootShotgun(void);
 
 public:
+	void FullRangeAttack(void);
 	bool IsDetectPlayerBossVersion(void);
 	bool IsInAttackRangePlayerBossVersion(void);
 	void ShowBossSpectrum(void);
 
 private:
 	bool m_bIsCrack;
-
+	bool m_bIsPhase2;
 	CBossState* m_pBossNextState ; 
 
 

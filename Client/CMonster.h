@@ -44,7 +44,7 @@ public:
 	D3DXVECTOR3 GetDirectionVector(void) const { return m_tInfo.vDir; }
 	void SetDirectionVector(D3DXVECTOR3& _rVecDir) { m_tInfo.vDir = _rVecDir; }
 	float GetHp(void) const { return m_fCurHp; }
-	void SetHp(float _fHp) { m_fCurHp = _fHp; }
+	void  SetHp(float _fHp) { m_fCurHp = _fHp; }
 	float GetMaxHp(void) const { return m_fMaxHp; }
 	LINEINFO* GetLinesInfo(void)
 	{

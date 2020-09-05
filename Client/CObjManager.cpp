@@ -58,23 +58,9 @@ bool CObjManager::Ready(void)
 	m_listItems.emplace_back(pItem);
 
 
-	//pItem = make_shared<CPickUpHealth>(
-	//	1000.f,
-	//	800.f,
-	//	50.f, 50.f, IMAGE::PICKUP_HEALTH);
-	//pItem->Ready();
-	//m_listItems.emplace_back(pItem);
-
-	//pItem = make_shared<CPickUpShield>(
-	//	1100.f,
-	//	800.f,
-	//	50.f, 50.f, IMAGE::PICKUP_SHIELD);
-	//pItem->Ready();
-	//m_listItems.emplace_back(pItem);
-
 	// Test 보스생성
 	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 800.f, 120.f, 120.f,
-	//	cfMosterDefaultSpeed, cfMosterDefaultHp, IMAGE::BOSS);
+	//	cfMosterDefaultSpeed, 1000.f, IMAGE::BOSS);
 	//pMonster->Ready();
 	//m_listMonsters.emplace_back(pMonster);
 
@@ -92,7 +78,7 @@ void CObjManager::Update(void)
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Update(); } }
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Update(); } }
 	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Update(); } }
-
+	for (auto& pParticle : m_listParticles) { DO_IF_IS_VALID_OBJ(pParticle) { pParticle->Update(); } }
 
 	InstallTeleporter();
 	SceneChange(); // Scene 체인지
@@ -114,6 +100,7 @@ void CObjManager::LateUpdate(void)
 	CollectGarbageObjects(m_listCasings);
 	CollectGarbageObjects(m_listMonsters);
 	CollectGarbageObjects(m_listItems);
+	CollectGarbageObjects(m_listParticles);
 }
 
 void CObjManager::Render(const HDC& _hdc)
@@ -135,8 +122,8 @@ void CObjManager::Render(const HDC& _hdc)
 	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Render(_hdc); } }
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Render(_hdc); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }
-	//GET_SINGLE(UICameraManager)->Render();
-
+	for (auto& pParticle : m_listParticles) { DO_IF_IS_VALID_OBJ(pParticle) { pParticle->Render(_hdc); } }
+	
 	// 카메라 움직임 결과
 	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();
 	GET_SINGLE(CGraphicDevice)->GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);	
@@ -284,6 +271,7 @@ void CObjManager::Release(void)
 	m_listCasings.clear();
 	m_listBullets.clear();
 	m_listMonsters.clear();
+	m_listParticles.clear();
 
 	UICameraManager::Destroy_Instance();
 	CCameraManager::Destroy_Instance();

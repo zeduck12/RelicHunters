@@ -12,6 +12,9 @@
 #include "CRocket.h"
 #include "CObjManager.h"
 #include "CShotGun.h"
+#include "CMapManager.h"
+#include "UICameraManager.h"
+#include "CBossHpBar.h"
 
 CBoss::CBoss(float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed, float _fHp, IMAGE::ID _eID)
 	:
@@ -20,6 +23,7 @@ CBoss::CBoss(float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed,
 	m_fAddSpeed = 0.f;
 	m_bIsDash = false;
 	m_bIsCrack = false;
+	m_bIsPhase2 = false;
 	m_fDegree = 0.f;
 	m_fMaxHp = _fHp;
 	m_fStackTime = 0.f;
@@ -66,7 +70,13 @@ void CBoss::Ready(void)
 		return;
 
 	m_pBossNextState = new EggIdleState;
+	//m_pBossNextState = new BossIdleState;
 	m_eDir = DIRECTION::RIGHT;
+
+	shared_ptr<CBossHpBar> pBossHpBar = make_shared<CBossHpBar>(this);
+	pBossHpBar->Ready();
+	GET_SINGLE(UICameraManager)->SetBossHpBar(pBossHpBar);
+
 }
 
 int CBoss::Update(float _fDeltaTime)
@@ -93,28 +103,45 @@ int CBoss::Update(float _fDeltaTime)
 
 void CBoss::LateUpdate(void)
 {
+	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
+		CCollisionManager::CollideCharacterTile(this, pTile);
+
+	for (auto& pStruc : GET_SINGLE(CMapManager)->GetStructures())
+		CCollisionManager::CollideCharacterStructure(this, pStruc.get());
+
 	// 플레이어 출동 선과 선 충돌
-	//CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
-	//LINEINFO* pPlayerLineArray = dynamic_cast<CPlayer*>(pPlayer)->GetLinesInfo();
-	//LINEINFO* pMonsterLineArray = GetLinesInfo();
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	LINEINFO* pPlayerLineArray = dynamic_cast<CPlayer*>(pPlayer)->GetLinesInfo();
+	LINEINFO* pMonsterLineArray = GetLinesInfo();
 
-	//for (int i = 0; i < 4; i++)
-	//{
-	//	for (int j = 0; j < 3; j++)
-	//	{
-	//		if (CCollisionManager::CollideLineToLine(pPlayerLineArray[i], pMonsterLineArray[j]))
-	//		{
-	//			// 충돌이 일어났다면 방향벡터 쪽으로 밀기
-	//			pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
-	//			pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
-	//			dynamic_cast<CPlayer*>(pPlayer)->SetState(GET_SINGLE(PlayerAttacked));
-	//		}
-	//	}
-	//}
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 3; j++)
+		{
+			if (CCollisionManager::CollideLineToLine(pPlayerLineArray[i], pMonsterLineArray[j]))
+			{
+				// 충돌이 일어났다면 방향벡터 쪽으로 밀기
+				pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
+				pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
+				dynamic_cast<CPlayer*>(pPlayer)->SetState(GET_SINGLE(PlayerAttacked));
+			}
+		}
+	}
 
-	//// 다쓴 라인정보 삭제
-	//delete[] pPlayerLineArray;
-	//delete[] pMonsterLineArray;
+	// 다쓴 라인정보 삭제
+	delete[] pPlayerLineArray;
+	delete[] pMonsterLineArray;
+
+
+
+	if (m_fCurHp <= m_fMaxHp * 0.5f && m_bIsPhase2 == false)
+	{
+		m_bIsPhase2 = true;
+		//페이지 2상태 시작
+	}
+
+
+
 }
 
 void CBoss::Render(const HDC& _hdc)
@@ -212,16 +239,35 @@ void CBoss::ShootShotgun(void)
 		GET_SINGLE(CObjManager)->GetBullets().emplace_back(pShotGun);
 	}
 
-	int iRandNum = rand() % 10 + 1;
-	for (int i = 0; i < 2; i++)
+}
+
+void CBoss::FullRangeAttack(void)
+{
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
+		return;
+
+	// 슈팅각도 계산
+	float fDeltaX = pPlayer->GetX() - this->GetX();
+	float fDeltaY = pPlayer->GetY() - this->GetY();
+	float fDist = sqrtf(fDeltaX * fDeltaX + fDeltaY * fDeltaY);
+
+	float fRadian = acosf(fDeltaX / fDist);
+	if (pPlayer->GetY() < m_tInfo.vPos.y)
+		fRadian = 2 * D3DX_PI - fRadian;
+
+	D3DXVECTOR3 vDeltaPos = pPlayer->GetInfo()->vPos - this->GetInfo()->vPos;
+	D3DXVec3Normalize(&m_tInfo.vDir, &vDeltaPos);
+
+	shared_ptr<CBullet> pShotGun = nullptr;
+	for (int i = 0; i < 8; i++)
 	{
 		pShotGun = make_shared<CShotGun>(this->GetX() + this->GetDirectionVector().x * 10.f,
 			this->GetY() + this->GetDirectionVector().y * 10.f,
-			this->GetDirectionVector(), -float(iRandNum) * (i - 1), 15.f, D3DXToDegree(fRadian), OBJ::MONSTER, L"Blue");
+			this->GetDirectionVector(), -45.f * (i - 4), 15.f, D3DXToDegree(fRadian), OBJ::MONSTER, L"Blue");
 		pShotGun->Ready();
 		GET_SINGLE(CObjManager)->GetBullets().emplace_back(pShotGun);
 	}
-
 }
 
 void CBoss::ShowBossSpectrum(void)

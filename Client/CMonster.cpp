@@ -101,16 +101,16 @@ int CMonster::Update(float _fDeltaTime)
 void CMonster::LateUpdate(void)
 {
 	// 수류탄 충돌
-	for (auto& pGrenade : CObjManager::Get_Instance()->GetGrenades())
-	{
-		DO_IF_IS_NOT_VALID_OBJ(pGrenade)
-			continue;
+	//for (auto& pGrenade : CObjManager::Get_Instance()->GetGrenades())
+	//{
+	//	DO_IF_IS_NOT_VALID_OBJ(pGrenade)
+	//		continue;
 
-		if (dynamic_cast<CGrenade*>(pGrenade.get())->IsReverse() == true)
-			continue;
+	//	if (dynamic_cast<CGrenade*>(pGrenade.get())->IsReverse() == true)
+	//		continue;
 
-		CCollisionManager::CollideWallGrenade(this, pGrenade.get());
-	}
+	//	CCollisionManager::CollideWallGrenade(this, pGrenade.get());
+	//}
 
 	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
 		CCollisionManager::CollideCharacterTile(this, pTile);
@@ -156,7 +156,7 @@ void CMonster::Render(const HDC& _hdc)
 
 
 	// 몬스터 아이디에 따라 총장착 여부 달라짐.
-	if(m_eImageID != IMAGE::KAMIKAZE && m_eImageID != IMAGE::KAMIKAZE_FLY)
+	if(m_eImageID != IMAGE::KAMIKAZE && m_eImageID != IMAGE::KAMIKAZE_FLY && m_bIsDead == false)
 		EquipWeapon(); // 총 장착
 
 	// 삼각형 그리기
@@ -219,6 +219,9 @@ void CMonster::UpdateMonsterDirection(void)
 
 void CMonster::DetectDirection(void)
 {
+	if (m_bIsDead == true)
+		return;
+
 	// 플레이어 위치를 기준으로 방향 설정
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer)

@@ -33,9 +33,9 @@ void CMapManager::Update(void)
 void CMapManager::LateUpdate(void)
 {
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
 
-	for (auto& pTile : m_vecCreateTile)
-		CCollisionManager::CollideCharacterTile(pPlayer, pTile);
+	CheckPlayerShadow();
 	for (auto& pStruc : m_listStructure)
 		CCollisionManager::CollideCharacterStructure(pPlayer, pStruc.get());
 
@@ -102,7 +102,6 @@ void CMapManager::Render(const HDC& _hdc)
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc,
 			&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
-
 	}
 
 	// ¸Ê Á¶Çü¹° 
@@ -115,7 +114,6 @@ void CMapManager::Render(const HDC& _hdc)
 				continue;
 
 			dynamic_cast<CStructure*>(pObj.get())->Render();
-			
 		}
 	}
 
@@ -304,4 +302,59 @@ bool CMapManager::LoadFile(void)
 	CloseHandle(hFile);
 
 	return true;
+}
+
+void CMapManager::CheckPlayerShadow(void)
+{
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
+	RECT rc = {};
+
+	bool bIsCollide = false;
+	for (auto& pTile : m_vecCreateTile)
+	{
+		CCollisionManager::CollideCharacterTile(pPlayer, pTile);
+		if (CCollisionManager::CollideCharacterTile(pPlayer, pTile, &rc) == true)
+		{
+			bIsCollide = true;
+			if (pRealPlayer->GetCollideWalls().size() == 0)
+			{
+				RECT rcTemp = rc;
+				rcTemp.right += 60;
+				rcTemp.bottom += 30;
+				pRealPlayer->SetShadowRect(rcTemp);
+				pRealPlayer->GetCollideWalls().emplace_back(pTile);
+			}
+			else
+			{
+				for (auto& pObj : pRealPlayer->GetCollideWalls())
+				{
+					if (pTile == pObj && pRealPlayer->GetCollideWalls().size() >= 2)
+					{
+						RECT rcTemp = rc;
+						rcTemp.right += 60;
+						rcTemp.bottom += 30;
+						pRealPlayer->SetShadowRect2(rcTemp);
+						return;
+					}
+					else
+					{
+						RECT rcTemp = rc;
+						rcTemp.right += 60;
+						rcTemp.bottom += 30;
+						pRealPlayer->SetShadowRect(rcTemp);
+					}
+				}
+
+				pRealPlayer->GetCollideWalls().emplace_back(pTile);
+			}
+
+		}
+	}
+	
+	if (bIsCollide == false)
+	{
+		pRealPlayer->SetShadowRect(RECT());
+		pRealPlayer->GetCollideWalls().clear();
+	}
 }

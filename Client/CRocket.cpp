@@ -10,6 +10,8 @@
 #include "CTimeManager.h"
 #include "CMapManager.h"
 #include "CStructure.h"
+#include "CParticle.h"
+#include "CObjManager.h"
 
 
 CRocket::CRocket(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID)
@@ -102,6 +104,11 @@ void CRocket::LateUpdate(void)
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 		pPlayer->SetState(GET_SINGLE(PlayerAttacked));
 		pPlayer->SetIsAttacked(true);
+
+		shared_ptr<CObj> pParticle = make_shared<CParticle>(pPlayer->GetX(), pPlayer->GetY(),
+			CParticle::BOMB, 11, L"Bomb");
+		pParticle->Ready();
+		GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 	}
 
 	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
@@ -114,12 +121,26 @@ void CRocket::LateUpdate(void)
 				continue;
 
 			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
+
+			shared_ptr<CObj> pParticle = make_shared<CParticle>(pObj->GetX(), pObj->GetY(),
+				CParticle::BOMB, 11, L"Bomb");
+			pParticle->Ready();
+			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 		}
 
 	}
 
 	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
-		CCollisionManager::CollideTileBullet(pTile, this);
+	{
+		if (CCollisionManager::CollideTileBullet(pTile, this))
+		{
+			shared_ptr<CObj> pParticle = make_shared<CParticle>(pTile->vPos.x, pTile->vPos.y,
+				CParticle::BOMB, 11, L"Bomb");
+			pParticle->Ready();
+			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+		}
+	}
+	
 }
 
 void CRocket::Render(const HDC& _hdc)

@@ -44,7 +44,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME3);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
 }
 
 void CMainApp::Update()
@@ -332,6 +332,10 @@ void CMainApp::SetImages(void)
 	// Particle
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Particle/Bomb/spr_grenade_exp1_%d.png", L"Particle", L"Bomb", 11)))
 		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Particle/Hit/spr_hit_light_%d.png", L"Particle", L"Hit", 6)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Particle/Dash/spr_sprint_%d.png", L"Particle", L"Dash", 6)))
+		return;
 
 	// Teleporter
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Teleporter/Idle/Idle_%d.png", L"Teleporter", L"Idle", 1)))
@@ -351,6 +355,8 @@ void CMainApp::SetImages(void)
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/UI/CoinBar/spr_dynamic_bounty_0.png", L"CoinBar")))
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/UI/Hp/spr_hud_hp_0.png", L"HpBar")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/UI/Emoticon/Boss/spr_boss_barFace_%d.png", L"Emoticon", L"Boss", 3)))
 		return;
 
 	// Shield

@@ -122,6 +122,21 @@ private:
 	int m_iCount = 0;
 };
 
+class BossRandomAttackState : public CBossState
+{
+public:
+	BossRandomAttackState() = default;
+	virtual ~BossRandomAttackState() {}
+
+public:
+	// CBossState을(를) 통해 상속됨
+	virtual CBossState* Update(CBoss* _pBoss) override;
+	virtual void Render(CBoss* _pBoss) override;
+
+private:
+	int m_iCount = 0;
+};
+
 class BossRocketAttackState : public CBossState
 {
 public:
@@ -172,6 +187,21 @@ class BossDashAttack : public CBossState
 public:
 	BossDashAttack() = default;
 	virtual ~BossDashAttack() {}
+
+public:
+	// CBossState을(를) 통해 상속됨
+	virtual CBossState* Update(CBoss * _pBoss) override;
+	virtual void Render(CBoss * _pBoss) override;
+
+private:
+	int m_iCount = 0;
+};
+
+class BossFullRangeAttack : public CBossState
+{
+public:
+	BossFullRangeAttack() = default;
+	virtual ~BossFullRangeAttack() {}
 
 public:
 	// CBossState을(를) 통해 상속됨

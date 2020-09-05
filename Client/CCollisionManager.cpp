@@ -323,6 +323,29 @@ bool CCollisionManager::CollideCharacterTile(CObj* _pDstObj, TILE* _pTile)
 	
 }
 
+bool CCollisionManager::CollideCharacterTile(CObj* _pDstObj, TILE* _pTile, RECT* _pOut)
+{
+	DO_IF_IS_NOT_VALID_OBJ(_pDstObj)
+		return false;
+
+	//if (_pTile->iOption == 0) // 0이면 지나갈 수 있게
+	//	return false;
+
+	RECT rcDst = _pDstObj->GetRect(); // 플레이어
+	RECT rcSrc =					  // Tile
+	{
+		LONG(_pTile->vPos.x - (128.f * 0.5f)),
+		LONG(_pTile->vPos.y - (128.f * 0.5f)),
+		LONG(_pTile->vPos.x + (128.f * 0.5f)),
+		LONG(_pTile->vPos.y + (128.f * 0.5f))
+	};
+
+	if (IntersectRect(_pOut, &rcSrc, &rcDst) == TRUE)
+		return true;
+
+	return false;
+}
+
 bool CCollisionManager::CollideCharacterStructure(CObj* _pDstObj, CObj* _pSrcObj)
 {
 	DO_IF_IS_NOT_VALID_OBJ(_pDstObj)
