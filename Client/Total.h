@@ -7,6 +7,11 @@ namespace OBJ
 	enum ID { MONSTER, PLAYER, BULLET, STRUCTURE, OBJ_UI, OBJ_MOUSE, OBJ_END };
 }
 
+namespace PLAYER
+{
+	enum ID { JIMMY, PINKY, RAFF,};
+}
+
 namespace IMAGE
 {
 	enum ID {

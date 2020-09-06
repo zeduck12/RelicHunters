@@ -10,6 +10,7 @@
 #include "CShadow.h"
 #include "CObjManager.h"
 #include "CItem.h"
+#include "CInteractionManager.h"
 
 
 CMonsterState* IdleState::Update(CMonster* _pMonster)
@@ -76,6 +77,7 @@ void IdleState::Render(CMonster* _pMonster)
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 	CShadow::RenderShadow(_pMonster);
+	
 }
 
 CMonsterState* TrackingState::Update(CMonster* _pMonster)
@@ -162,6 +164,7 @@ void TrackingState::Render(CMonster* _pMonster)
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 	
 	CShadow::RenderShadow(_pMonster);
+	CInteractionManager::RenderActivation(_pMonster);
 }
 
 CMonsterState* AttackState::Update(CMonster* _pMonster)

@@ -18,6 +18,8 @@ bool CEnemyManager::LoadMonsterData()
 		lstrcpy(szFilePath, L"..\\Data\\MonsterData3.dat");
 	if (eSceneID == CSceneManager::SCENE_GAME4)
 		lstrcpy(szFilePath, L"..\\Data\\MonsterData4.dat");
+	if (eSceneID == CSceneManager::SCENE_TEST) // Test씬은 불러올 적이 없음..
+		return false;
 
 	// 맵툴에서 작업한 Data파일에 있는 맵 정보 벡터에 넣어주기
 	HANDLE hFile = CreateFile(szFilePath, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);

@@ -74,6 +74,25 @@ int CSelButton::Update(float _fDeltaTime)
 			if (m_eID == BUTTON::BIU || m_eID == BUTTON::PUNNY || m_eID == BUTTON::ASS)
 				return 0;
 
+			if(m_eID == BUTTON::JIMMY)
+				GET_SINGLE(CSceneManager)->SetPlayerID(PLAYER::JIMMY);
+			else if(m_eID == BUTTON::PINKY)
+				GET_SINGLE(CSceneManager)->SetPlayerID(PLAYER::PINKY);
+			else if(m_eID == BUTTON::RAFF)
+				GET_SINGLE(CSceneManager)->SetPlayerID(PLAYER::RAFF);
+			else if (m_eID == BUTTON::RANDOM) // 랜덤으로 캐릭선택되게
+			{
+				int iRandNum = rand() % 3 + 1;
+				if(iRandNum == 1)
+					GET_SINGLE(CSceneManager)->SetPlayerID(PLAYER::JIMMY);
+				else if(iRandNum == 2)
+					GET_SINGLE(CSceneManager)->SetPlayerID(PLAYER::PINKY);
+				else if(iRandNum == 3)
+					GET_SINGLE(CSceneManager)->SetPlayerID(PLAYER::RAFF);
+			}
+			else
+				GET_SINGLE(CSceneManager)->SetPlayerID(PLAYER::JIMMY);
+
 			// 캐릭터 클릭
 			m_bIsClicked = true;
 			// 버튼들을 가져와서

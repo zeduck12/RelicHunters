@@ -38,6 +38,7 @@ private:
 	list<shared_ptr<CObj>> m_listMonsters;
 	list<shared_ptr<CObj>> m_listItems;
 	list<shared_ptr<CObj>> m_listParticles;
+	list<shared_ptr<CObj>> m_listHolograms;
 
 private:
 	bool m_bIsInstall;

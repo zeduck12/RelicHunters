@@ -88,16 +88,21 @@ public:
 	void SetIsDead(bool _bIsDead) { m_bIsDead = _bIsDead; }
 	void SetAddY(float _fY) { m_fAddY = _fY; }
 	float GetAddY(void) const { return m_fAddY; }
+	void SetActivationDrawID(int _iDrawID) { m_iActivationDrawID = _iDrawID; }
+	int  GetActivationDrawID(void) const { return m_iActivationDrawID; }
 
 public:
 	void SetState(CMonsterState* _pState);
 
 	
 protected:
+	int   m_iActivationDrawID;
+
 	bool  m_bIsDash;
+	bool  m_bIsDead = false;
+	
 	float m_fAddSpeed;
 	float m_fAddY ;
-	bool  m_bIsDead = false;
 	float m_fStackTime;
 
     float m_fCurHp;

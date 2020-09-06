@@ -141,6 +141,8 @@ bool CMapManager::LoadFile(void)
 		lstrcpy(szFilePath, L"..\\Data\\Stage3.dat");
 	if (eSceneID == CSceneManager::SCENE_GAME4)
 		lstrcpy(szFilePath, L"..\\Data\\Stage4.dat");
+	if (eSceneID == CSceneManager::SCENE_TEST)
+		lstrcpy(szFilePath, L"..\\Data\\TestScene.dat");
 
 	// 맵툴에서 작업한 Data파일에 있는 맵 정보 벡터에 넣어주기.
 	HANDLE hFile = CreateFile(szFilePath, GENERIC_READ, 0, 0, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, nullptr);

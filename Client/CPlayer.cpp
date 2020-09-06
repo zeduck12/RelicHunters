@@ -44,7 +44,8 @@ CPlayer::CPlayer()
 	m_pImageSetting{ nullptr },
 	m_bIsReloading{ false },
 	m_fCurHp{ 0.f },
-	m_fMaxHp{ 0.f }
+	m_fMaxHp{ 0.f },
+	m_strDashName{ L"" }
 {
 	ZeroMemory(&m_rcShadowRect, sizeof(RECT));
 	ZeroMemory(&m_tInfo, sizeof(INFO));
@@ -70,6 +71,8 @@ void CPlayer::Ready()
 		m_tInfo.vPos = { 830.f, 576.f, 0.f };
 	else if (eSceneID == CSceneManager::SCENE_GAME4)
 		m_tInfo.vPos = { 548.f, 767.f, 0.f };
+	else if (eSceneID == CSceneManager::SCENE_TEST)
+		m_tInfo.vPos = { 1000.f, 1000.f, 0.f };
 
 	m_tInfo.vDir = {1.0f, 0.f, 0.f};
 	m_tInfo.vSize = { 50.f, 50.f, 0.f };
@@ -121,6 +124,7 @@ void CPlayer::Ready()
 
 int CPlayer::Update(float _fDeltaTime)
 {
+	UpdateDashName();
 	// 포신좌표 갱신
 	UpdatePosinInfo();
 	RecoverDashHp();
@@ -469,7 +473,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 
 	if (m_fAddSpeed >= 5.f && m_fAddSpeed <= 6.f)
 	{
-		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", L"Dash", 2);
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", m_strDashName, 2);
 
 		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
 		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
@@ -494,7 +498,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 	
 	if (m_fAddSpeed >= 3.f && m_fAddSpeed <= 8.f)
 	{
-		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", L"Dash", 1);
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", m_strDashName, 1);
 
 		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
 		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
@@ -518,7 +522,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 
 	if (m_fAddSpeed >= 1.f && m_fAddSpeed <= 10.f)
 	{
-		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", L"Dash", 0);
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", m_strDashName, 0);
 
 		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
 		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
@@ -540,7 +544,7 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(150, 255, 255, 255));
 	}
 
-	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", L"Dash", 0);
+	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Player", m_strDashName, 0);
 
 	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
 	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
@@ -562,6 +566,23 @@ void CPlayer::ShowSpectrum(const HDC& _hdc)
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 	CShadow::RenderSheetShadow(this, pTexInfo);
+}
+
+void CPlayer::UpdateDashName(void)
+{
+	PLAYER::ID ePlayerID = GET_SINGLE(CSceneManager)->GetPlayerID();
+	switch (ePlayerID)
+	{
+	case PLAYER::JIMMY:
+		m_strDashName = L"Dash";
+		break;
+	case PLAYER::PINKY:
+		m_strDashName = L"Pinky_Dash";
+		break;
+	case PLAYER::RAFF:
+		m_strDashName = L"Raff_Dash";
+		break;
+	}
 }
 
 

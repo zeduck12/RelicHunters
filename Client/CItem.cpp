@@ -1246,8 +1246,12 @@ int CTeleporter::Update(float _fDeltaTime)
 
     if (m_eType == TELEPORTER::SPAWN)
     {
-        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E)) 
-             GET_SINGLE(CSceneManager)->SetIsChangeScene(true);
+        CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+        if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+        {
+            if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+                GET_SINGLE(CSceneManager)->SetIsChangeScene(true);
+        }
     }
 
     return 0;

@@ -44,7 +44,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
 }
 
 void CMainApp::Update()
@@ -66,9 +66,6 @@ void CMainApp::Render()
 	GET_SINGLE(CGraphicDevice)->RenderBegin();
 	GET_SINGLE(CSceneManager)->Render(m_hDC);
 	m_pMouse->Render(m_hDC);
-	/*GET_SINGLE(CGraphicDevice)->GetSprite()->End();
-	GET_SINGLE(CGraphicDevice)->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
-	GET_SINGLE(UICameraManager)->Render();*/
 	GET_SINGLE(CGraphicDevice)->GetSprite()->End();
 	GET_SINGLE(CGraphicDevice)->RenderEnd();
 }
@@ -102,6 +99,25 @@ void CMainApp::SetImages(void)
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Attacked/attacked_%d.png", L"Player", L"Attacked", 2))
 		return;
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Dash/dash_%d.png", L"Player", L"Dash", 3))
+		return;
+	// Pinky Image
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Pinky_Idle/spr_pinky_idle_%d.png", L"Player", L"Pinky_Idle", 9))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Pinky_Move/spr_pinky_sprint_%d.png", L"Player", L"Pinky_Move", 6))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Pinky_Attacked/spr_pinky_hit_%d.png", L"Player", L"Pinky_Attacked", 2))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Pinky_Dash/spr_pinky_dash_%d.png", L"Player", L"Pinky_Dash", 3))
+		return;
+
+	// Raff Image
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Raff_Idle/spr_raff_idle_%d.png", L"Player", L"Raff_Idle", 10))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Raff_Move/spr_raff_sprint_%d.png", L"Player", L"Raff_Move", 6))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Raff_Attacked/spr_raff_hit_%d.png", L"Player", L"Raff_Attacked", 2))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Raff_Dash/spr_raff_dash_%d.png", L"Player", L"Raff_Dash", 3))
 		return;
 
 	// Duck Image
@@ -348,6 +364,10 @@ void CMainApp::SetImages(void)
 	// Player UI °ü·Ã
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/UI/Emoticon/Jimmy/spr_hud_face_jimmy_%d.png", L"Emoticon", L"Jimmy", 3)))
 		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/UI/Emoticon/Pinky/spr_hud_face_pinky_%d.png", L"Emoticon", L"Pinky", 3)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/UI/Emoticon/Raff/spr_hud_face_raff_%d.png", L"Emoticon", L"Raff", 3)))
+		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/UI/DashBar/Dash_%d.png", L"DashBar", L"DashBar", 2)))
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/UI/Icon/icon_%d.png", L"Icon", L"Icon", 2)))
@@ -375,6 +395,25 @@ void CMainApp::SetImages(void)
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Stage/Stage4/spr_stage_boss_%d.png", L"Stage", L"Stage4", 13)))
 		return;
 
+	//End
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/End/Background/bg_end.png", L"EndBackground")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Scene/End/Text/spr_intro_text_0.png", L"EndText")))
+		return;
+
+	// Activation
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Activation/spr_activation_marker_%d.png", L"Activation", L"Activation", 7)))
+		return;
+
+	// Hologram
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Hologram/Jimmy/spr_jimmy_holo_%d.png", L"Hologram", L"Jimmy", 27)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Hologram/Pinky/spr_pinky_holo_%d.png", L"Hologram", L"Pinky", 27)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Hologram/Raff/spr_raff_holo_%d.png", L"Hologram", L"Raff", 27)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Hologram/Altar/spr_altar_players_0.png", L"Altar")))
+		return;
 }
 
 

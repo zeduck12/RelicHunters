@@ -18,6 +18,7 @@
 #include "CStructure.h"
 #include "CShield.h"
 #include "CParticle.h"
+#include "CTimeManager.h"
 
 CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree,
 	OBJ::ID _eID, const wstring& _strBulletName /*= L"Small"*/,float _fDamage/* = 10.f*/)
@@ -28,6 +29,7 @@ CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _
 {
 	m_fDegree = _fShootingDegree;
 	m_fSpeed = _fSpeed;
+	m_fStacktime = 0.f;
 
 	m_tInfo.vPos = { _fX , _fY , 0.f };
 	m_tInfo.vDir = { 1.f, 0.f, 0.f };
@@ -49,7 +51,8 @@ CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _
 	if (GET_SINGLE(CCameraManager)->IsPressing() == false)
 	{
 		if(m_eObjID == OBJ::MONSTER)
-			fAddAngle = GetNumberMinBetweenMax(-40.f,40.f);
+			fAddAngle = GetNumberMinBetweenMax(-10.f,10.f);
+			//보스는 40으로 고려해보기
 		else
 			fAddAngle = GetNumberMinBetweenMax(-7.f, 7.f);
 
@@ -74,6 +77,16 @@ void CBullet::Ready()
 
 int CBullet::Update(float _fDeltaTime)
 {
+	if (m_eObjID == OBJ::MONSTER)
+	{
+		m_fStacktime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+		if (m_fStacktime >= 2.f)
+			this->SetIsValid(false);
+
+		if (m_fStacktime >= 1.5f)
+			m_iDelta += 10;
+	}
+
 	D3DXMATRIX matWorld, matRev, matParent;
 
 	D3DXMatrixRotationZ(&matRev, D3DXToRadian(m_fDegree));
@@ -179,13 +192,6 @@ void CBullet::LateUpdate()
 
 void CBullet::Render(const HDC& _hdc)
 {
-	MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-
-	for (int i = 1; i < 4; i++)
-		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
-
-
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 
@@ -208,9 +214,11 @@ void CBullet::Render(const HDC& _hdc)
 	matWorld = matScale * matRev * matParent;
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-
-	//CShadow::RenderSheetProjectile(this, pTexInfo, m_fDegree);
+	
+	if(m_eObjID == OBJ::MONSTER)
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255 - m_iDelta, 255, 255, 255));
+	else
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 }
 
 void CBullet::Release()

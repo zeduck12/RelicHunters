@@ -6,6 +6,8 @@
 #include "CLogo.h"
 #include "CLobby.h"
 #include "CMenu.h"
+#include "CEnd.h"
+
 
 // ΩÃ±€≈Ê ¡§¿«
 DEFINITION_SINGLETON(CSceneManager)
@@ -52,7 +54,11 @@ void CSceneManager::ChangeScene(ID _eSceneID)
 		case CSceneManager::SCENE_GAME4:
 			m_pScene = new CGame;
 			break;
+		case CSceneManager::SCENE_TEST:
+			m_pScene = new CGame;
+			break;
 		case CSceneManager::SCENE_END:
+			m_pScene = new CEnd;
 			return;
 		default:
 			break;

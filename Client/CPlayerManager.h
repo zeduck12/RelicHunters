@@ -28,6 +28,5 @@ private:
 private:
 	unique_ptr<CObj> m_pPlayer;
 	unique_ptr<CInventory> m_pInventory;
-
 };
 

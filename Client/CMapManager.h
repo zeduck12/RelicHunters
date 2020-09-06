@@ -19,7 +19,7 @@ public:
 
 public:
 	bool LoadFile(void);
-	void CheckShadow(void);
+	void CheckPlayerShadow(void);
 
 public:
 	list<TILE*>& GetTiles(void) { return m_vecTile; }
@@ -33,6 +33,5 @@ private:
 	list<shared_ptr<CObj>> m_listStructure;
 	list<shared_ptr<CObj>> m_listItems;
 
-	list<CObj*>  m_listSortObj;
 };
 

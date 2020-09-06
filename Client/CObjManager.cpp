@@ -13,6 +13,7 @@
 #include "CItem.h"
 #include "CSceneManager.h"
 #include "UICameraManager.h"
+#include "CHologram.h"
 
 DEFINITION_SINGLETON(CObjManager)
 
@@ -57,6 +58,18 @@ bool CObjManager::Ready(void)
 	pItem->Ready();
 	m_listItems.emplace_back(pItem);
 
+	shared_ptr<CObj> pHologram = nullptr;
+	pHologram = make_shared<CHologram>(300.f, 400.f, 50.f, 50.f);
+	pHologram->Ready();
+	m_listHolograms.emplace_back(pHologram);
+
+	pHologram = make_shared<CHologram>(500.f, 400.f, 50.f, 50.f, L"Pinky");
+	pHologram->Ready();
+	m_listHolograms.emplace_back(pHologram);
+
+	pHologram = make_shared<CHologram>(700.f, 400.f, 50.f, 50.f, L"Raff");
+	pHologram->Ready();
+	m_listHolograms.emplace_back(pHologram);
 
 	// Test 보스생성
 	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 800.f, 120.f, 120.f,
@@ -79,6 +92,8 @@ void CObjManager::Update(void)
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Update(); } }
 	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Update(); } }
 	for (auto& pParticle : m_listParticles) { DO_IF_IS_VALID_OBJ(pParticle) { pParticle->Update(); } }
+	for (auto& pHologram : m_listHolograms) { DO_IF_IS_VALID_OBJ(pHologram) { pHologram->Update(); } }
+
 
 	InstallTeleporter();
 	SceneChange(); // Scene 체인지
@@ -93,6 +108,8 @@ void CObjManager::LateUpdate(void)
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->LateUpdate(); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->LateUpdate(); } }
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->LateUpdate(); } }
+	for (auto& pHologram : m_listHolograms) { DO_IF_IS_VALID_OBJ(pHologram) { pHologram->LateUpdate(); } }
+
 
 	// 만약에 오브젝트들이 무효하면 없애주기.
 	CollectGarbageObjects(m_listBullets);
@@ -101,6 +118,7 @@ void CObjManager::LateUpdate(void)
 	CollectGarbageObjects(m_listMonsters);
 	CollectGarbageObjects(m_listItems);
 	CollectGarbageObjects(m_listParticles);
+	CollectGarbageObjects(m_listHolograms);
 }
 
 void CObjManager::Render(const HDC& _hdc)
@@ -123,6 +141,7 @@ void CObjManager::Render(const HDC& _hdc)
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Render(_hdc); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }
 	for (auto& pParticle : m_listParticles) { DO_IF_IS_VALID_OBJ(pParticle) { pParticle->Render(_hdc); } }
+	for (auto& pHologram : m_listHolograms) { DO_IF_IS_VALID_OBJ(pHologram) { pHologram->Render(_hdc); } }
 	
 	// 카메라 움직임 결과
 	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();
@@ -153,6 +172,15 @@ void CObjManager::InstallTeleporter(void)
 			pItem->Ready();
 			m_listItems.emplace_back(pItem);
 		}
+		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_TEST)
+		{
+			shared_ptr<CObj> pItem = make_shared<CTeleporter>(
+				460.f,
+				1860.f,
+				150.f, 100.f, IMAGE::TELEPORTER, TELEPORTER::SPAWN);
+			pItem->Ready();
+			m_listItems.emplace_back(pItem);
+		}
 		else
 		{
 			shared_ptr<CObj> pItem = make_shared<CTeleporter>(
@@ -176,6 +204,8 @@ void CObjManager::SceneChange(void)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME3);
 		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME3)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
+		else if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_TEST)
+			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
 	}
 }
 

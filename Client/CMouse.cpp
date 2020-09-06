@@ -139,10 +139,10 @@ void CMouse::Render(const HDC& _hdc)
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 
-		float fPlayerX = 0.f;
-		float fPlayerY = 0.f;
-		fPlayerX = GET_SINGLE(CPlayerManager)->GetPlayer()->GetX();
-		fPlayerY = GET_SINGLE(CPlayerManager)->GetPlayer()->GetY();
+
+		float fDeltaX = GET_SINGLE(CCameraManager)->GetCameraDeltaX();
+		float fDeltaY = GET_SINGLE(CCameraManager)->GetCameraDeltaY();
+
 		pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Mouse", L"ReloadChar", m_iReloadID);
 		if (nullptr == pTexInfo)
 			return;
@@ -151,14 +151,12 @@ void CMouse::Render(const HDC& _hdc)
 
 		matScale, matTrans, matWorld;
 		D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
-		D3DXMatrixTranslation(&matTrans, fPlayerX, fPlayerY + 35.f, 0.f);
+		D3DXMatrixTranslation(&matTrans, 400.f + fDeltaX, 300.f + 35.f + fDeltaY, 0.f);
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-
 	}
-
 }
 
 void CMouse::ToEnlargeScale(void)

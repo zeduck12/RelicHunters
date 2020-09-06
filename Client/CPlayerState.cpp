@@ -3,6 +3,7 @@
 #include "CAnimation.h"
 #include "CTimeManager.h"
 #include "CGraphicDevice.h"
+#include "CSceneManager.h"
 #include "CPlayer.h"
 #include "CShadow.h"
 
@@ -16,7 +17,19 @@ void PlayerIdleState::Update(CPlayer* _pPlayer)
 	if (pAnimation)
 		pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
 
-	pAnimation->ChangeClip("Idle");
+	PLAYER::ID ePlayerID = GET_SINGLE(CSceneManager)->GetPlayerID();
+	switch (ePlayerID)
+	{
+	case PLAYER::JIMMY:
+		pAnimation->ChangeClip("Idle");
+		break;
+	case PLAYER::PINKY:
+		pAnimation->ChangeClip("Pinky_Idle");
+		break;
+	case PLAYER::RAFF:
+		pAnimation->ChangeClip("Raff_Idle");
+		break;
+	}
 
 }
 
@@ -58,7 +71,21 @@ void PlayerMoveState::Update(CPlayer* _pPlayer)
 	if (pAnimation)
 		pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
 
-	pAnimation->ChangeClip("Move");
+
+	PLAYER::ID ePlayerID = GET_SINGLE(CSceneManager)->GetPlayerID();
+	switch (ePlayerID)
+	{
+	case PLAYER::JIMMY:
+		pAnimation->ChangeClip("Move");
+		break;
+	case PLAYER::PINKY:
+		pAnimation->ChangeClip("Pinky_Move");
+		break;
+	case PLAYER::RAFF:
+		pAnimation->ChangeClip("Raff_Move");
+		break;
+	}
+
 
 	SetPlayerState(_pPlayer, GET_SINGLE(PlayerIdleState));
 }
@@ -99,7 +126,21 @@ void PlayerAttacked::Update(CPlayer* _pPlayer)
 	if (pAnimation)
 		pAnimation->Update(GET_SINGLE(CTimeManager)->GetElapsedTime());
 
-	pAnimation->ChangeClip("Attacked");
+	
+	PLAYER::ID ePlayerID = GET_SINGLE(CSceneManager)->GetPlayerID();
+	switch (ePlayerID)
+	{
+	case PLAYER::JIMMY:
+		pAnimation->ChangeClip("Attacked");
+		break;
+	case PLAYER::PINKY:
+		pAnimation->ChangeClip("Pinky_Attacked");
+		break;
+	case PLAYER::RAFF:
+		pAnimation->ChangeClip("Raff_Attacked");
+		break;
+	}
+
 
 	m_fCoolTime = 0.4f;
 	m_fStackTime += CTimeManager::Get_Instance()->GetElapsedTime();

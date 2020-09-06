@@ -112,6 +112,7 @@ public:
 	void CheckKeyState(void);
 	void DetectDirection(void);
 	void ShowSpectrum(const HDC& _hdc);
+	void UpdateDashName(void);
 
 private:
 	RECT m_rcShadowRect;
@@ -140,6 +141,7 @@ private:
 	bool m_bIsDash;
 	float m_fAddSpeed;
 
+	wstring m_strDashName;						// 캐릭터에 따른 대시이름
 	unique_ptr<CShield> m_pShield;
 	unique_ptr<CWeapon> m_pWeapon;				// 현재 보유하고 있는 무기
 	unique_ptr<CImageSetting> m_pImageSetting;	// 이미지 셋팅 객체

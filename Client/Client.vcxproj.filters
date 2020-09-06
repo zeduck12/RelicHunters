@@ -151,9 +151,6 @@
     <Filter Include="02.Scene\026.End">
       <UniqueIdentifier>{a540079a-8cc1-4572-9c19-4e4ca494ef8a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="02.Scene\027.Edit">
-      <UniqueIdentifier>{c4d0fca6-e5e2-4f15-89bf-674a2986ad53}</UniqueIdentifier>
-    </Filter>
     <Filter Include="02.Scene\025.Game">
       <UniqueIdentifier>{564e28f9-dd07-4f64-98c8-2739f5968177}</UniqueIdentifier>
     </Filter>
@@ -201,6 +198,12 @@
     </Filter>
     <Filter Include="01.CObj\015.Boss\HpBar">
       <UniqueIdentifier>{68ad5369-e80e-4f31-b969-f078f862a280}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene\027.Test">
+      <UniqueIdentifier>{c4d0fca6-e5e2-4f15-89bf-674a2986ad53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\019.Hologram">
+      <UniqueIdentifier>{2b7c18b0-be8f-4407-a033-a7803c455063}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -402,6 +405,12 @@
     <ClInclude Include="CBossHpBar.h">
       <Filter>01.CObj\015.Boss\HpBar</Filter>
     </ClInclude>
+    <ClInclude Include="CEnd.h">
+      <Filter>02.Scene\026.End</Filter>
+    </ClInclude>
+    <ClInclude Include="CHologram.h">
+      <Filter>01.CObj\019.Hologram</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -577,6 +586,12 @@
     </ClCompile>
     <ClCompile Include="CBossHpBar.cpp">
       <Filter>01.CObj\015.Boss\HpBar</Filter>
+    </ClCompile>
+    <ClCompile Include="CEnd.cpp">
+      <Filter>02.Scene\026.End</Filter>
+    </ClCompile>
+    <ClCompile Include="CHologram.cpp">
+      <Filter>01.CObj\019.Hologram</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

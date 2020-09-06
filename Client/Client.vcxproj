@@ -161,10 +161,12 @@
     <ClInclude Include="CCasing.h" />
     <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CDecoStar.h" />
+    <ClInclude Include="CEnd.h" />
     <ClInclude Include="CEnemyManager.h" />
     <ClInclude Include="CGame.h" />
     <ClInclude Include="CGraphicDevice.h" />
     <ClInclude Include="CGrenade.h" />
+    <ClInclude Include="CHologram.h" />
     <ClInclude Include="CImageSetting.h" />
     <ClInclude Include="CInteractionManager.h" />
     <ClInclude Include="CIntro.h" />
@@ -228,10 +230,12 @@
     <ClCompile Include="CCasing.cpp" />
     <ClCompile Include="CCollisionManager.cpp" />
     <ClCompile Include="CDecoStar.cpp" />
+    <ClCompile Include="CEnd.cpp" />
     <ClCompile Include="CEnemyManager.cpp" />
     <ClCompile Include="CGame.cpp" />
     <ClCompile Include="CGraphicDevice.cpp" />
     <ClCompile Include="CGrenade.cpp" />
+    <ClCompile Include="CHologram.cpp" />
     <ClCompile Include="CImageSetting.cpp" />
     <ClCompile Include="CInteractionManager.cpp" />
     <ClCompile Include="CIntro.cpp" />

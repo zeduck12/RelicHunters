@@ -22,6 +22,8 @@ public:
 
 protected:
 	float m_fDamage;
+	float m_fStacktime;
+	int   m_iDelta = 0;
 	// πÊ«‚
 	D3DXVECTOR3 m_vDir;
 

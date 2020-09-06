@@ -83,7 +83,7 @@ void CMenu::Update(void)
 	if (GET_SINGLE(CSceneManager)->IsChangeScene() == true)
 	{
 		GET_SINGLE(CSceneManager)->SetIsChangeScene(false);
-		GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
+		GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_TEST);
 	}
 }
 
