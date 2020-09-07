@@ -25,6 +25,20 @@ bool CCollisionManager::CollideBullet(CObj* _pDstObj, CObj* _SrcObj)
 
 	return false;
 }
+bool CCollisionManager::CollidePlasma(CObj* _pDstObj, CObj* _SrcObj)
+{
+	DO_IF_IS_NOT_VALID_OBJ(_pDstObj)
+		return false;
+
+	RECT rc = {};
+	RECT rcDst = _pDstObj->GetRect();
+	RECT rcSrc = _SrcObj->GetRect();
+
+	if (IntersectRect(&rc, &rcDst, &rcSrc) == TRUE)
+		return true;
+
+	return false;
+}
 bool CCollisionManager::CollideGrenade(CObj* _pDstObj, CObj* _SrcObj)
 {
 	DO_IF_IS_NOT_VALID_OBJ(_pDstObj)
@@ -384,6 +398,100 @@ bool CCollisionManager::CollideCharacterStructure(CObj* _pDstObj, CObj* _pSrcObj
 
 	return false;
 
+}
+
+bool CCollisionManager::CollideReflectStructure(CObj* _pDstObj, CObj* _pSrcObj)
+{
+	DO_IF_IS_NOT_VALID_OBJ(_pDstObj)
+		return false;
+
+	DO_IF_IS_NOT_VALID_OBJ(_pSrcObj) 
+		return false;
+
+	RECT rcDst = _pDstObj->GetRect(); // 플레이어
+	RECT rcSrc = _pSrcObj->GetRect(); // 총알
+
+	RECT rc = {};
+	if (IntersectRect(&rc, &rcSrc, &rcDst) == TRUE)
+	{
+		int iVertical = rc.bottom - rc.top;
+		int iHorizontal = rc.right - rc.left;
+
+		if (iHorizontal > iVertical)
+		{
+			if (_pSrcObj->GetY() < _pDstObj->GetY())
+				_pSrcObj->SetY(_pSrcObj->GetY() - iVertical * 10.f);
+			else if (_pSrcObj->GetY() > _pDstObj->GetY())
+				_pSrcObj->SetY(_pSrcObj->GetY() + iVertical * 10.f);
+
+			float fIncidenceDegree = _pSrcObj->GetDegree();
+			float fReflectDegree = 360.f - fIncidenceDegree;
+			_pSrcObj->SetDegree((fReflectDegree));
+		}
+		else
+		{
+			if (_pSrcObj->GetX() > _pDstObj->GetX())
+				_pSrcObj->SetX(_pSrcObj->GetX() + iHorizontal * 10.f);
+			else if (_pSrcObj->GetX() < _pDstObj->GetX())
+				_pSrcObj->SetX(_pSrcObj->GetX() - iHorizontal * 10.f);
+
+			float fIncidenceDegree = _pSrcObj->GetDegree();
+			float fReflectDegree = 180.f - fIncidenceDegree;
+			_pSrcObj->SetDegree((fReflectDegree));
+		}
+		return true;
+	}
+
+	return false;
+}
+
+bool CCollisionManager::CollideReflectWall(TILE* _pTile, CObj* _SrcObj)
+{
+	DO_IF_IS_NOT_VALID_OBJ(_SrcObj)
+		return false;
+
+	RECT rc = {};
+	RECT rcDst =
+	{
+		LONG(_pTile->vPos.x - (128.f * 0.5f)),
+		LONG(_pTile->vPos.y - (128.f * 0.5f)),
+		LONG(_pTile->vPos.x + (128.f * 0.5f)),
+		LONG(_pTile->vPos.y + (128.f * 0.5f))
+	};
+	RECT rcSrc = _SrcObj->GetRect();
+
+	if (IntersectRect(&rc, &rcDst, &rcSrc) == TRUE)
+	{
+		int iVertical = rc.bottom - rc.top;
+		int iHorizontal = rc.right - rc.left;
+
+		if (iHorizontal > iVertical)
+		{
+			if (_SrcObj->GetY() < _pTile->vPos.y)
+				_SrcObj->SetY(_SrcObj->GetY() - iVertical * 10.f);
+			else if (_SrcObj->GetY() > _pTile->vPos.y)
+				_SrcObj->SetY(_SrcObj->GetY() + iVertical * 10.f);
+
+			float fIncidenceDegree = _SrcObj->GetDegree();
+			float fReflectDegree = 360.f - fIncidenceDegree;
+			_SrcObj->SetDegree((fReflectDegree));
+		}
+		else
+		{
+			if (_SrcObj->GetX() > _pTile->vPos.x)
+				_SrcObj->SetX(_SrcObj->GetX() + iHorizontal * 10.f);
+			else if (_SrcObj->GetX() < _pTile->vPos.x)
+				_SrcObj->SetX(_SrcObj->GetX() - iHorizontal * 10.f);
+
+			float fIncidenceDegree = _SrcObj->GetDegree();
+			float fReflectDegree = 180.f - fIncidenceDegree;
+			_SrcObj->SetDegree((fReflectDegree));
+		}
+
+		return true;
+	}
+
+	return false;
 }
 
 CCollisionManager::~CCollisionManager()

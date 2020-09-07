@@ -193,6 +193,7 @@
     <ClInclude Include="CPlayerInfo.h" />
     <ClInclude Include="CPlayerManager.h" />
     <ClInclude Include="CPlayerState.h" />
+    <ClInclude Include="CReflect.h" />
     <ClInclude Include="CRocket.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneManager.h" />
@@ -261,6 +262,7 @@
     <ClCompile Include="CPlayerInfo.cpp" />
     <ClCompile Include="CPlayerManager.cpp" />
     <ClCompile Include="CPlayerState.cpp" />
+    <ClCompile Include="CReflect.cpp" />
     <ClCompile Include="CRocket.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneManager.cpp" />

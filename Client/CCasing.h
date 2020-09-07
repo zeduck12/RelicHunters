@@ -5,7 +5,8 @@ class CCasing : // ÅºÇÇ
 {
 public:
     CCasing() = default;
-    CCasing(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed = cfCasingSpeed, float _fShootingDegree = 0.f);
+    CCasing(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed = cfCasingSpeed,
+        float _fShootingDegree = 0.f, const wstring& _strName = L"CasingLite");
     virtual ~CCasing();
 
 public:
@@ -62,5 +63,7 @@ private:
     float m_fAddAngle;
     float m_fRotDegree;
     float m_fReflectValue;
+
+    wstring m_strName;
 };
 

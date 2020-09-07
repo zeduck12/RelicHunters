@@ -1,5 +1,5 @@
 #include "pch.h"
-#include "CPlasma.h"
+#include "CReflect.h"
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
 #include "CTimeManager.h"
@@ -13,8 +13,7 @@
 #include "CMapManager.h"
 #include "CStructure.h"
 
-
-CPlasma::CPlasma(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID, float _fDamage)
+CReflect::CReflect(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID, float _fDamage)
 {
 	m_iDrawID = 0;
 	m_fDegree = _fShootingDegree;
@@ -51,83 +50,51 @@ CPlasma::CPlasma(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _
 	m_fCoolTime = 0.f;
 }
 
-CPlasma::~CPlasma()
+CReflect::~CReflect()
 {
 	Release();
 }
 
-void CPlasma::Ready(void)
+void CReflect::Ready(void)
 {
 }
 
-int CPlasma::Update(float _fDeltaTime)
+int CReflect::Update(float _fDeltaTime)
 {
-	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
-	if (m_fStackTime >= 0.05f)
+	if (m_bIsCollide == true)
+		Reflect();
+	else
 	{
-		m_iDrawID++;
-		m_fStackTime = 0.f;
+
+		D3DXMATRIX matWorld, matRev, matParent;
+
+		D3DXMatrixRotationZ(&matRev, D3DXToRadian(m_fDegree));
+		D3DXMatrixTranslation(&matParent, m_tInfo.vPos.x, m_tInfo.vPos.y, m_tInfo.vPos.z);
+
+		matWorld = matRev * matParent;
+
+		for (int i = 0; i < 4; i++)
+			D3DXVec3TransformCoord(&m_vRealVertex[i], &m_vRotVertex[i], &matWorld);
+
+		m_tInfo.vPos += m_vDir * m_fSpeed;
+
+
 	}
-
-	if (m_iDrawID >= 12)
-		m_iDrawID = 0;
-
-	D3DXMATRIX matWorld, matRev, matParent;
-
-	D3DXMatrixRotationZ(&matRev, D3DXToRadian(m_fDegree));
-	D3DXMatrixTranslation(&matParent, m_tInfo.vPos.x, m_tInfo.vPos.y, m_tInfo.vPos.z);
-
-	matWorld = matRev * matParent;
-
-	for (int i = 0; i < 4; i++)
-		D3DXVec3TransformCoord(&m_vRealVertex[i], &m_vRotVertex[i], &matWorld);
-
-	m_tInfo.vPos += m_vDir * m_fSpeed;
-
-
 	return 0;
 }
 
-void CPlasma::LateUpdate(void)
+void CReflect::LateUpdate(void)
 {
-	m_fCoolTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
-	if (m_fCoolTime >= 2.f)
+
+	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fStackTime >= 10.f)
 		this->SetIsValid(false);
-
-	for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
-	{
-		// 몬스터가 하늘을 나는 중이면 충돌판정 PASS !
-		if (dynamic_cast<CMonster*>(pMonster.get())->IsFlying() == true)
-			continue;
-
-		if (CCollisionManager::CollidePlasma(pMonster.get(), this) == true)
-		{
-			if (pMonster->GetImageID() == IMAGE::BOSS)
-			{
-				CBoss* pBoss = dynamic_cast<CBoss*>(pMonster.get());
-				if (pBoss->IsDead() == false && pBoss->IsCrack() == true)
-				{
-					pBoss->SetState(new BossAttackedState);
-					pBoss->SetHp(pBoss->GetHp() - m_fDamage);
-				}
-			}
-			else
-			{
-				CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
-				if (pMonst->IsDead() == false)
-				{
-					pMonst->SetState(new AttackedState());
-					pMonst->SetHp(pMonst->GetHp() - m_fDamage);
-				}
-			}
-
-		}
-	}
 
 	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
 	{
-		if (CCollisionManager::CollidePlasma(pObj.get(), this) == true)
+		if (CCollisionManager::CollideReflectStructure(pObj.get(), this) == true)
 		{
+			m_bIsCollide = true;
 			CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
 			pStructure->SetCurHp(pStructure->GetCurHp() - 1);
 			if (pStructure->GetCurDrawID() >= pStructure->GetMaxDrawID())
@@ -135,16 +102,18 @@ void CPlasma::LateUpdate(void)
 
 			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
 		}
-
 	}
 
 	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
-		CCollisionManager::CollideTileBullet(pTile, this);
+	{
+		if(CCollisionManager::CollideReflectWall(pTile, this))
+			m_bIsCollide = true;
+	}
 }
 
-void CPlasma::Render(const HDC& _hdc)
+void CReflect::Render(const HDC& _hdc)
 {
-	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", L"Plasma", m_iDrawID);
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", L"Plasma", 0);
 	if (nullptr == pTexInfo)
 		return;
 	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
@@ -162,6 +131,12 @@ void CPlasma::Render(const HDC& _hdc)
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 }
 
-void CPlasma::Release(void)
+void CReflect::Release(void)
 {
+}
+
+void CReflect::Reflect(void)
+{
+	m_tInfo.vPos.x += cosf(D3DXToRadian(m_fDegree))  * 10.f;
+	m_tInfo.vPos.y += sinf(D3DXToRadian(m_fDegree))  * 10.f;
 }

@@ -9,7 +9,10 @@
 #include "CCollisionManager.h"
 #include "CTimeManager.h"
 
-CCasing::CCasing(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree)
+CCasing::CCasing(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed,
+	float _fShootingDegree, const wstring& _strName /*= L"CasingLite"*/)
+	:
+	m_strName{ _strName }
 {
 	m_vShadowPos = { _fX, _fY, 0 };
     m_tInfo.vPos = { _fX, _fY, 0 };
@@ -124,7 +127,7 @@ void CCasing::Release(void)
 
 void CCasing::Render(const HDC& _hdc)
 {
-	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"CasingLite");
+	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(m_strName);
 
 	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
 	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);

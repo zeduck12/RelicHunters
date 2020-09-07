@@ -17,6 +17,7 @@ public:
 	int  GetOwnBullets(void) const { return m_iOwnBullets; }
 	void SetOwnBellets(int _iBullets) { m_iOwnBullets = _iBullets; }
 	GUN::ID GetCurWeapon(void) const { return m_eCurWeaponID; }; // 현재 사용중인 무기 반환
+	GUN::ID GetSubWeapon(void) const { return m_vecInventory[1]; }
 	void GetSubWeapon(GUN::ID* _eID)
 	{
 		if (m_vecInventory.size() < 2)

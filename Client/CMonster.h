@@ -30,6 +30,7 @@ public:
 	void DetectDirection(void);
 	void EquipWeapon(void);
 	void DropItems(void);
+	void KnockBack(void);
 
 public:
 	// 어택관련

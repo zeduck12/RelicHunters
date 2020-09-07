@@ -137,6 +137,9 @@ int CPlayer::Update(float _fDeltaTime)
 	if(m_bIsDash == true)
 		Dash();
 
+	if (m_bIsAttack == true)
+		CheckDelaySniper();
+
 	m_pShield->Update();
 	m_pWeapon->Update();
 	m_pCurState->Update(this); // 상태 업데이트
@@ -191,10 +194,12 @@ void CPlayer::Render(const HDC& _hdc)
 {
 
 	// Line으로 그리기
-	MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-	for (int i = 1; i < 4; i++)
-		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
+	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
+	//for (int i = 1; i < 4; i++)
+	//	LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
+	//LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
+
+	m_pWeapon->DrawSubGun();
 
 	if (m_bIsDash)
 		ShowSpectrum(_hdc);
@@ -342,13 +347,18 @@ void CPlayer::CheckKeyState(void)
 	{
 		if (m_pWeapon->GetCurWeaponID() == GUN::SNIPER)
 		{
-			m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
-			if (m_fStackTime >= 0.2f)
-			{
-				m_fStackTime = 0.f;
-				// 무기에서 총알 발사
-				m_pWeapon->Shoot();
-			}
+			//m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+			//if (m_fStackTime >= 0.2f)
+			//{
+			//	m_fStackTime = 0.f;
+			//	// 무기에서 총알 발사
+			//	m_pWeapon->Shoot();
+			//}
+			if (m_bIsAttack == true)
+				return;
+
+			m_bIsAttack = true;
+			m_pWeapon->Shoot();
 		}
 
 		if(m_pWeapon->GetCurWeaponID() != GUN::SNIPER)
@@ -584,6 +594,18 @@ void CPlayer::UpdateDashName(void)
 		break;
 	}
 }
+
+void CPlayer::CheckDelaySniper(void)
+{
+	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fStackTime >= 0.7f)
+	{
+		m_fStackTime = 0.f;
+		m_bIsAttack = false;
+	}
+}
+
+
 
 
 

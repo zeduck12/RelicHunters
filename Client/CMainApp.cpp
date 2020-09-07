@@ -44,7 +44,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_TEST);
 }
 
 void CMainApp::Update()
@@ -226,6 +226,10 @@ void CMainApp::SetImages(void)
 
 	// Casing
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Casing/Lite/casing_0.png", L"CasingLite"))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Casing/Middle/spr_casing_2.png", L"CasingMiddle"))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Casing/Heavy/spr_casing_1.png", L"CasingHeavy"))
 		return;
 
 	// Grenade

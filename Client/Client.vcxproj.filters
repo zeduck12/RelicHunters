@@ -205,6 +205,9 @@
     <Filter Include="01.CObj\019.Hologram">
       <UniqueIdentifier>{2b7c18b0-be8f-4407-a033-a7803c455063}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\012.Projectile\Bullet\07.Reflect">
+      <UniqueIdentifier>{49d63722-77e3-4601-aff0-bfc7394328a9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -411,6 +414,9 @@
     <ClInclude Include="CHologram.h">
       <Filter>01.CObj\019.Hologram</Filter>
     </ClInclude>
+    <ClInclude Include="CReflect.h">
+      <Filter>01.CObj\012.Projectile\Bullet\07.Reflect</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -592,6 +598,9 @@
     </ClCompile>
     <ClCompile Include="CHologram.cpp">
       <Filter>01.CObj\019.Hologram</Filter>
+    </ClCompile>
+    <ClCompile Include="CReflect.cpp">
+      <Filter>01.CObj\012.Projectile\Bullet\07.Reflect</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

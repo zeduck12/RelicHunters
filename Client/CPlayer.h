@@ -113,6 +113,7 @@ public:
 	void DetectDirection(void);
 	void ShowSpectrum(const HDC& _hdc);
 	void UpdateDashName(void);
+	void CheckDelaySniper(void);
 
 private:
 	RECT m_rcShadowRect;
@@ -120,6 +121,7 @@ private:
 
 	bool m_bIsReloading;
 	bool m_bIsAttacked;
+	bool m_bIsAttack = false;
 
 	float m_fCurHp;
 	float m_fMaxHp;

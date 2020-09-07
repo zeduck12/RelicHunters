@@ -170,7 +170,7 @@ void CShotGun::Render(const HDC& _hdc)
 void CShotGun::CheckValidTime(void)
 {
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
-	if (m_fStackTime >= 0.4f)
+	if (m_fStackTime >= 0.25f)
 	{
 		m_fStackTime = 0.f;
 		this->SetIsValid(false);

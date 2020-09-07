@@ -39,6 +39,7 @@ public:
 
 public:
     void DrawCurGun(void);
+    void DrawSubGun(void);
     bool ReloadBullets(void);
   
 public:

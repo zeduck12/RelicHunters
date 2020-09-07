@@ -6,6 +6,7 @@ public:
 
 public:
 	static bool CollideBullet(CObj* _pDstObj, CObj* _SrcObj);				 // Object와 총알충돌 
+	static bool CollidePlasma(CObj* _pDstObj, CObj* _SrcObj);				 // Object와 총알충돌 
 	static bool CollideGrenade(CObj* _pDstObj, CObj* _SrcObj);				 // Object와 총알충돌 
 	static bool CollideTileBullet(TILE* _pTile, CObj* _SrcObj);				 // Tile관 총알충돌
 	static bool CollideTileCasing(TILE* _pTile, CObj* _SrcObj);				 // Tile과 탄피충돌
@@ -17,7 +18,8 @@ public:
 	static bool CollideCharacterTile(CObj* _pDstObj, TILE* _pTile);			 // 캐릭터 타일 충돌
 	static bool CollideCharacterTile(CObj* _pDstObj, TILE* _pTile, RECT* _pOut);
 	static bool CollideCharacterStructure(CObj* _pDstObj, CObj* _pSrcObj);	 // 캐릭터 구조물 충돌
-
+	static bool CollideReflectStructure(CObj* _pDstObj, CObj* _pSrcObj);
+	static bool CollideReflectWall(TILE* _pTile, CObj* _SrcObj);
 
 private:
 	CCollisionManager() = default;

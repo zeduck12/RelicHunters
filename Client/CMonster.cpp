@@ -101,18 +101,6 @@ int CMonster::Update(float _fDeltaTime)
 
 void CMonster::LateUpdate(void)
 {
-	// 수류탄 충돌
-	//for (auto& pGrenade : CObjManager::Get_Instance()->GetGrenades())
-	//{
-	//	DO_IF_IS_NOT_VALID_OBJ(pGrenade)
-	//		continue;
-
-	//	if (dynamic_cast<CGrenade*>(pGrenade.get())->IsReverse() == true)
-	//		continue;
-
-	//	CCollisionManager::CollideWallGrenade(this, pGrenade.get());
-	//}
-
 	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
 		CCollisionManager::CollideCharacterTile(this, pTile);
 
@@ -323,6 +311,21 @@ void CMonster::DropItems(void)
 		GET_SINGLE(CObjManager)->GetItems().emplace_back(pItem);
 	}
 
+}
+
+void CMonster::KnockBack(void)
+{
+	// 플레이어 위치를 기준으로 방향 설정
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
+		return;
+
+	// 플레이어 좌표
+	D3DXVECTOR3 vPlayerPos = pPlayer->GetInfo()->vPos;
+	D3DXVECTOR3 vDelta = vPlayerPos - m_tInfo.vPos;
+	D3DXVec3Normalize(&vDelta, &vDelta);
+
+	m_tInfo.vPos -= vDelta * 50.f;
 }
 
 // 총알 발사
@@ -607,7 +610,6 @@ void CMonster::SetState(CMonsterState* _pState)
 	Safe_Delete(m_pNextState);
 	m_pNextState = _pState;
 }
-
 
 bool CMonster::IsDetectPlayer(void)
 {

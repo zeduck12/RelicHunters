@@ -19,5 +19,6 @@ public:
 private:
 	int m_iDrawID;
 	float m_fStackTime;
+	float m_fCoolTime;
 };
 

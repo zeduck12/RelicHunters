@@ -275,6 +275,7 @@ CMonsterState* AttackedState::Update(CMonster* _pMonster)
 		_pMonster->SetHp(0.f);
 		_pMonster->DropItems();
 		_pMonster->SetIsDead(true);
+		_pMonster->KnockBack();
 		return new DeathState;
 	}
 

@@ -14,6 +14,7 @@
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
 #include "CPlasma.h"
+#include "CReflect.h"
 
 CWeapon::~CWeapon()
 {
@@ -244,7 +245,7 @@ void CWeapon::ShootShotGun(void)
 	{
 		pShotGun = make_shared<CShotGun>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 10.f,
 			pPlayer->GetY() + pPlayer->GetDirectionVector().y * 10.f,
-			pPlayer->GetDirectionVector(), -7.f * (i - 1), cfDefaultBulletSpeed, pPlayer->GetShootingDegree());
+			pPlayer->GetDirectionVector(), -7.f * (i - 1), cfDefaultBulletSpeed, pPlayer->GetShootingDegree(), OBJ::PLAYER, L"Blue");
 		pShotGun->Ready();
 		GET_SINGLE(CObjManager)->GetBullets().emplace_back(pShotGun);
 	}
@@ -257,7 +258,7 @@ void CWeapon::ShootShotGun(void)
 	{
 		pCasing = make_shared<CCasing>(pPlayer->GetX(),
 			pPlayer->GetY(), pPlayer->GetDirectionVector(), cfCasingSpeed,
-			pPlayer->GetShootingDegree());
+			pPlayer->GetShootingDegree(), L"CasingHeavy");
 		pCasing->Ready();
 		GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
 	}
@@ -301,7 +302,7 @@ void CWeapon::ShootSniper(void)
 
 	// 藕乔 积己
 	shared_ptr<CCasing> pCasing = make_shared<CCasing>(pPlayer->GetX(),
-		pPlayer->GetY(), pPlayer->GetDirectionVector(), cfCasingSpeed, pPlayer->GetShootingDegree());
+		pPlayer->GetY(), pPlayer->GetDirectionVector(), cfCasingSpeed, pPlayer->GetShootingDegree(), L"CasingHeavy");
 	pCasing->Ready();
 	GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
 }
@@ -336,9 +337,9 @@ void CWeapon::ShootAssault(void)
 
 	// Bullet 惯荤
 	shared_ptr<CBullet> pBullet
-		= make_shared<CBullet>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 10.f,
+		= make_shared<CReflect>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 10.f,
 			pPlayer->GetY() + pPlayer->GetDirectionVector().y * 10.f,
-			pPlayer->GetDirectionVector(), 20.f, pPlayer->GetShootingDegree(), OBJ::PLAYER, L"Default", 12.f);
+			pPlayer->GetDirectionVector(), 5.f, pPlayer->GetShootingDegree(), OBJ::PLAYER, 1.f);
 	pBullet->Ready();
 	GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);
 	GET_SINGLE(CCameraManager)->SetIsShooting(true);
@@ -389,7 +390,7 @@ void CWeapon::ShootPistolHeavy(void)
 
 	// 藕乔 积己
 	shared_ptr<CCasing> pCasing = make_shared<CCasing>(pPlayer->GetX(),
-		pPlayer->GetY(), pPlayer->GetDirectionVector(), cfCasingSpeed, pPlayer->GetShootingDegree());
+		pPlayer->GetY(), pPlayer->GetDirectionVector(), cfCasingSpeed, pPlayer->GetShootingDegree(), L"CasingMiddle");
 	pCasing->Ready();
 	GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
 }
@@ -411,7 +412,7 @@ void CWeapon::ShootKeytar(void)
 
 	// 藕乔 积己
 	shared_ptr<CCasing> pCasing = make_shared<CCasing>(pPlayer->GetX(),
-		pPlayer->GetY(), pPlayer->GetDirectionVector(), cfCasingSpeed, pPlayer->GetShootingDegree());
+		pPlayer->GetY(), pPlayer->GetDirectionVector(), cfCasingSpeed, pPlayer->GetShootingDegree(), L"CasingMiddle");
 	pCasing->Ready();
 	GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
 }
@@ -426,7 +427,7 @@ void CWeapon::ShootPlasma(void)
 	shared_ptr<CBullet> pBullet
 		= make_shared<CPlasma>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 10.f,
 			pPlayer->GetY() + pPlayer->GetDirectionVector().y * 10.f,
-			pPlayer->GetDirectionVector(), 5.f, pPlayer->GetShootingDegree(), OBJ::PLAYER,  100.f);
+			pPlayer->GetDirectionVector(), 5.f, pPlayer->GetShootingDegree(), OBJ::PLAYER,  1.f);
 	pBullet->Ready();
 	GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);
 	GET_SINGLE(CCameraManager)->SetIsShooting(true);
@@ -624,6 +625,320 @@ void CWeapon::DrawCurGun(void)
 		if (!GetWorldMatrix(&matWorld))
 			return;
 
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+}
+
+void CWeapon::DrawSubGun(void)
+{
+	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pObj) { return ; }
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::DEFAULT)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Pistol", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+		
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::SHOTGUN)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Shotgun", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::HIGH_MAG)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"HighMag", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::SNIPER)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Sniper", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::MACHINEGUN)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"MachineGun", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::FLAME)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Flame", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::ASSAULT)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Assault", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::KEYTAR)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Keytar", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::PISTOL_ASSUALT)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Pistol_Assualt", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::PISTOL_HEAVY)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Pistol_Heavy", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::PLASMA)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Plasma", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 	}
