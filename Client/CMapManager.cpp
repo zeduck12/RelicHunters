@@ -52,7 +52,6 @@ void CMapManager::Render(const HDC& _hdc)
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
 		return;
 
-	int iIndex = 0;
 	const TEXINFO* pTexInfo = nullptr;
 	for (auto& pTile : m_vecTile)
 	{
@@ -119,7 +118,9 @@ void CMapManager::Render(const HDC& _hdc)
 
 	// ¾ÆÀÌÅÛ
 	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Render(_hdc); } }
+
 }
+
 
 void CMapManager::Release(void)
 {

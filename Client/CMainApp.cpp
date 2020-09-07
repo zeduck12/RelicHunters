@@ -100,6 +100,8 @@ void CMainApp::SetImages(void)
 		return;
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Dash/dash_%d.png", L"Player", L"Dash", 3))
 		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Death/spr_jimmy_death_%d.png", L"Player", L"Death", 11))
+		return;
 	// Pinky Image
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Pinky_Idle/spr_pinky_idle_%d.png", L"Player", L"Pinky_Idle", 9))
 		return;
@@ -108,6 +110,8 @@ void CMainApp::SetImages(void)
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Pinky_Attacked/spr_pinky_hit_%d.png", L"Player", L"Pinky_Attacked", 2))
 		return;
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Pinky_Dash/spr_pinky_dash_%d.png", L"Player", L"Pinky_Dash", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Pinky_Death/spr_pinky_death_%d.png", L"Player", L"Pinky_Death", 11))
 		return;
 
 	// Raff Image
@@ -118,6 +122,8 @@ void CMainApp::SetImages(void)
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Raff_Attacked/spr_raff_hit_%d.png", L"Player", L"Raff_Attacked", 2))
 		return;
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Raff_Dash/spr_raff_dash_%d.png", L"Player", L"Raff_Dash", 3))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Player/Raff_Death/spr_raff_death_%d.png", L"Player", L"Raff_Death", 11))
 		return;
 
 	// Duck Image

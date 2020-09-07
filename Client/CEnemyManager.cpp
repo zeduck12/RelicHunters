@@ -60,5 +60,7 @@ bool CEnemyManager::LoadMonsterData()
 		GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
 	}
 
+	CloseHandle(hFile);
+
     return true;
 }

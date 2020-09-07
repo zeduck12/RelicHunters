@@ -232,12 +232,14 @@ void CPlayer::Render(const HDC& _hdc)
 		//쓰고난 펜을 삭제해준다.
 		DeleteObject(myPen);
 		DeleteObject(myBrush);
-
 	}
 
-	TCHAR str[10] = {};
-	wsprintf(str, TEXT("%d"), int(m_fShootingDegree));
-	TextOut(_hdc, (int)m_tInfo.vPos.x, (int)m_tInfo.vPos.y, str, lstrlen(str));
+	if (m_bIsInvicible == true)
+	{
+		TCHAR str[10] = {};
+		wsprintf(str, TEXT("Debug"), int(m_fShootingDegree));
+		TextOut(_hdc, (int)m_tInfo.vPos.x - 10.f, (int)m_tInfo.vPos.y + 20.f, str, lstrlen(str));
+	}
 
 }
 
@@ -250,6 +252,7 @@ void CPlayer::Release()
 	PlayerIdleState::Destroy_Instance();
 	PlayerMoveState::Destroy_Instance();
 	PlayerAttacked::Destroy_Instance();
+	PlayerDeath::Destroy_Instance();
 }
 
 void CPlayer::TrackMousePos(void)
@@ -268,10 +271,21 @@ void CPlayer::TrackMousePos(void)
 
 void CPlayer::CheckKeyState(void)
 {
+	if (m_bIsDead)
+		return;
+
 	D3DXMATRIX matWorld;
 	D3DXMATRIX matParent;
 	// 행렬 초기화
 	D3DXMatrixIdentity(&matWorld);
+
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_T))
+	{
+		if (m_bIsInvicible == true)
+			m_bIsInvicible = false;
+		else
+			m_bIsInvicible = true;
+	}
 
 	// 플레이어 이동
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_A))

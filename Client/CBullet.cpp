@@ -149,9 +149,13 @@ void CBullet::LateUpdate()
 		{
 			// 피격 애니메이션
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
-			pPlayer->SetState(GET_SINGLE(PlayerAttacked));
-			pPlayer->SetIsAttacked(true);
-			pPlayer->TakeDamage(m_fDamage);
+
+			if (pPlayer->IsDead() == false)
+			{
+				pPlayer->SetState(GET_SINGLE(PlayerAttacked));
+				pPlayer->SetIsAttacked(true);
+				pPlayer->TakeDamage(m_fDamage);
+			}
 		}
 
 		/*for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())

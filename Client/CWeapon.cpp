@@ -136,11 +136,11 @@ void CWeapon::Render(const HDC& _hdc)
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer) { return; }
 
 
-	MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
+	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
 
-	for (int i = 1; i < 4; i++)
-		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
+	//for (int i = 1; i < 4; i++)
+	//	LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
+	//LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
 
 	// ÇöÀç ÀåÂøÃÑ ±×¸®±â
 	DrawCurGun();

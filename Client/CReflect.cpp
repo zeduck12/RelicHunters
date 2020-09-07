@@ -96,7 +96,7 @@ void CReflect::LateUpdate(void)
 		{
 			m_bIsCollide = true;
 			CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
-			pStructure->SetCurHp(pStructure->GetCurHp() - 1);
+			pStructure->SetCurHp(pStructure->GetCurHp() - 10);
 			if (pStructure->GetCurDrawID() >= pStructure->GetMaxDrawID())
 				continue;
 

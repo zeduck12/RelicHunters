@@ -52,7 +52,7 @@ namespace GUN
 
 namespace BUTTON
 {
-	enum ID { START, CHANGE, CLOSE ,END};
+	enum ID { START, SETTING, CREDIT, CHANGE, CLOSE ,END};
 	enum SEL_ID { JIMMY, PINKY, RAFF, BIU, PUNNY, ASS, RANDOM, SEL_END};
 }
 

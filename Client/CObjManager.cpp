@@ -151,8 +151,8 @@ void CObjManager::Render(const HDC& _hdc)
 	GET_SINGLE(UICameraManager)->Render();
 
 	// 여기서 포신 그려주기
-	if (GET_SINGLE(CCameraManager)->IsPressing() == true)
-		DrawLine();
+	//if (GET_SINGLE(CCameraManager)->IsPressing() == true)
+	//	DrawLine();
 	
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);
@@ -195,10 +195,15 @@ void CObjManager::InstallTeleporter(void)
 
 void CObjManager::SceneChange(void)
 {
+	
+
 	if (GET_SINGLE(CSceneManager)->IsChangeScene() == true)
 	{
 		GET_SINGLE(CSceneManager)->SetIsChangeScene(false);
-		if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME)
+
+		if (dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer())->IsDead() == true)
+			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
+		else if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME2);
 		else if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME2)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME3);
@@ -283,12 +288,13 @@ void CObjManager::DrawLine(void)
 	fPlayerX -= float(WINCX >> 1) + GET_SINGLE(CCameraManager)->GetCameraDeltaX();
 	fPlayerY -= float(WINCY >> 1) + GET_SINGLE(CCameraManager)->GetCameraDeltaY();
 
+	float fScale = GET_SINGLE(CCameraManager)->GetCameraScale();
 	D3DXVECTOR2 vecList[2] =
 	{
-		D3DXVECTOR2(float(int(tPosinPos.tLPoint.fX) - fPlayerX), float(int(tPosinPos.tLPoint.fY) - fPlayerY)),
-		D3DXVECTOR2(float(int(tPosinPos.tRPoint.fX) - fPlayerX) , float(int(tPosinPos.tRPoint.fY) - fPlayerY))
+		D3DXVECTOR2(float(tPosinPos.tLPoint.fX - fPlayerX) , float(tPosinPos.tLPoint.fY - fPlayerY)),
+		D3DXVECTOR2(float(tPosinPos.tRPoint.fX - fPlayerX) , float(tPosinPos.tRPoint.fY - fPlayerY))
 	};
-
+	
 	pLine->Begin();
 	pLine->Draw(vecList, 2, D3DCOLOR_ARGB(255, 255, 0, 0));
 	pLine->End();

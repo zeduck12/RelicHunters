@@ -19,6 +19,11 @@ public:
 		m_pBossHpBar = _pHpBar;
 	}
 
+public:
+	void RenderMiniMap(void);
+	void DrawPlayer(void);
+	void Set_Ratio(D3DXMATRIX& matWorld, const float& fRatioX, const float& fRatioY);
+
 private:
 	UICameraManager() = default;
 	~UICameraManager() = default;

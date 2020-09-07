@@ -26,11 +26,11 @@ bool CLobby::Ready(void)
 	pButton->Ready();
 	m_listButtons.emplace_back(pButton);
 
-	pButton = make_shared<CButton>(0.f, 370.f, 600.f, 52.f, L"Button", BUTTON::END);
+	pButton = make_shared<CButton>(0.f, 370.f, 600.f, 52.f, L"Button", BUTTON::SETTING);
 	pButton->Ready();
 	m_listButtons.emplace_back(pButton);
 
-	pButton = make_shared<CButton>(-50.f, 440.f, 600.f, 52.f, L"Button", BUTTON::END);
+	pButton = make_shared<CButton>(-50.f, 440.f, 600.f, 52.f, L"Button", BUTTON::CREDIT);
 	pButton->Ready();
 	m_listButtons.emplace_back(pButton);
 

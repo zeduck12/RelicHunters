@@ -49,6 +49,10 @@ public:
 	const D3DXVECTOR3& GetDirectionVector(void) const { return (const D3DXVECTOR3&)m_tInfo.vDir; }
 	const LINEINFO& GetPosinPos(void) const { return m_tPosin; }
 	RECT GetShadowRect(void) const { return m_rcShadowRect; }
+	void SetIsDead(bool _bIsDead) { m_bIsDead = _bIsDead; }
+	bool IsDead(void) const { return m_bIsDead; }
+	void SetIsInvicible(bool _bIsInvicible) { m_bIsInvicible = _bIsInvicible; }
+	bool IsInvicible(void) const { return m_bIsInvicible; }
 	void SetShadowRect(RECT _rcRect)
 	{
 		LONG lWidth = _rcRect.right - _rcRect.left;
@@ -127,6 +131,8 @@ private:
 	float m_fMaxHp;
 	float m_fDashCurHp;
 	float m_fDashMaxHp;
+	bool  m_bIsDead = false;
+	bool  m_bIsInvicible = false;
 
 	float m_fStackTime; // 누적시간 담는 용도의 변수.
 	float m_fShootingDegree;

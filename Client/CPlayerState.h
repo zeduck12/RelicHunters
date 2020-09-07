@@ -51,3 +51,15 @@ public:
 	virtual void Render(CPlayer* _pPlayer) override;
 
 };
+
+class PlayerDeath : public CPlayerState
+{
+public:
+	DECLARE_SINGLETON(PlayerDeath)
+
+public:
+	// CPlayerState을(를) 통해 상속됨
+	virtual void Update(CPlayer* _pPlayer) override;
+	virtual void Render(CPlayer* _pPlayer) override;
+
+};

@@ -26,15 +26,17 @@ bool CImageSetting::Ready(void)
         m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 1.2f, 12, 0, 12, 0.f, L"Player", L"Idle", L"../Texture/Player/Idle/idle_%d.png");
         m_pOwner->AddAnimationClip("Move", ANIMATION::ONCE_RETURN, 0.6f, 6, 0, 6, 0.f, L"Player", L"Move", L"../Texture/Player/Move/move_%d.png");
         m_pOwner->AddAnimationClip("Attacked", ANIMATION::ONCE_RETURN, 0.2f, 2, 0, 2, 0.f, L"Player", L"Attacked", L"../Texture/Player/Attacked/attacked_%d.png");
+        m_pOwner->AddAnimationClip("Death", ANIMATION::LOOP, 1.1f, 11, 0, 11, 0.f, L"Player", L"Death", L"../Texture/Player/Death/spr_jimmy_death_%d.png");
        // Pinky
         m_pOwner->AddAnimationClip("Pinky_Idle", ANIMATION::LOOP, 0.9f, 9, 0, 9, 0.f, L"Player", L"Pinky_Idle", L"../Texture/Player/Pinky_Idle/spr_pinky_idle_%d.png");
         m_pOwner->AddAnimationClip("Pinky_Move", ANIMATION::ONCE_RETURN, 0.6f, 6, 0, 6, 0.f, L"Player", L"Pinky_Move", L"../Texture/Player/Pinky_Move/spr_pinky_sprint_%d.png");
         m_pOwner->AddAnimationClip("Pinky_Attacked", ANIMATION::ONCE_RETURN, 0.2f, 2, 0, 2, 0.f, L"Player", L"Pinky_Attacked", L"../Texture/Player/Pinky_Attacked/spr_pinky_hit_%d.png");
+        m_pOwner->AddAnimationClip("Pinky_Death", ANIMATION::LOOP, 1.1f, 11, 0, 11, 0.f, L"Player", L"Pinky_Death", L"../Texture/Player/Pinky_Death/spr_pinky_death_%d.png");
        // Raff
         m_pOwner->AddAnimationClip("Raff_Idle", ANIMATION::LOOP, 1.f, 10, 0, 10, 0.f, L"Player", L"Raff_Idle", L"../Texture/Player/Raff_Idle/spr_raff_idle_%d.png");
         m_pOwner->AddAnimationClip("Raff_Move", ANIMATION::ONCE_RETURN, 0.6f, 6, 0, 6, 0.f, L"Player", L"Raff_Move", L"../Texture/Player/Raff_Move/spr_raff_sprint_%d.png");
         m_pOwner->AddAnimationClip("Raff_Attacked", ANIMATION::ONCE_RETURN, 0.2f, 2, 0, 2, 0.f, L"Player", L"Raff_Attacked", L"../Texture/Player/Raff_Attacked/spr_raff_hit_%d.png");
-
+        m_pOwner->AddAnimationClip("Raff_Death", ANIMATION::LOOP, 1.1f, 11, 0, 11, 0.f, L"Player", L"Raff_Death", L"../Texture/Player/Raff_Death/spr_raff_death_%d.png");
         break;
     case IMAGE::DUCK:
         m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 1.4f, 7, 0, 7, 0.f, L"Duck", L"Idle", L"../Texture/Monster/Duck/Idle/idle_%d.png");

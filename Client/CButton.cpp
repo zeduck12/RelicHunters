@@ -128,6 +128,40 @@ void CButton::Render(const HDC& _hdc)
 		}
 	}
 
+	if (m_eID == BUTTON::SETTING)
+	{
+		TCHAR szBuf[MAX_PATH] = L"SETTING";
+		if (m_bIsPress)
+		{
+			D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x + 60.f, m_tInfo.vPos.y - 10.f, 0.f);
+			CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+			CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 0, 0));
+		}
+		else
+		{
+			D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x + 60.f, m_tInfo.vPos.y - 10.f, 0.f);
+			CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+			CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
+	}
+
+	if (m_eID == BUTTON::CREDIT)
+	{
+		TCHAR szBuf[MAX_PATH] = L"CREDIT";
+		if (m_bIsPress)
+		{
+			D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x + 80.f, m_tInfo.vPos.y - 10.f, 0.f);
+			CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+			CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 0, 0));
+		}
+		else
+		{
+			D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x + 80.f, m_tInfo.vPos.y - 10.f, 0.f);
+			CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+			CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+		}
+	}
+
 	if (m_eID == BUTTON::CLOSE)
 	{
 		TCHAR szBuf[MAX_PATH] = L"EXIT";

@@ -6,6 +6,9 @@
 #include "CGraphicDevice.h"
 #include "CTimeManager.h"
 #include "CBossHpBar.h"
+#include "CMapManager.h"
+#include "CPlayerManager.h"
+#include "CPlayer.h"
 
 DEFINITION_SINGLETON(UICameraManager)
 
@@ -87,6 +90,88 @@ void UICameraManager::Render(void)
 
 		DrawFocusTitle();
 	}
+
+	//RenderMiniMap();
+}
+
+void UICameraManager::RenderMiniMap()
+{
+	const TEXINFO* pTexInfo = nullptr;
+	for (auto& pTile : GET_SINGLE(CMapManager)->GetTiles())
+	{
+		pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tile", pTile->iDrawID);
+		if (nullptr == pTexInfo)
+			return;
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		// 农 磊 捞 傍 何
+		D3DXMatrixScaling(&matScale, pTile->vSize.x, pTile->vSize.y, 0.f);
+		D3DXMatrixTranslation(&matTrans, pTile->vPos.x + 16000.f, pTile->vPos.y + 1500.f, 0.f);
+		matWorld = matScale * matTrans;
+
+		Set_Ratio(matWorld, 0.04f, 0.03f);
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(150, 255, 255, 255));
+	}
+
+	// 货肺 积己茄 鸥老
+	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
+	{
+		pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tileset", pTile->iDrawID);
+		if (nullptr == pTexInfo)
+			return;
+		RECT rc = { pTile->iFrameX * 72, pTile->iFrameY * 72, pTile->iFrameX * 72 + 72, pTile->iFrameY * 72 + 72 };
+		float fCenterX = float(rc.right - rc.left) * 0.5f;
+		float fCenterY = float(rc.bottom - rc.top) * 0.5f;
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		D3DXMatrixScaling(&matScale, pTile->vSize.x, pTile->vSize.y, 0.f);
+		D3DXMatrixTranslation(&matTrans, pTile->vPos.x + 16000.f, pTile->vPos.y + 1500.f, 0.f);
+		matWorld = matScale * matTrans;
+
+		Set_Ratio(matWorld, 0.04f, 0.03f);
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc,
+			&D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(150, 255, 255, 255));
+	}
+
+	DrawPlayer();
+}
+
+void UICameraManager::DrawPlayer(void)
+{
+	CObj* pPlayer = dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer());
+
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Emoticon", L"Jimmy", 0);
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.5f, 1.5f, 0.f);
+	D3DXMatrixTranslation(&matTrans,16000.f + pPlayer->GetX(), 1500.f + pPlayer->GetY(), 0.f);
+	matWorld = matScale * matTrans;
+
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+}
+
+void UICameraManager::Set_Ratio(D3DXMATRIX& matWorld, const float& fRatioX, const float& fRatioY)
+{
+	matWorld._11 *= fRatioX;
+	matWorld._21 *= fRatioX;
+	matWorld._31 *= fRatioX;
+	matWorld._41 *= fRatioX;
+
+	matWorld._12 *= fRatioY;
+	matWorld._22 *= fRatioY;
+	matWorld._32 *= fRatioY;
+	matWorld._42 *= fRatioY;
 }
 
 void UICameraManager::DrawStageTitle(void)

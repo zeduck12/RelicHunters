@@ -44,6 +44,8 @@ void CKeyManager::Update()
 		m_dwKey |= KEY_TAB;
 	if (GetAsyncKeyState('R') & 0x8000)
 		m_dwKey |= KEY_R;
+	if (GetAsyncKeyState('T') & 0x8000)
+		m_dwKey |= KEY_T;
 
 }
 
