@@ -3,6 +3,7 @@
 #include "CTextureManager.h"
 #include "CGraphicDevice.h"
 #include "CTimeManager.h"
+#include "CSceneManager.h"
 
 CEnd::CEnd()
 {
@@ -15,11 +16,20 @@ CEnd::~CEnd()
 
 bool CEnd::Ready(void)
 {
+
     return true;
 }
 
 void CEnd::Update(void)
 {
+	if (m_bIsPlayingBGM == false)
+	{
+		m_bIsPlayingBGM = true;
+		CSoundManager::Get_Instance()->StopAll();
+		CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_victory.wav");
+
+	}
+
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStackTime >= 0.05f)
 	{

@@ -84,6 +84,10 @@ bool CImageSetting::Ready(void)
         m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 0.1f, 1, 0, 1, 0.f, L"PickUpHeavy", L"Start", L"../Texture/Item/PickUp/Heavy/spr_pickup_heavy_%d.png");
         m_pOwner->AddAnimationClip("Start", ANIMATION::LOOP, 1.6f, 16, 0, 16, 0.f, L"PickUpHeavy", L"Start", L"../Texture/Item/PickUp/Heavy/spr_pickup_heavy_%d.png");
         break;
+    case IMAGE::PICKUP_GRENADE:
+        m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 0.1f, 1, 0, 1, 0.f, L"PickUpGrenade", L"Start", L"../Texture/Item/PickUp/Grenade/spr_pickup_grenade_%d.png");
+        m_pOwner->AddAnimationClip("Start", ANIMATION::LOOP, 1.7f, 17, 0, 17, 0.f, L"PickUpGrenade", L"Start", L"../Texture/Item/PickUp/Grenade/spr_pickup_grenade_%d.png");
+        break;
     case IMAGE::COIN:
         m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 1.4f, 14, 0, 14, 0.f, L"Coin", L"Idle", L"../Texture/Coin/Idle/spr_coin_ground_%d.png");
         m_pOwner->AddAnimationClip("Drop", ANIMATION::LOOP, 1.f, 5, 0, 5, 0.f, L"Coin", L"Drop", L"../Texture/Coin/Drop/spr_coin_drop_%d.png");

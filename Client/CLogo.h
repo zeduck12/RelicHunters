@@ -17,6 +17,7 @@ public:
 
 private:
     float m_fStackTime;
+    bool  m_bIsPlayingBGM = false;
 
 };
 

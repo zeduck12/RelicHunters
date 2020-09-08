@@ -109,6 +109,7 @@ void CMonster::LateUpdate(void)
 
 	// 플레이어 출동 선과 선 충돌
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
 	LINEINFO* pPlayerLineArray = dynamic_cast<CPlayer*>(pPlayer)->GetLinesInfo();
 	LINEINFO* pMonsterLineArray = GetLinesInfo();
 	for (int i = 0; i < 4; i++)
@@ -120,7 +121,13 @@ void CMonster::LateUpdate(void)
 				// 충돌이 일어났다면 방향벡터 쪽으로 밀기
 				pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
 				pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
-				dynamic_cast<CPlayer*>(pPlayer)->SetState(GET_SINGLE(PlayerAttacked));
+
+				if (pRealPlayer->IsDead() == false)
+				{
+					pRealPlayer->SetState(GET_SINGLE(PlayerAttacked));
+					pRealPlayer->SetIsAttacked(true);
+					pRealPlayer->TakeDamage(15.f);
+				}
 			}
 
 		}
@@ -241,6 +248,9 @@ void CMonster::DetectDirection(void)
 
 void CMonster::EquipWeapon(void)
 {
+	if (m_bIsDead == true)
+		return;
+
 	wstring szWeaponName = L"";
 	if (m_eImageID == IMAGE::TURTLE)
 		szWeaponName = L"Flame";
@@ -334,6 +344,9 @@ void CMonster::Shoot(void)
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
 		return;
+
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::MONSTER);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pistol.wav", CSoundManager::MONSTER);
 
 	// 슈팅각도 계산
 	float fDeltaX = pPlayer->GetX() - this->GetX();

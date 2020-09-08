@@ -135,13 +135,6 @@ void CWeapon::Render(const HDC& _hdc)
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer) { return; }
 
-
-	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-
-	//for (int i = 1; i < 4; i++)
-	//	LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	//LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
-
 	// ÇöÀç ÀåÂøÃÑ ±×¸®±â
 	DrawCurGun();
 
@@ -213,6 +206,9 @@ void CWeapon::Shoot(void)
 
 void CWeapon::ShootDefault(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pistol.wav", CSoundManager::GUN_DEFAULT);
+
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
@@ -235,6 +231,9 @@ void CWeapon::ShootDefault(void)
 
 void CWeapon::ShootShotGun(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_shotgun.wav", CSoundManager::GUN_DEFAULT);
+
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
@@ -266,6 +265,9 @@ void CWeapon::ShootShotGun(void)
 
 void CWeapon::ShootBoomerang(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_rifle1.wav", CSoundManager::GUN_DEFAULT);
+
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
@@ -287,6 +289,9 @@ void CWeapon::ShootBoomerang(void)
 
 void CWeapon::ShootSniper(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_sniper.wav", CSoundManager::GUN_DEFAULT);
+
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
@@ -309,6 +314,9 @@ void CWeapon::ShootSniper(void)
 
 void CWeapon::ShootFlame(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_smg1.wav", CSoundManager::GUN_DEFAULT);
+
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
@@ -331,6 +339,9 @@ void CWeapon::ShootFlame(void)
 
 void CWeapon::ShootAssault(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_smg1.wav", CSoundManager::GUN_DEFAULT);
+
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
@@ -353,6 +364,9 @@ void CWeapon::ShootAssault(void)
 
 void CWeapon::ShootPistolAssault(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pistol.wav", CSoundManager::GUN_DEFAULT);
+
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
@@ -375,6 +389,9 @@ void CWeapon::ShootPistolAssault(void)
 
 void CWeapon::ShootPistolHeavy(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pistol.wav", CSoundManager::GUN_DEFAULT);
+
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
@@ -397,6 +414,9 @@ void CWeapon::ShootPistolHeavy(void)
 
 void CWeapon::ShootKeytar(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pistol.wav", CSoundManager::GUN_DEFAULT);
+
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
@@ -419,6 +439,9 @@ void CWeapon::ShootKeytar(void)
 
 void CWeapon::ShootPlasma(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_plasma_start.wav", CSoundManager::GUN_DEFAULT);
+
 	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);

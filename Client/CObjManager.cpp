@@ -71,11 +71,7 @@ bool CObjManager::Ready(void)
 	pHologram->Ready();
 	m_listHolograms.emplace_back(pHologram);
 
-	// Test 보스생성
-	//shared_ptr<CObj> pMonster = make_shared<CBoss>(800.f, 800.f, 120.f, 120.f,
-	//	cfMosterDefaultSpeed, 1000.f, IMAGE::BOSS);
-	//pMonster->Ready();
-	//m_listMonsters.emplace_back(pMonster);
+	PlayBGM();
 
 	return true;
 }
@@ -172,6 +168,15 @@ void CObjManager::InstallTeleporter(void)
 			pItem->Ready();
 			m_listItems.emplace_back(pItem);
 		}
+		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME4)
+		{
+			shared_ptr<CObj> pItem = make_shared<CTeleporter>(
+				1600.f,
+				1750.f,
+				150.f, 100.f, IMAGE::TELEPORTER, TELEPORTER::SPAWN);
+			pItem->Ready();
+			m_listItems.emplace_back(pItem);
+		}
 		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_TEST)
 		{
 			shared_ptr<CObj> pItem = make_shared<CTeleporter>(
@@ -195,8 +200,6 @@ void CObjManager::InstallTeleporter(void)
 
 void CObjManager::SceneChange(void)
 {
-	
-
 	if (GET_SINGLE(CSceneManager)->IsChangeScene() == true)
 	{
 		GET_SINGLE(CSceneManager)->SetIsChangeScene(false);
@@ -209,6 +212,8 @@ void CObjManager::SceneChange(void)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME3);
 		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME3)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
+		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME4)
+			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_END);
 		else if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_TEST)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
 	}
@@ -299,6 +304,35 @@ void CObjManager::DrawLine(void)
 	pLine->Draw(vecList, 2, D3DCOLOR_ARGB(255, 255, 0, 0));
 	pLine->End();
 	pLine->Release();
+}
+
+void CObjManager::PlayBGM(void)
+{
+	if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_GAME)
+	{
+		CSoundManager::Get_Instance()->StopAll();
+		CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_stage1.wav");
+	}
+	else if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_GAME2)
+	{
+		CSoundManager::Get_Instance()->StopAll();
+		CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_stage2.wav");
+	}
+	else if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_GAME3)
+	{
+		CSoundManager::Get_Instance()->StopAll();
+		CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_stage3.wav");
+	}
+	else if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_GAME4)
+	{
+		CSoundManager::Get_Instance()->StopAll();
+		CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_boss.wav");
+	}
+	else if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_TEST)
+	{
+		CSoundManager::Get_Instance()->StopAll();
+		CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_main.wav");
+	}
 }
 
 void CObjManager::Release(void)

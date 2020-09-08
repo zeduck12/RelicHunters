@@ -195,6 +195,7 @@ public:
 
 private:
 	int m_iCount = 0;
+	bool m_bIsPlayingSFX = false;
 };
 
 class BossFullRangeAttack : public CBossState

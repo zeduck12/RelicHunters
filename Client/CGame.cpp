@@ -6,6 +6,7 @@
 #include "CPlayer.h"
 #include "CMonster.h"
 #include "CMapManager.h"
+#include "CSceneManager.h"
 
 CGame::CGame()
 {

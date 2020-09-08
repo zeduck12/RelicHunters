@@ -29,6 +29,8 @@ void CMainApp::Ready()
 	// 장치 초기화
 	if (E_FAIL == GET_SINGLE(CGraphicDevice)->Ready())
 		return;
+	if (!GET_SINGLE(CSoundManager)->Ready())
+		return;
 	
 	SetImages();
 
@@ -74,6 +76,7 @@ void CMainApp::Release()
 {
 	ReleaseDC(g_hWND, m_hDC);
 	
+	CSoundManager::Destroy_Instance();
 	CTimeManager::Destroy_Instance();
 	CKeyManager::Destroy_Instance();
 	CCollisionManager::Destroy_Instance();
@@ -266,6 +269,8 @@ void CMainApp::SetImages(void)
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Item/PickUp/Shield/pickup_shield_0.png", L"PickUpShield")))
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Item/PickUp/Health/pickup_health_0.png", L"PickUpHealth")))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Item/PickUp/Grenade/spr_pickup_grenade_%d.png", L"PickUpGrenade", L"Start", 17)))
 		return;
 
 	// Prompt E

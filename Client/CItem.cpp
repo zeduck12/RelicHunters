@@ -47,11 +47,12 @@ int CPickUpLight::Update(float _fDeltaTime)
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
-        if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            this->SetIsValid(false);
             int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetOwnBullets();
             GET_SINGLE(CPlayerManager)->GetInventory()->SetOwnBellets(iCount + 30);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
    
@@ -135,11 +136,12 @@ int CPickUpMedium::Update(float _fDeltaTime)
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
-        if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            this->SetIsValid(false);
             int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetOwnBullets();
             GET_SINGLE(CPlayerManager)->GetInventory()->SetOwnBellets(iCount + 50);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
 
@@ -221,11 +223,13 @@ int CPickUpHeavy::Update(float _fDeltaTime)
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
-        if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            this->SetIsValid(false);
             int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetOwnBullets();
             GET_SINGLE(CPlayerManager)->GetInventory()->SetOwnBellets(iCount + 100);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
+
         }
     }
 
@@ -384,8 +388,10 @@ int FlameGun::Update(float _fDeltaTime)
         // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
         if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::FLAME);
             this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::FLAME);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
     return 0;
@@ -463,8 +469,10 @@ int HighMagGun::Update(float _fDeltaTime)
         // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
         if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::HIGH_MAG);
             this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::HIGH_MAG);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
 
@@ -543,8 +551,10 @@ int AssaultGun::Update(float _fDeltaTime)
         // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
         if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::ASSAULT);
             this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::ASSAULT);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
     return 0;
@@ -622,8 +632,10 @@ int KeytarGun::Update(float _fDeltaTime)
         // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
         if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::KEYTAR);
             this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::KEYTAR);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
     return 0;
@@ -701,8 +713,10 @@ int MachineGun::Update(float _fDeltaTime)
         // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
         if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::MACHINEGUN);
             this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::MACHINEGUN);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
 
@@ -781,8 +795,10 @@ int PistolAssualtGun::Update(float _fDeltaTime)
         // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
         if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::PISTOL_ASSUALT);
             this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::PISTOL_ASSUALT);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
     return 0;
@@ -860,8 +876,10 @@ int PistolHeavyGun::Update(float _fDeltaTime)
         // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
         if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::PISTOL_HEAVY);
             this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::PISTOL_HEAVY);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
     return 0;
@@ -939,8 +957,10 @@ int PlasmaGun::Update(float _fDeltaTime)
         // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
         if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::PLASMA);
             this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::PLASMA);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
     return 0;
@@ -1018,8 +1038,10 @@ int ShotGun::Update(float _fDeltaTime)
         // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
         if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::SHOTGUN);
             this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::SHOTGUN);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
 
@@ -1098,8 +1120,10 @@ int SniperGun::Update(float _fDeltaTime)
         // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
         if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
-            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::SNIPER);
             this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::SNIPER);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
 
@@ -1341,10 +1365,19 @@ int CPickUpShield::Update(float _fDeltaTime)
     CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
-        if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
+            if (pRealPlayer->GetShield()->GetCurShieldHp() >= 100.f)
+            {
+                GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+                GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_full.wav", CSoundManager::EFFECT);
+                return 0;
+            }
+
             this->SetIsValid(false);
-            pRealPlayer->GetShield()->SetCurShieldHp(pRealPlayer->GetShield()->GetCurShieldHp() + 20.f);
+            pRealPlayer->GetShield()->SetCurShieldHp(pRealPlayer->GetShield()->GetCurShieldHp() + 50.f);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
         }
     }
     return 0;
@@ -1423,10 +1456,19 @@ int CPickUpHealth::Update(float _fDeltaTime)
     CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
-        if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
         {
+            if (pRealPlayer->GetCurHp() >= 200.f)
+            {
+                GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+                GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_full.wav", CSoundManager::EFFECT);
+                return 0;
+            }
+
             this->SetIsValid(false);
             pRealPlayer->SetCurHp(pRealPlayer->GetCurHp() + 40.f);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_health.wav", CSoundManager::EFFECT);
         }
     }
     return 0;
@@ -1448,6 +1490,101 @@ void CPickUpHealth::Render(const HDC& _hdc)
     CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
     CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
+    // 상호작용
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+        if (m_fStackTime >= m_fCoolTime)
+        {
+            m_fStackTime = 0.f;
+            this->SetDrawID(this->GetDrawID() + 1);
+        }
+
+        CInteractionManager::Render(this);
+    }
+}
+
+CPickUpGrenade::CPickUpGrenade(float _fX, float _fY, float _fWidth, float _fHeight, IMAGE::ID _eID)
+{
+    m_tInfo.vPos = { _fX, _fY, 0.f };
+    m_tInfo.vSize = { _fWidth, _fHeight, 0.f };
+    m_tInfo.vDir = { 1.0f, 0.f, 0.f };
+    m_tInfo.vLook = { 1.f, 0.f, 0.f };
+
+    m_eImageID = _eID;
+    m_pNextState = nullptr;
+    m_pImageSetting = nullptr;
+}
+
+CPickUpGrenade::~CPickUpGrenade()
+{
+    Release();
+}
+
+void CPickUpGrenade::Ready(void)
+{
+    m_iDrawID = 0;
+    m_pImageSetting = make_unique<CImageSetting>(this, "PickUpGrenadeAnimation");
+    if (!m_pImageSetting->Ready())
+        return;
+
+    m_pNextState = new CItemIdleState;
+}
+
+int CPickUpGrenade::Update(float _fDeltaTime)
+{
+    CItemState* pCurState = m_pNextState->Update(this);
+    if (pCurState != nullptr)
+    {
+        Safe_Delete(m_pNextState);
+        m_pNextState = pCurState;
+    }
+
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
+    // Interaction Manager 만들어서 근처에 오면 E누르면 아이템 획득할수 있게하기
+    // 그리고 아이템 획득
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        {
+            int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetBombsCount();
+            if (iCount >= 5)
+            {
+                GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+                GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_full.wav", CSoundManager::EFFECT);
+                return 0 ;
+            }
+
+            GET_SINGLE(CPlayerManager)->GetInventory()->SetBombsCount(iCount + 1);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
+
+        }
+    }
+    return 0;
+}
+
+void CPickUpGrenade::Release(void)
+{
+    Safe_Delete(m_pNextState);
+}
+
+void CPickUpGrenade::Render(const HDC& _hdc)
+{
+    m_pNextState->Render(this);
     // 상호작용
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)

@@ -153,7 +153,13 @@ void CBossHpBar::Render_HpBar(void)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 0, 70));
 
-	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Emoticon", L"Boss", 0);
+	int iDrawID = 0;
+	if (fCurHp < m_pOwner->GetMaxHp() * 0.5f)
+		iDrawID = 1;
+	else 
+		iDrawID = 0;
+
+	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Emoticon", L"Boss", iDrawID);
 	if (nullptr == pTexInfo)
 		return;
 	fCenterX = float(pTexInfo->tImageInfo.Width >> 1);

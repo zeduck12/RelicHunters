@@ -38,7 +38,16 @@ int CShield::Update(float _fDeltaTime )
 	UpdateShieldPos();
 
 	if (m_bIsExplosion == true)
+	{
 		CheckExplosionAnimation();
+
+		if (m_bIsPlayingSFX == false)
+		{
+			m_bIsPlayingSFX = true;
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_shield_destroy.wav", CSoundManager::EFFECT);
+		}
+	}
 
     return 0;
 }
@@ -157,6 +166,7 @@ void CShield::CheckExplosionAnimation(void)
 		m_fCheckTime = 0.f;
 		m_bIsChecking = false;
 		m_bIsExplosion = false;
+		m_bIsPlayingSFX = false;
 	}
 }
 

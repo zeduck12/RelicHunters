@@ -293,6 +293,7 @@ void CPlayer::CheckKeyState(void)
 		m_tInfo.vPos.x -= m_fSpeed;
 		if(m_bIsAttacked == false)
 			SetState(GET_SINGLE(PlayerMoveState));
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_walk1.wav", CSoundManager::PLAYER);
 
 	}
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_D))
@@ -300,18 +301,24 @@ void CPlayer::CheckKeyState(void)
 		m_tInfo.vPos.x += m_fSpeed;
 		if (m_bIsAttacked == false)
 			SetState(GET_SINGLE(PlayerMoveState));
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_walk1.wav", CSoundManager::PLAYER);
+
 	}
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_W))
 	{
 		m_tInfo.vPos.y -= m_fSpeed;
 		if (m_bIsAttacked == false)
 			SetState(GET_SINGLE(PlayerMoveState));
+
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_walk1.wav", CSoundManager::PLAYER);
+
 	}
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_S))
 	{
 		m_tInfo.vPos.y += m_fSpeed;
 		if (m_bIsAttacked == false)
 			SetState(GET_SINGLE(PlayerMoveState));
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_walk1.wav", CSoundManager::PLAYER);
 	}
 
 	// 나중에 크기 * 자전 * 이동 * 공전 * 부모
@@ -361,13 +368,6 @@ void CPlayer::CheckKeyState(void)
 	{
 		if (m_pWeapon->GetCurWeaponID() == GUN::SNIPER)
 		{
-			//m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
-			//if (m_fStackTime >= 0.2f)
-			//{
-			//	m_fStackTime = 0.f;
-			//	// 무기에서 총알 발사
-			//	m_pWeapon->Shoot();
-			//}
 			if (m_bIsAttack == true)
 				return;
 
@@ -383,13 +383,21 @@ void CPlayer::CheckKeyState(void)
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_R))
 	{
 		if (m_pWeapon->ReloadBullets() == true)
+		{
 			m_bIsReloading = true; // 장전중
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::MOUSE);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_reload_loop1.wav", CSoundManager::MOUSE);
+		}
 		
 	}
 
 	// 무기 교체
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_TAB))
+	{
 		GET_SINGLE(CPlayerManager)->GetInventory()->ChangeWeapon();
+		GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_weapon_switch.wav", CSoundManager::EFFECT);
+	}
 
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_RBUTTON)) // 카메라 확대
 	{
@@ -416,6 +424,9 @@ void CPlayer::CheckKeyState(void)
 			,CParticle::DASH, 6, L"Dash", this);
 		pParticle->Ready();
 		GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
+		GET_SINGLE(CSoundManager)->StopSound(CSoundManager::PLAYER);
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_dash1.wav", CSoundManager::PLAYER);
 	}
 
 

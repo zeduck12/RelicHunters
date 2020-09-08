@@ -21,6 +21,10 @@ CLobby::~CLobby()
 
 bool CLobby::Ready(void)
 {
+	//배경음악
+	CSoundManager::Get_Instance()->StopAll();
+	CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_menu.wav");
+
 	// 나중에 버튼 옵션줘서 기능 추가.
 	shared_ptr<CButton> pButton = make_shared<CButton>(50.f, 300.f, 600.f, 52.f, L"Button", BUTTON::START);
 	pButton->Ready();

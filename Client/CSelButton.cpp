@@ -95,6 +95,7 @@ int CSelButton::Update(float _fDeltaTime)
 
 			// 캐릭터 클릭
 			m_bIsClicked = true;
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_click.wav", CSoundManager::BUTTON);
 			// 버튼들을 가져와서
 			for (auto pBtn : m_rMenuScene.GetButtons())
 			{

@@ -243,6 +243,8 @@ bool CMapManager::LoadFile(void)
 			pItem = make_shared<CPickUpShield>(fX, fY, fWidth, fHeight, eID);
 		else if (eID == IMAGE::PICKUP_HEALTH)
 			pItem = make_shared<CPickUpHealth>(fX, fY, fWidth, fHeight, eID);
+		else if(eID == IMAGE::PICKUP_GRENADE)
+			pItem = make_shared<CPickUpGrenade>(fX, fY, fWidth, fHeight, eID);
 
 		pItem->Ready();
 		m_listItems.emplace_back(pItem);

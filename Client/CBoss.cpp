@@ -216,6 +216,9 @@ void CBoss::ShootShotgun(void)
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
 		return;
 
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::MONSTER);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_shotgun.wav", CSoundManager::MONSTER);
+
 	// 슈팅각도 계산
 	float fDeltaX = pPlayer->GetX() - this->GetX();
 	float fDeltaY = pPlayer->GetY() - this->GetY();
@@ -246,6 +249,9 @@ void CBoss::FullRangeAttack(void)
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer)
 		return;
+
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::MONSTER);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_shotgun.wav", CSoundManager::MONSTER);
 
 	// 슈팅각도 계산
 	float fDeltaX = pPlayer->GetX() - this->GetX();

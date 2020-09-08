@@ -90,6 +90,12 @@ void CGrenade::LateUpdate(void)
 				dynamic_cast<CGrenade*>(pGrenade.get())->SetIsCollide(true);
 				m_iCollideCount++;
 				dynamic_cast<CGrenade*>(pGrenade.get())->SetCollideCount(1);
+
+				if (m_iCollideCount <= 3)
+				{
+					GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+					GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_grenade_bounce.wav", CSoundManager::EFFECT);
+				}
 			}
 
 		}
@@ -97,6 +103,13 @@ void CGrenade::LateUpdate(void)
 
 	if (m_iCollideCount >= 3)
 	{
+		if (m_bIsPlayingSFX == false)
+		{
+			m_bIsPlayingSFX = true;
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_grenade_explosion.wav", CSoundManager::EFFECT);
+		}
+
 		// 이안에서의 기간동안 Object들 Damage
 		m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 		m_fBombStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();

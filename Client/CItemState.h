@@ -73,4 +73,6 @@ public:
 	virtual CItemState* Update(CItem * _pItem) override;
 	virtual void Render(CItem * _pItem)		 override;
 
+private:
+	bool m_bIsPlayingSFX = false;
 };

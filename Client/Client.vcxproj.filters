@@ -208,6 +208,9 @@
     <Filter Include="01.CObj\012.Projectile\Bullet\07.Reflect">
       <UniqueIdentifier>{49d63722-77e3-4601-aff0-bfc7394328a9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="97.Manager\SoundManager">
+      <UniqueIdentifier>{ca6b4227-67e6-4cbb-b0a4-0d66436ab5e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -417,6 +420,9 @@
     <ClInclude Include="CReflect.h">
       <Filter>01.CObj\012.Projectile\Bullet\07.Reflect</Filter>
     </ClInclude>
+    <ClInclude Include="CSoundManager.h">
+      <Filter>97.Manager\SoundManager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -601,6 +607,9 @@
     </ClCompile>
     <ClCompile Include="CReflect.cpp">
       <Filter>01.CObj\012.Projectile\Bullet\07.Reflect</Filter>
+    </ClCompile>
+    <ClCompile Include="CSoundManager.cpp">
+      <Filter>97.Manager\SoundManager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

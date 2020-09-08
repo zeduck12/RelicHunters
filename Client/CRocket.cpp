@@ -53,6 +53,8 @@ CRocket::~CRocket()
 
 void CRocket::Ready(void)
 {
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_rocket_loop.wav", CSoundManager::EFFECT);
 }
 
 int CRocket::Update(float _fDeltaTime)
@@ -102,13 +104,20 @@ void CRocket::LateUpdate(void)
 	{
 		// 피격 애니메이션
 		CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
-		pPlayer->SetState(GET_SINGLE(PlayerAttacked));
-		pPlayer->SetIsAttacked(true);
+		if (pPlayer->IsDead() == false)
+		{
+			pPlayer->SetState(GET_SINGLE(PlayerAttacked));
+			pPlayer->SetIsAttacked(true);
+			pPlayer->TakeDamage(m_fDamage);
+		}
 
 		shared_ptr<CObj> pParticle = make_shared<CParticle>(pPlayer->GetX(), pPlayer->GetY(),
 			CParticle::BOMB, 11, L"Bomb");
 		pParticle->Ready();
 		GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
+		GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_grenade_explosion.wav", CSoundManager::EFFECT);
 	}
 
 	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
@@ -126,6 +135,9 @@ void CRocket::LateUpdate(void)
 				CParticle::BOMB, 11, L"Bomb");
 			pParticle->Ready();
 			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_grenade_explosion.wav", CSoundManager::EFFECT);
 		}
 
 	}
@@ -138,6 +150,9 @@ void CRocket::LateUpdate(void)
 				CParticle::BOMB, 11, L"Bomb");
 			pParticle->Ready();
 			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_grenade_explosion.wav", CSoundManager::EFFECT);
 		}
 	}
 	

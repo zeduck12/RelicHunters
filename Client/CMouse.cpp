@@ -9,6 +9,7 @@
 #include "CCameraManager.h"
 #include "CPlayer.h"
 #include "CTimeManager.h"
+#include "CSceneManager.h"
 
 void CMouse::Ready(void)
 {
@@ -69,6 +70,11 @@ int CMouse::Update(float _fDeltaTime)
 
 	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_LBUTTON) && m_bIsReloading == false)
 	{		
+		if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_MENU ||
+			GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_LOBBY)
+		{
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_menu_mouse.wav", CSoundManager::EFFECT);
+		}
 		m_bIsPressing = true;
 	}
 

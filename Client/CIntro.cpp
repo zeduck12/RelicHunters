@@ -19,11 +19,14 @@ CIntro::~CIntro()
 
 bool CIntro::Ready(void)
 {
+	//¹è°æÀ½¾Ç
+	CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_intro.wav");
     return true;
 }
 
 void CIntro::Update(void)
 {
+	
 	if (m_iDrawID >= 11)
 		m_iDrawID = 0;
 

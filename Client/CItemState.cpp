@@ -7,7 +7,8 @@
 #include "CTimeManager.h"
 #include "CGraphicDevice.h"
 #include "CCollisionManager.h"
-
+#include "CInteractionManager.h"
+#include "CKeyManager.h"
 
 CItemState* CItemIdleState::Update(CItem* _pItem)
 {
@@ -38,10 +39,27 @@ CItemState* CItemIdleState::Update(CItem* _pItem)
 			{
 				int iCurCoins = GET_SINGLE(CPlayerManager)->GetInventory()->GetCoins();
 				GET_SINGLE(CPlayerManager)->GetInventory()->SetCoins(iCurCoins + 10);
+				GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+				GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_coin1.wav", CSoundManager::EFFECT);
 			}
 			
 		}
 		
+	}
+	else if(_pItem->GetImageID() == IMAGE::PICKUP_GRENADE || _pItem->GetImageID() == IMAGE::PICKUP_LIGHT ||
+		_pItem->GetImageID() == IMAGE::PICKUP_MEDIUM || _pItem->GetImageID() == IMAGE::PICKUP_HEAVY)
+	{
+		// ±×¸®°í ¾ÆÀÌÅÛ È¹µæ
+		CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+		if (CInteractionManager::InteractPlayerItem(pPlayer, _pItem) == true)
+		{
+			int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetBombsCount();
+			if (_pItem->GetImageID() == IMAGE::PICKUP_GRENADE && iCount >= 5)
+				return nullptr;
+				
+			if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_E))
+				return new CItemStartState;
+		}
 	}
 
 	return nullptr;
@@ -81,7 +99,7 @@ CItemState* CItemStartState::Update(CItem* _pItem)
 
 	pAnimation->ChangeClip("Start");
 
-	m_fCoolTime = 2.f;
+	m_fCoolTime = 1.7f;
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStackTime > m_fCoolTime)
 	{
@@ -183,6 +201,13 @@ CItemState* CItemSpawnState::Update(CItem* _pItem)
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStackTime >= 1.1f)
 		return new CItemIdleState;
+
+	if (m_bIsPlayingSFX == false)
+	{
+		m_bIsPlayingSFX = true;
+		GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_coin1.wav", CSoundManager::EFFECT);
+	}
 
 	return nullptr;
 }

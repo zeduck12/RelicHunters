@@ -69,6 +69,7 @@ public:
     void SetMaxHp(int _iMaxHp) { m_iMaxHp = _iMaxHp; }
 
 private:
+	bool m_bIsPlayingSFX;
 
     int m_iDrawID;
     int m_iCurDrawID;

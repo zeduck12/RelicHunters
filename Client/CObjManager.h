@@ -30,6 +30,7 @@ private:
 	void SceneChange(void);
 	void TestWeapons(void);
 	void DrawLine(void);
+	void PlayBGM(void);
 
 private:
 	list<shared_ptr<CObj>> m_listBullets;

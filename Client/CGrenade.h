@@ -30,14 +30,16 @@ public:
     void MiniJump(void);
 
 private:
+    bool m_bIsPlayingSFX = false;
+
     float m_fAddValue;
     float m_fAddAngle;
     int m_iDrawID;
     float m_fStackTime;
     float m_fBombStackTime;
 
-    int m_iCollideCount;
     bool m_bIsReverse;
+    int m_iCollideCount;
     float m_fRotZAngle;
     float m_fSaveDegree;
 

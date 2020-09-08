@@ -37,6 +37,8 @@ public:
 		{
 			float fCurHp = m_pShield->GetCurShieldHp();
 			m_pShield->SetCurShieldHp(fCurHp - _fHp);
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_shield_hit1.wav", CSoundManager::EFFECT);
 		}
 	}
 	float GetCurHp(void) const { return m_fCurHp; }

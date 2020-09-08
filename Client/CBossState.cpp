@@ -680,6 +680,13 @@ CBossState* BossDashAttack::Update(CBoss* _pBoss)
 
 	pAnimation->ChangeClip("Idle");
 
+	if (m_bIsPlayingSFX == false)
+	{
+		m_bIsPlayingSFX = true;
+		GET_SINGLE(CSoundManager)->StopSound(CSoundManager::MONSTER);
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_dash1.wav", CSoundManager::MONSTER);
+	}
+
 	m_fCoolTime = 1.f;
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStackTime >= m_fCoolTime)

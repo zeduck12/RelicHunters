@@ -21,6 +21,7 @@ public:
 private:
     float m_fDeltaY    = 0.f;
     float m_fStackTime = 0.f;
+    bool m_bIsPlayingBGM = false;
     
 };
 

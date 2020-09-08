@@ -219,6 +219,8 @@ CMonsterState* AttackState::Update(CMonster* _pMonster)
 		if (m_fStackTime >= m_fCoolTime)
 		{
 			m_fStackTime = 0.f;
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::MONSTER);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_kami_dash.wav", CSoundManager::MONSTER);
 			return new IdleState;
 		}
 
@@ -276,6 +278,23 @@ CMonsterState* AttackedState::Update(CMonster* _pMonster)
 		_pMonster->DropItems();
 		_pMonster->SetIsDead(true);
 		_pMonster->KnockBack();
+
+		if (_pMonster->GetImageID() == IMAGE::DUCK)
+		{
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_duck_death.wav", CSoundManager::EFFECT);
+		}
+		else if (_pMonster->GetImageID() == IMAGE::TURTLE)
+		{
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_turtle_death.wav", CSoundManager::EFFECT);
+		}
+		else
+		{
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_kami_death.wav", CSoundManager::EFFECT);
+		}
+
 		return new DeathState;
 	}
 
@@ -331,6 +350,8 @@ CMonsterState* FlyState::Update(CMonster* _pMonster)
 	if (m_fStackTime >= m_fCoolTime)
 	{
 		dynamic_cast<CMonster*>(_pMonster)->SetGap(dynamic_cast<CMonster*>(_pMonster)->GetOldPos() - _pMonster->GetInfo()->vPos);
+		GET_SINGLE(CSoundManager)->StopSound(CSoundManager::MONSTER);
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_kami_fly.wav", CSoundManager::MONSTER);
 		return new PatrolState;
 	}
 

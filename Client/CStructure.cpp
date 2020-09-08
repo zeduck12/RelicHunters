@@ -11,6 +11,7 @@ CStructure::CStructure(D3DXVECTOR3 _vPos, D3DXVECTOR3 _vSize, D3DXVECTOR3 _vImag
 	m_iDrawID{ _iDrawID },
 	m_strStateKey{ L"" }
 {
+	m_bIsPlayingSFX = false;
 	m_iMaxHp = 200;
 	m_iCurHp = m_iMaxHp;
 	m_iCurDrawID = 0;
@@ -103,7 +104,17 @@ void CStructure::LateUpdate(void)
 	}
 
 	if (m_iCurHp >= m_iMaxHp * 0.8f && m_iMaxHp * 0.85f >= m_iCurHp)
+	{
+
 		m_iCurDrawID += 1;
+
+		if (m_bIsPlayingSFX == false)
+		{
+			m_bIsPlayingSFX = true;
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::STRUCTURE);
+			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_debris1.wav", CSoundManager::STRUCTURE);
+		}
+	}
 
 }
 

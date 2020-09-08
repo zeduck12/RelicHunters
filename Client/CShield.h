@@ -44,6 +44,7 @@ private:
 
     float m_fShieldCurHp;
     float m_fShieldMaxHp;
+    bool  m_bIsPlayingSFX = false;
 
     D3DXVECTOR3 m_vRotVertex[4];
     D3DXVECTOR3 m_vRealVertex[4];

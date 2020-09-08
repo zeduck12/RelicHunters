@@ -204,6 +204,7 @@
     <ClInclude Include="CShield.h" />
     <ClInclude Include="CShotGun.h" />
     <ClInclude Include="CSingleTexture.h" />
+    <ClInclude Include="CSoundManager.h" />
     <ClInclude Include="CStatBox.h" />
     <ClInclude Include="CStatBoxButton.h" />
     <ClInclude Include="CStructure.h" />
@@ -273,6 +274,7 @@
     <ClCompile Include="CShield.cpp" />
     <ClCompile Include="CShotGun.cpp" />
     <ClCompile Include="CSingleTexture.cpp" />
+    <ClCompile Include="CSoundManager.cpp" />
     <ClCompile Include="CStatBox.cpp" />
     <ClCompile Include="CStatBoxButton.cpp" />
     <ClCompile Include="CStructure.cpp" />

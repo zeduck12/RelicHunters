@@ -22,6 +22,12 @@ bool CLogo::Ready(void)
 
 void CLogo::Update(void)
 {
+	if (m_bIsPlayingBGM == false)
+	{
+		m_bIsPlayingBGM = true;
+		CSoundManager::Get_Instance()->PlaySound((TCHAR*)L"sfx_relic_on.wav", CSoundManager::EFFECT);
+	}
+
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_SPACE))
 	{
 		// ¿Œ∆Æ∑Œ
