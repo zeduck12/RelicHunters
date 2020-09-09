@@ -33,6 +33,7 @@ public:
 	bool IsDetectPlayerBossVersion(void);
 	bool IsInAttackRangePlayerBossVersion(void);
 	void ShowBossSpectrum(void);
+	void InstallGenerators(void);
 
 private:
 	bool m_bIsCrack;

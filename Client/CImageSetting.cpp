@@ -97,6 +97,17 @@ bool CImageSetting::Ready(void)
         m_pOwner->AddAnimationClip("Spawn", ANIMATION::LOOP, 1.1f, 11, 0, 11, 0.f, L"Teleporter", L"Spawn", L"../Texture/Teleporter/Spawn/spr_teleporter_spawn_%d.png");
         m_pOwner->AddAnimationClip("Effect", ANIMATION::LOOP, 1.7f, 17, 0, 17, 0.f, L"Teleporter", L"Effect", L"../Texture/Teleporter/Effect/spr_teleporter_fx_%d.png");
         break;
+    case IMAGE::GENERATOR:
+        m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 1.6f, 16, 0, 16, 0.f, L"Generator", L"Idle", L"../Texture/Monster/Generator/Idle/spr_generator_%d.png");
+        m_pOwner->AddAnimationClip("Spawn", ANIMATION::LOOP, 1.8f, 18, 0, 18, 0.f, L"Generator", L"Spawn", L"../Texture/Monster/Generator/Spawn/spr_generatorActivation_%d.png");
+        m_pOwner->AddAnimationClip("Attacked", ANIMATION::LOOP, 0.2f, 2, 0, 2, 0.f, L"Generator", L"Attacked", L"../Texture/Monster/Generator/Attacked/spr_generator_hit_%d.png");
+        m_pOwner->AddAnimationClip("Death", ANIMATION::LOOP, 0.1f, 1, 0, 1, 0.f, L"Generator", L"Death", L"../Texture/Monster/Generator/Death/spr_generatorOff_%d.png");
+        break;
+    case IMAGE::KAMIKAZE_CAGE:
+        m_pOwner->AddAnimationClip("Idle", ANIMATION::LOOP, 1.2f, 12, 0, 12, 0.f, L"kamikazeCage", L"Idle", L"../Texture/Monster/KamikazeCage/Idle/spr_cage1_%d.png");
+        m_pOwner->AddAnimationClip("Attacked", ANIMATION::LOOP, 0.1f, 1, 0, 1, 0.f, L"kamikazeCage", L"Attacked", L"../Texture/Monster/KamikazeCage/Attacked/spr_cage1_hit_%d.png");
+        m_pOwner->AddAnimationClip("Death", ANIMATION::LOOP, 1.f, 10, 0, 10, 0.f, L"kamikazeCage", L"Death", L"../Texture/Monster/KamikazeCage/Death/spr_cage_destroy_%d.png");
+        break;
     }
           
     return true;

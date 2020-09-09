@@ -33,6 +33,9 @@ public:
 	// CBossState을(를) 통해 상속됨
 	virtual CBossState* Update(CBoss* _pBoss) override;
 	virtual void Render(CBoss* _pBoss) override;
+
+private:
+	bool m_bIsInstall = false;
 };
 
 class EggStartState : public CBossState

@@ -14,6 +14,7 @@
 #include "CSceneManager.h"
 #include "UICameraManager.h"
 #include "CHologram.h"
+#include "CKamikazeCage.h"
 
 DEFINITION_SINGLETON(CObjManager)
 
@@ -71,7 +72,16 @@ bool CObjManager::Ready(void)
 	pHologram->Ready();
 	m_listHolograms.emplace_back(pHologram);
 
+
+	//shared_ptr<CObj> pMonster = make_shared<CKamikazeCage>(
+	//	800.f,
+	//	756.f,
+	//	50.f, 50.f);
+	//pMonster->Ready();
+	//GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
+
 	PlayBGM();
+	SpawnKamikazeCage();
 
 	return true;
 }
@@ -89,7 +99,6 @@ void CObjManager::Update(void)
 	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Update(); } }
 	for (auto& pParticle : m_listParticles) { DO_IF_IS_VALID_OBJ(pParticle) { pParticle->Update(); } }
 	for (auto& pHologram : m_listHolograms) { DO_IF_IS_VALID_OBJ(pHologram) { pHologram->Update(); } }
-
 
 	InstallTeleporter();
 	SceneChange(); // Scene Ã¼ÀÎÁö
@@ -334,6 +343,27 @@ void CObjManager::PlayBGM(void)
 		CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_main.wav");
 	}
 }
+
+void CObjManager::SpawnKamikazeCage(void)
+{
+	if (GET_SINGLE(CSceneManager)->GetNextSceneID() != CSceneManager::SCENE_GAME3)
+		return;
+
+	shared_ptr<CObj> pMonster = make_shared<CKamikazeCage>(
+		1669.f,
+		756.f,
+		50.f, 50.f);
+	pMonster->Ready();
+	GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
+
+	pMonster = make_shared<CKamikazeCage>(
+		1840.f,
+		2823.f,
+		50.f, 50.f);
+	pMonster->Ready();
+	GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
+}
+
 
 void CObjManager::Release(void)
 {

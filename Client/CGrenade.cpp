@@ -40,7 +40,7 @@ CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float
 
 	m_fGravity = 0.f;
 	m_fJumpPower = 0.f;
-	m_fJumpPowerOrigin = 4.f;
+	m_fJumpPowerOrigin = 3.5f;
 
 	m_eDir = DIRECTION::END;
 

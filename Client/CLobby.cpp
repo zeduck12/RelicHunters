@@ -101,8 +101,6 @@ void CLobby::LateUpdate(void)
 
 void CLobby::Render(const HDC& _hdc)
 {
-	//GET_SINGLE(CGraphicDevice)->RenderBegin();
-
 	DrawMainBackGround();
 	DrawMainBackGround2();
 	for (auto& pStar : m_listStars) { DO_IF_IS_VALID_OBJ(pStar) { pStar->Render(_hdc); } }
@@ -111,9 +109,6 @@ void CLobby::Render(const HDC& _hdc)
 	DrawLogoBox();
 	DrawLogo();
 	DrawZueira();
-
-	//GET_SINGLE(CGraphicDevice)->GetSprite()->End();
-	//GET_SINGLE(CGraphicDevice)->RenderEnd();
 }
 
 void CLobby::Release(void)

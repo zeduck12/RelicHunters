@@ -31,6 +31,7 @@ private:
 	void TestWeapons(void);
 	void DrawLine(void);
 	void PlayBGM(void);
+	void SpawnKamikazeCage(void);
 
 private:
 	list<shared_ptr<CObj>> m_listBullets;

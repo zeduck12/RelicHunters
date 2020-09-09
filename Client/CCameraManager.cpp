@@ -73,6 +73,12 @@ void CCameraManager::Update(void)
 	// 카메라 축소
 	if (m_bIsReduceScale)
 		ToReduceScale();
+
+
+	if (m_bIsEnlargeScaleDash)
+		ToEnlargeScaleDash();
+	if (m_bIsReduceScaleDash)
+		ToReduceScaleDash();
 }
 
 void CCameraManager::LateUpdate(void)
@@ -135,6 +141,28 @@ void CCameraManager::ToReduceScale(void)
 	if (m_fScale <= 1.f)
 	{
 		m_bIsReduceScale = false;
+		return;
+	}
+
+	m_fScale -= 0.1f;
+}
+
+void CCameraManager::ToEnlargeScaleDash(void)
+{
+	if (m_fScale >= 1.2f || m_bIsPressingDash == false)
+	{
+		m_bIsEnlargeScaleDash = false;
+		return;
+	}
+
+	m_fScale += 0.1f;
+}
+
+void CCameraManager::ToReduceScaleDash(void)
+{
+	if (m_fScale <= 1.f)
+	{
+		m_bIsReduceScaleDash = false;
 		return;
 	}
 

@@ -211,6 +211,12 @@
     <Filter Include="97.Manager\SoundManager">
       <UniqueIdentifier>{ca6b4227-67e6-4cbb-b0a4-0d66436ab5e6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\020.Generator">
+      <UniqueIdentifier>{97b7152f-29ab-41aa-939d-bb951bd12e0a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\021.KamikazeCage">
+      <UniqueIdentifier>{e4096ad8-efa2-48b6-a798-3a6fd4ecdc55}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -423,6 +429,12 @@
     <ClInclude Include="CSoundManager.h">
       <Filter>97.Manager\SoundManager</Filter>
     </ClInclude>
+    <ClInclude Include="CGenerator.h">
+      <Filter>01.CObj\020.Generator</Filter>
+    </ClInclude>
+    <ClInclude Include="CKamikazeCage.h">
+      <Filter>01.CObj\021.KamikazeCage</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -610,6 +622,12 @@
     </ClCompile>
     <ClCompile Include="CSoundManager.cpp">
       <Filter>97.Manager\SoundManager</Filter>
+    </ClCompile>
+    <ClCompile Include="CGenerator.cpp">
+      <Filter>01.CObj\020.Generator</Filter>
+    </ClCompile>
+    <ClCompile Include="CKamikazeCage.cpp">
+      <Filter>01.CObj\021.KamikazeCage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

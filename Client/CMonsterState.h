@@ -108,3 +108,14 @@ public:
 	virtual void Render(CMonster * _pMonster)				  override;
 
 };
+
+class SpawnState : public CMonsterState
+{
+public:
+	SpawnState() = default;
+	virtual ~SpawnState() {}
+
+public:
+	virtual CMonsterState* Update(CMonster * _pMonster)		  override;
+	virtual void Render(CMonster * _pMonster)				  override;
+};

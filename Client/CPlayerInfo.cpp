@@ -37,7 +37,14 @@ void CPlayerInfo::Render(void)
 
 void CPlayerInfo::DrawCharacterEmoticon(void)
 {
-	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Emoticon", m_strCharacterName, 0);
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer());
+	int iDrawID = 0;
+	if(pPlayer->GetCurHp() <= 100.f)
+		iDrawID = 1;
+	else
+		iDrawID = 0;
+
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Emoticon", m_strCharacterName, iDrawID);
 	if (nullptr == pTexInfo)
 		return;
 	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);

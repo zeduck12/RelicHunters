@@ -6,6 +6,7 @@
 #include "CTimeManager.h"
 #include "CShadow.h"
 #include "CPlayerManager.h"
+#include "CObjManager.h"
 
 CBossState* EggIdleState::Update(CBoss* _pBoss)
 {
@@ -16,7 +17,16 @@ CBossState* EggIdleState::Update(CBoss* _pBoss)
 	pAnimation->ChangeClip("EggIdle");
 
 	if (_pBoss->IsDetectPlayer() == true)
-		return new EggStartState;
+	{
+		if (m_bIsInstall == false)
+		{
+			m_bIsInstall = true;
+			_pBoss->InstallGenerators();
+		}
+
+		if(GET_SINGLE(CObjManager)->GetMonsters().size() == 1)
+			return new EggStartState;
+	}
 
 	return nullptr;
 }
@@ -235,13 +245,13 @@ CBossState* BossMoveState::Update(CBoss* _pBoss)
 		}
 		else
 		{
-			int iRandNum = rand() % 3 + 1;
+			int iRandNum = rand() % 4 + 1;
 			if (iRandNum == 1)
 				return new BossRapidAttack;
 			else if(iRandNum == 2)
-				return new BossRocketAttackState;
-			else
 				return new BossRandomAttackState;
+			else
+				return new BossRocketAttackState;
 		}
 
 	}

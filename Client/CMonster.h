@@ -24,6 +24,7 @@ public:
 	bool IsDied(void) { return m_fCurHp <= 0.f; }
 	void TakeDamage(float _fDamage) { m_fCurHp -= _fDamage; }
 	bool IsDetectPlayer(void);
+	bool IsDetectPlayerWideVer(void);
 	bool IsInAttackRangePlayer(void);
 	void CollidePlayer(void);
 	void UpdateMonsterDirection(void);
@@ -116,14 +117,14 @@ protected:
     D3DXVECTOR3 m_vRealVertex[3];
 	// 이미지 셋팅
 	unique_ptr<CImageSetting> m_pImageSetting = nullptr;
+	// State 담는 변수
+	CMonsterState* m_pNextState = nullptr;
 private:
 	bool  m_bIsFlying;
 
 	D3DXVECTOR3 m_vOldPos;
 	D3DXVECTOR3 m_vGap;
 
-	// State 담는 변수
-	CMonsterState* m_pNextState = nullptr;
 
 };
 

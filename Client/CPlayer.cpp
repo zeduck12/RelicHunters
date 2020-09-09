@@ -420,6 +420,8 @@ void CPlayer::CheckKeyState(void)
 		m_bIsDash = true;
 		m_fDashCurHp -= 50.f;
 
+		GET_SINGLE(CCameraManager)->SetIsPressingDash(true);
+		GET_SINGLE(CCameraManager)->SetIsEnlargeScaleDash(true);
 		shared_ptr<CObj> pParticle = make_shared<CParticle>(this->GetX(), this->GetY()
 			,CParticle::DASH, 6, L"Dash", this);
 		pParticle->Ready();
@@ -429,6 +431,11 @@ void CPlayer::CheckKeyState(void)
 		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_dash1.wav", CSoundManager::PLAYER);
 	}
 
+	if (GET_SINGLE(CKeyManager)->Key_UP(KEY_SHIFT)) // 카메라 축소
+	{
+		GET_SINGLE(CCameraManager)->SetIsPressingDash(false);
+		GET_SINGLE(CCameraManager)->SetIsReduceScaleDash(true);
+	}
 
 
 	// Test용

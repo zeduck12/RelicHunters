@@ -15,6 +15,7 @@
 #include "CMapManager.h"
 #include "UICameraManager.h"
 #include "CBossHpBar.h"
+#include "CGenerator.h"
 
 CBoss::CBoss(float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed, float _fHp, IMAGE::ID _eID)
 	:
@@ -153,17 +154,17 @@ void CBoss::Render(const HDC& _hdc)
 	if(m_bIsCrack == true)
 		EquipWeapon(); // ÃÑ ÀåÂø
 
-	// »ï°¢Çü ±×¸®±â
-	MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-	for (int i = 1; i < 3; i++)
-		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
+	//// »ï°¢Çü ±×¸®±â
+	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
+	//for (int i = 1; i < 3; i++)
+	//	LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
+	//LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
 
 
-	// ºä Æ÷ÀÎÆ®
-	RECT rcEllipse = { LONG(m_vRealVertex[0].x - 10), LONG(m_vRealVertex[0].y - 10),
-		LONG(m_vRealVertex[0].x + 10) , LONG(m_vRealVertex[0].y + 10) };
-	Ellipse(_hdc, rcEllipse.left, rcEllipse.top, rcEllipse.right, rcEllipse.bottom);
+	//// ºä Æ÷ÀÎÆ®
+	//RECT rcEllipse = { LONG(m_vRealVertex[0].x - 10), LONG(m_vRealVertex[0].y - 10),
+	//	LONG(m_vRealVertex[0].x + 10) , LONG(m_vRealVertex[0].y + 10) };
+	//Ellipse(_hdc, rcEllipse.left, rcEllipse.top, rcEllipse.right, rcEllipse.bottom);
 }
 
 void CBoss::Release(void)
@@ -419,6 +420,38 @@ void CBoss::ShowBossSpectrum(void)
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 255, 255, 255));
 	}
+}
+
+void CBoss::InstallGenerators(void)
+{
+	shared_ptr<CObj> pMonster = make_shared<CGenerator>(
+		1219.f,
+		1290.f,
+		50.f, 50.f);
+	pMonster->Ready();
+	GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
+
+	pMonster = make_shared<CGenerator>(
+		1905.f,
+		1266.f,
+		50.f, 50.f);
+	pMonster->Ready();
+	GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
+
+	pMonster = make_shared<CGenerator>(
+		1261.f,
+		2140.f,
+		50.f, 50.f);
+	pMonster->Ready();
+	GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
+
+	pMonster = make_shared<CGenerator>(
+		1950.f,
+		2172.f,
+		50.f, 50.f);
+	pMonster->Ready();
+	GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
+
 }
 
 bool CBoss::IsDetectPlayerBossVersion(void)

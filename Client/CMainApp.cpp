@@ -46,7 +46,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_TEST);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
 }
 
 void CMainApp::Update()
@@ -192,6 +192,25 @@ void CMainApp::SetImages(void)
 		return;
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Boss/Death/spr_boss_death_%d.png", L"Boss", L"Death", 13))
 		return;
+
+	// Generator
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Generator/Idle/spr_generator_%d.png", L"Generator", L"Idle", 16))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Generator/Spawn/spr_generatorActivation_%d.png", L"Generator", L"Spawn", 18))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Generator/Attacked/spr_generator_hit_%d.png", L"Generator", L"Attacked", 2))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/Generator/Death/spr_generatorOff_%d.png", L"Generator", L"Death", 1))
+		return;
+
+	// Cage
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/KamikazeCage/Idle/spr_cage1_%d.png", L"KamikazeCage", L"Idle", 12))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/KamikazeCage/Attacked/spr_cage1_hit_%d.png", L"KamikazeCage", L"Attacked", 1))
+		return;
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Monster/KamikazeCage/Death/spr_cage_destroy_%d.png", L"KamikazeCage", L"Death", 10))
+		return;
+
 
 	// Weapon
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Weapon/Boss/spr_boss_gun_%d.png", L"Weapon", L"Boss", 3))

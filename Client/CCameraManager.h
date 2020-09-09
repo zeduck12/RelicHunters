@@ -28,10 +28,23 @@ public:
 	void SetIsEnlargeScale(bool _bIsEnLarge) { m_bIsEnlargeScale = _bIsEnLarge; }
 	void SetIsShooting(bool _bIsShooting) { m_bIsShooting = _bIsShooting; }
 
+	// 데시 전용
+	bool IsPressingDash(void) const { return m_bIsPressingDash; }
+	bool IsReduceScaleDash(void) const { return m_bIsReduceScaleDash; }
+	bool IsEnlargeScaleDash(void) const { return m_bIsEnlargeScaleDash; }
+
+	void SetIsPressingDash(bool _bIsPressing) { m_bIsPressingDash = _bIsPressing; }
+	void SetIsReduceScaleDash(bool _bIsReduce) { m_bIsReduceScaleDash = _bIsReduce; }
+	void SetIsEnlargeScaleDash(bool _bIsEnLarge) { m_bIsEnlargeScaleDash = _bIsEnLarge; }
+
 public:
 	// Scale 관련
 	void ToEnlargeScale(void);  // 확대
 	void ToReduceScale(void);	// 축소
+
+	void ToEnlargeScaleDash(void);  // 확대
+	void ToReduceScaleDash(void);	// 축소
+
 public:
 
 	void MoveCameraToFreeSpace(void);  // 조금더 카메라 움직이게
@@ -59,6 +72,10 @@ private:
 	bool m_bIsReduceScale;
 	bool m_bIsPressing;
 
+
+	bool m_bIsEnlargeScaleDash;
+	bool m_bIsReduceScaleDash;
+	bool m_bIsPressingDash;
 
 };
 

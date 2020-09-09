@@ -155,17 +155,17 @@ void CMonster::Render(const HDC& _hdc)
 	if(m_eImageID != IMAGE::KAMIKAZE && m_eImageID != IMAGE::KAMIKAZE_FLY && m_bIsDead == false)
 		EquipWeapon(); // 총 장착
 
-	// 삼각형 그리기
-	MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-	for (int i = 1; i < 3; i++)
-		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
-	
+	//// 삼각형 그리기
+	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
+	//for (int i = 1; i < 3; i++)
+	//	LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
+	//LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
+	//
 
-	// 뷰 포인트
-	RECT rcEllipse = { LONG(m_vRealVertex[0].x - 10), LONG(m_vRealVertex[0].y - 10),
-		LONG(m_vRealVertex[0].x + 10) , LONG(m_vRealVertex[0].y + 10 )};
-	Ellipse(_hdc, rcEllipse.left, rcEllipse.top, rcEllipse.right, rcEllipse.bottom);
+	//// 뷰 포인트
+	//RECT rcEllipse = { LONG(m_vRealVertex[0].x - 10), LONG(m_vRealVertex[0].y - 10),
+	//	LONG(m_vRealVertex[0].x + 10) , LONG(m_vRealVertex[0].y + 10 )};
+	//Ellipse(_hdc, rcEllipse.left, rcEllipse.top, rcEllipse.right, rcEllipse.bottom);
 
 
 }
@@ -180,6 +180,24 @@ bool CMonster::IsInAttackRangePlayer(void)
 			pPlayer->GetX() < this->GetX() + cfMonsterAttackRange &&
 			pPlayer->GetY() > this->GetY() - cfMonsterAttackRange &&
 			pPlayer->GetY() < this->GetY() + cfMonsterAttackRange)
+		{
+			return true;
+		}
+	}
+
+	return false;
+}
+
+bool CMonster::IsDetectPlayerWideVer(void)
+{
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_VALID_OBJ(pPlayer)
+	{
+		// 범위내에 플레이어가 있다면 true or 없다면 false.
+		if (pPlayer->GetX() > this->GetX() - 1000.f &&
+			pPlayer->GetX() < this->GetX() + 1000.f &&
+			pPlayer->GetY() > this->GetY() - 1000.f &&
+			pPlayer->GetY() < this->GetY() + 1000.f)
 		{
 			return true;
 		}

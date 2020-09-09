@@ -166,6 +166,7 @@
     <ClInclude Include="CEnd.h" />
     <ClInclude Include="CEnemyManager.h" />
     <ClInclude Include="CGame.h" />
+    <ClInclude Include="CGenerator.h" />
     <ClInclude Include="CGraphicDevice.h" />
     <ClInclude Include="CGrenade.h" />
     <ClInclude Include="CHologram.h" />
@@ -175,6 +176,7 @@
     <ClInclude Include="CInventory.h" />
     <ClInclude Include="CItem.h" />
     <ClInclude Include="CItemState.h" />
+    <ClInclude Include="CKamikazeCage.h" />
     <ClInclude Include="CKeyManager.h" />
     <ClInclude Include="Client.h" />
     <ClInclude Include="CLobby.h" />
@@ -237,6 +239,7 @@
     <ClCompile Include="CEnd.cpp" />
     <ClCompile Include="CEnemyManager.cpp" />
     <ClCompile Include="CGame.cpp" />
+    <ClCompile Include="CGenerator.cpp" />
     <ClCompile Include="CGraphicDevice.cpp" />
     <ClCompile Include="CGrenade.cpp" />
     <ClCompile Include="CHologram.cpp" />
@@ -246,6 +249,7 @@
     <ClCompile Include="CInventory.cpp" />
     <ClCompile Include="CItem.cpp" />
     <ClCompile Include="CItemState.cpp" />
+    <ClCompile Include="CKamikazeCage.cpp" />
     <ClCompile Include="CKeyManager.cpp" />
     <ClCompile Include="Client.cpp" />
     <ClCompile Include="CLobby.cpp" />
