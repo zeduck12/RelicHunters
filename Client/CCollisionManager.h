@@ -10,7 +10,6 @@ public:
 	static bool CollideGrenade(CObj* _pDstObj, CObj* _SrcObj);				 // Object와 총알충돌 
 	static bool CollideTileBullet(TILE* _pTile, CObj* _SrcObj);				 // Tile관 총알충돌
 	static bool CollideTileCasing(TILE* _pTile, CObj* _SrcObj);				 // Tile과 탄피충돌
-	static bool CollideTileGrenade(TILE* _pTile, CObj* _SrcObj);			 // Tile과 수류탄충돌
 	static bool CollidePlayerMonster(CObj* _pDstObj, CObj* _SrcObj);		 // 플레이어와 몬스터 충돌
 	static bool CollideWallGrenade(CObj* _pDstObj, CObj* _SrcObj);			 // 벽과 수류탄
 	static bool CollideLineToLine(LINEINFO& _DstLine, LINEINFO& _SrcLine);	 // 선과 선 충돌

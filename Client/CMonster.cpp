@@ -126,7 +126,7 @@ void CMonster::LateUpdate(void)
 				{
 					pRealPlayer->SetState(GET_SINGLE(PlayerAttacked));
 					pRealPlayer->SetIsAttacked(true);
-					pRealPlayer->TakeDamage(15.f);
+					pRealPlayer->TakeDamage(1.5f);
 				}
 			}
 
@@ -166,8 +166,6 @@ void CMonster::Render(const HDC& _hdc)
 	//RECT rcEllipse = { LONG(m_vRealVertex[0].x - 10), LONG(m_vRealVertex[0].y - 10),
 	//	LONG(m_vRealVertex[0].x + 10) , LONG(m_vRealVertex[0].y + 10 )};
 	//Ellipse(_hdc, rcEllipse.left, rcEllipse.top, rcEllipse.right, rcEllipse.bottom);
-
-
 }
 
 bool CMonster::IsInAttackRangePlayer(void)
@@ -194,10 +192,10 @@ bool CMonster::IsDetectPlayerWideVer(void)
 	DO_IF_IS_VALID_OBJ(pPlayer)
 	{
 		// 범위내에 플레이어가 있다면 true or 없다면 false.
-		if (pPlayer->GetX() > this->GetX() - 1000.f &&
-			pPlayer->GetX() < this->GetX() + 1000.f &&
-			pPlayer->GetY() > this->GetY() - 1000.f &&
-			pPlayer->GetY() < this->GetY() + 1000.f)
+		if (pPlayer->GetX() > this->GetX() - 600.f &&
+			pPlayer->GetX() < this->GetX() + 600.f &&
+			pPlayer->GetY() > this->GetY() - 600.f &&
+			pPlayer->GetY() < this->GetY() + 600.f)
 		{
 			return true;
 		}
@@ -328,7 +326,7 @@ void CMonster::DropItems(void)
 {
 	// 코인 드랍되게
 	float fRandom = 0.f;
-	int iCount = GetNumberMinBetweenMax(1, 3);
+	int iCount = int(GetNumberMinBetweenMax(1, 3));
 
 	for (int i = 0; i < iCount; i++)
 	{

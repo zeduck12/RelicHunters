@@ -43,6 +43,7 @@ CShotGun::CShotGun(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fAddDegree, f
 	m_eObjID = _eID;
 	m_strBulletName = _strBulletName;
 	m_fStackTime = 0.f;
+	m_fDamage = 10.f;
 }
 
 CShotGun::~CShotGun()

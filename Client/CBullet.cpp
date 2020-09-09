@@ -166,6 +166,9 @@ void CBullet::LateUpdate()
 	// °øÅë
 	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
 	{
+		if (m_strBulletName == L"SonicBoom")
+			continue;
+
 		CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 		if (pObj->GetInfo()->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pObj->GetInfo()->vPos.x ||
 			pObj->GetInfo()->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pObj->GetInfo()->vPos.y)

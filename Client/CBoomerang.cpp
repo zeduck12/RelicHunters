@@ -49,6 +49,7 @@ CBoomerang::CBoomerang(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed,
 
 	m_eObjID = _eID;
 	m_strBulletName = _strBulletName;
+	m_fDamage = 30.f;
 }
 
 CBoomerang::~CBoomerang()
@@ -175,7 +176,7 @@ void CBoomerang::LateUpdate(void)
 
 void CBoomerang::Render(const HDC& _hdc)
 {
-	Ellipse(_hdc, GetLeft(), GetTop(), GetRight(), GetBottom());
+	//Ellipse(_hdc, GetLeft(), GetTop(), GetRight(), GetBottom());
 
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", m_strBulletName, 5);
 	if (nullptr == pTexInfo)

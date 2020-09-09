@@ -124,7 +124,7 @@ bool CAnimation::AddClip(const string& strName, ANIMATION::OPTION eOption, float
 	pClip->fOptionLimitTime = fOptionLimitTime;
 	pClip->fAnimationFrameTime = fAnimationLimitTime / iLength; // 한사진당 머무르는 시간.
 
-	if (E_FAIL == FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, pFilePath, strObjectKey, strStateKey, iLength)))
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, pFilePath, strObjectKey, strStateKey, iLength)))
 		return false;
 
 	const vector<TEXINFO*> vecTexture = CTextureManager::Get_Instance()->GetVecTextureInfo(strObjectKey, strStateKey);

@@ -46,7 +46,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_MENU);
 }
 
 void CMainApp::Update()

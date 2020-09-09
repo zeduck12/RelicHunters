@@ -115,7 +115,6 @@ void CObjManager::LateUpdate(void)
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->LateUpdate(); } }
 	for (auto& pHologram : m_listHolograms) { DO_IF_IS_VALID_OBJ(pHologram) { pHologram->LateUpdate(); } }
 
-
 	// 만약에 오브젝트들이 무효하면 없애주기.
 	CollectGarbageObjects(m_listBullets);
 	CollectGarbageObjects(m_listGrenades);
@@ -147,7 +146,8 @@ void CObjManager::Render(const HDC& _hdc)
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }
 	for (auto& pParticle : m_listParticles) { DO_IF_IS_VALID_OBJ(pParticle) { pParticle->Render(_hdc); } }
 	for (auto& pHologram : m_listHolograms) { DO_IF_IS_VALID_OBJ(pHologram) { pHologram->Render(_hdc); } }
-	
+
+
 	// 카메라 움직임 결과
 	D3DXMATRIX matWorld = GET_SINGLE(CCameraManager)->GetWorldD3DMatrix();
 	GET_SINGLE(CGraphicDevice)->GetDevice()->SetTransform(D3DTS_WORLD, &matWorld);	

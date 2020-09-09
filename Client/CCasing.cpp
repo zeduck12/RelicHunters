@@ -260,7 +260,7 @@ void CCasing::Reflection(void)
 	m_vShadowPos.x += cosf(D3DXToRadian(m_fReflectDegree)) * m_fReflectValue * 1.7f;
 	m_vShadowPos.y += sinf(D3DXToRadian(m_fReflectDegree)) * m_fReflectValue * 0.8f;
 
-	m_fReflectValue -= 0.1;
+	m_fReflectValue -= 0.1f;
 	m_tInfo.vPos.y += m_fSpeed;
 	//m_vShadowPos.y += m_fSpeed;
 }

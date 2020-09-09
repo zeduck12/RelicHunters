@@ -50,8 +50,6 @@ bool CCollisionManager::CollideGrenade(CObj* _pDstObj, CObj* _SrcObj)
 
 	if (IntersectRect(&rc, &rcDst, &rcSrc) == TRUE)
 	{
-		////_pDstObj->SetIsValid(false);
-		//_SrcObj->SetIsValid(false);
 		return true;
 	}
 
@@ -114,35 +112,7 @@ bool CCollisionManager::CollideTileCasing(TILE* _pTile, CObj* _SrcObj)
 
 	return false;
 }
-bool CCollisionManager::CollideTileGrenade(TILE* _pTile, CObj* _SrcObj)
-{
-	DO_IF_IS_NOT_VALID_OBJ(_SrcObj)
-		return false;
 
-	CGrenade* pCasing = dynamic_cast<CGrenade*>(_SrcObj);
-
-	float fTileX = _pTile->vPos.x;
-	float fTileY = _pTile->vPos.y;
-
-	RECT rcDst =
-	{
-		LONG(_pTile->vPos.x - (128.f * 0.5f)),
-		LONG(_pTile->vPos.y - (128.f * 0.5f)),
-		LONG(_pTile->vPos.x + (128.f * 0.5f)),
-		LONG(_pTile->vPos.y + (128.f * 0.5f))
-	};
-	RECT rcSrc = _SrcObj->GetRect(); // 몬스터
-	RECT rc = {};
-	if (IntersectRect(&rc, &rcSrc, &rcDst) == TRUE)
-	{
-		// 반사각으로 팅겨내기
-		float fIncidenceDegree = pCasing->GetIncidenceDegree();
-		float fReflectDegree = 180.f - fIncidenceDegree;
-		//pCasing->SetGravity(0.f);
-		return true;
-	}
-	return false;
-}
 // 플레이어와 몬스터
 bool CCollisionManager::CollidePlayerMonster(CObj* _pDstObj, CObj* _SrcObj)
 {
@@ -214,8 +184,6 @@ bool CCollisionManager::CollideWallGrenade(CObj* _pDstObj, CObj* _SrcObj)
 			
 			dynamic_cast<CGrenade*>(_SrcObj)->SetIsCollide(true);
 		}
-		// 수류탄이 벽의 상단에 부딫힐 때
-		// 수류탄이 벽의 하단에 부딫힐 때
 		return true;
 	}
 
@@ -493,6 +461,7 @@ bool CCollisionManager::CollideReflectWall(TILE* _pTile, CObj* _SrcObj)
 
 	return false;
 }
+
 
 CCollisionManager::~CCollisionManager()
 {

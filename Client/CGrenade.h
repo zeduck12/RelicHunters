@@ -19,8 +19,8 @@ public:
     void  SetIncidenceDegree(float _fDegree) { m_fDegree = _fDegree; }
     bool  GetIsCollide(void) const { return m_bIsCollide; }
     void  SetIsCollide(bool _bIsCollide) { m_bIsCollide = _bIsCollide; }
-    bool IsReverse(void) const { return m_bIsReverse; }
-    void SetCollideCount(int _iCount) { m_iCollideCount += _iCount; }
+    bool  IsReverse(void) const { return m_bIsReverse; }
+    void  SetCollideCount(int _iCount) { m_iCollideCount += _iCount; }
     const D3DXVECTOR3& GetShadowPos(void) const { return m_vShadowPos; }
 
 public:

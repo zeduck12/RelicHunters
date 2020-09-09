@@ -27,7 +27,6 @@
 #include "CStructure.h"
 #include "CParticle.h"
 
-
 CPlayer::CPlayer()
 	:
 	m_vRotVertex{},
@@ -99,7 +98,13 @@ void CPlayer::Ready()
 
 	// 여기서 무기 세팅하고 셋팅
 	GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::DEFAULT);
-	GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::DEFAULT);
+	PLAYER::ID ePlayerID = GET_SINGLE(CSceneManager)->GetPlayerID();
+	if(ePlayerID == PLAYER::RAFF)
+		GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::KEYTAR);
+	else
+		GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::DEFAULT);
+
+	
 
 	// 무기 생성
 	m_pWeapon = make_unique<CWeapon>();
@@ -238,7 +243,7 @@ void CPlayer::Render(const HDC& _hdc)
 	{
 		TCHAR str[10] = {};
 		wsprintf(str, TEXT("Debug"), int(m_fShootingDegree));
-		TextOut(_hdc, (int)m_tInfo.vPos.x - 10.f, (int)m_tInfo.vPos.y + 20.f, str, lstrlen(str));
+		TextOut(_hdc, (int)m_tInfo.vPos.x - 10, (int)m_tInfo.vPos.y + 20, str, lstrlen(str));
 	}
 
 }
