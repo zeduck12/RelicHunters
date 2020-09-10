@@ -18,6 +18,7 @@ public:
 
 private:
 	float m_fStackTime;
+	float m_fCoolTime = 0.f;
 
 };
 

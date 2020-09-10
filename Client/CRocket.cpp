@@ -12,7 +12,7 @@
 #include "CStructure.h"
 #include "CParticle.h"
 #include "CObjManager.h"
-
+#include "CSmoke.h"
 
 CRocket::CRocket(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID)
 {
@@ -60,6 +60,22 @@ void CRocket::Ready(void)
 
 int CRocket::Update(float _fDeltaTime)
 {
+	m_fCoolTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fCoolTime >= 0.05f)
+	{
+		m_fCoolTime = 0.f;
+
+		float fRandNum = 0;
+		for (int i = 0; i < 3; i++)
+		{
+			fRandNum = GetNumberMinBetweenMax(-5.f, 5.f);
+			shared_ptr<CObj> pParticle = make_shared<CSmoke>(this->GetX() + fRandNum, this->GetY()+ fRandNum);
+			pParticle->Ready();
+			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+		}
+
+	}
+
 
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
 	DO_IF_IS_NOT_VALID_OBJ(pPlayer)

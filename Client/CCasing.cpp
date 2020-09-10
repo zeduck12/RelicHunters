@@ -140,9 +140,19 @@ void CCasing::Render(const HDC& _hdc)
 	D3DXMATRIX matScale, matRotZ, matTrans, matWorld;
 
 	if (this->GetDirection() == DIRECTION::LEFT)
-		D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	{
+		if (m_strName == L"AttackedParticle")
+			D3DXMatrixScaling(&matScale, -0.5f, 0.5f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+	}
 	else
-		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+	{
+		if (m_strName == L"AttackedParticle")
+			D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.f);
+		else
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+	}
 
 	D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(m_fRotDegree));
 	D3DXMatrixTranslation(&matTrans, this->GetInfo()->vPos.x, this->GetInfo()->vPos.y, 0.f);

@@ -26,6 +26,7 @@
 #include "CMapManager.h"
 #include "CStructure.h"
 #include "CParticle.h"
+#include "CSmoke.h"
 
 CPlayer::CPlayer()
 	:
@@ -336,7 +337,7 @@ void CPlayer::CheckKeyState(void)
 	// ¼ö·ùÅº
 	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_F))
 	{
-		int iBombsCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetBombsCount();
+	/*	int iBombsCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetBombsCount();
 		if (GET_SINGLE(CPlayerManager)->GetInventory()->GetBombsCount() <= 0)
 		{
 			GET_SINGLE(CPlayerManager)->GetInventory()->SetBombsCount(0);
@@ -353,7 +354,11 @@ void CPlayer::CheckKeyState(void)
 			m_tInfo.vPos.y + m_tInfo.vDir.y * 50.f, m_tInfo.vDir, 20.f, m_fShootingDegree, m_fShootingDist, true);
 		pGrenade->Ready();
 		GET_SINGLE(CObjManager)->GetGrenades().emplace_back(pGrenade);
+*/
 
+		shared_ptr<CObj> pParticle = make_shared<CSmoke>(this->GetX(), this->GetY());
+		pParticle->Ready();
+		GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 	}
 
 	// ¿¬»ç

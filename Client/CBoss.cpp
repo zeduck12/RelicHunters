@@ -27,7 +27,8 @@ CBoss::CBoss(float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed,
 	m_bIsCrack = false;
 	m_bIsPhase2 = false;
 	m_fDegree = 0.f;
-	m_fMaxHp = _fHp;
+	//m_fMaxHp = _fHp;
+	m_fMaxHp = 2000.f;
 	m_fStackTime = 0.f;
 
 	m_tInfo.vPos = { _fX, _fY, 0.f };

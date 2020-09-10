@@ -217,6 +217,9 @@
     <Filter Include="01.CObj\021.KamikazeCage">
       <UniqueIdentifier>{e4096ad8-efa2-48b6-a798-3a6fd4ecdc55}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\018.Particle\RocketSmoke">
+      <UniqueIdentifier>{bec25f4e-97da-4e02-8841-cb9ec1f9845b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -435,6 +438,9 @@
     <ClInclude Include="CKamikazeCage.h">
       <Filter>01.CObj\021.KamikazeCage</Filter>
     </ClInclude>
+    <ClInclude Include="CSmoke.h">
+      <Filter>01.CObj\018.Particle\RocketSmoke</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -628,6 +634,9 @@
     </ClCompile>
     <ClCompile Include="CKamikazeCage.cpp">
       <Filter>01.CObj\021.KamikazeCage</Filter>
+    </ClCompile>
+    <ClCompile Include="CSmoke.cpp">
+      <Filter>01.CObj\018.Particle\RocketSmoke</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
