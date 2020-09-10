@@ -4,7 +4,7 @@ class CParticle :
     public CObj
 {
 public:
-    enum ID { HIT, DASH, BOMB};
+    enum ID { HIT, DASH, BOMB, DEATH, FINISH};
    
 public:
      explicit CParticle() = default;
@@ -18,10 +18,18 @@ public:
     virtual void Release(void) override;
     virtual void Render(const HDC& _hdc) override;
 
+    void Move(void);
+    void MoveToPlayer();
+
 private:
+    float         m_fAddSpeed = 0.f;
+
     int           m_iDrawID;
     int           m_iDrawMax;
     float         m_fStackTime;
+    float         m_fCoolTime = 0.f;
+    float         m_fFinishTime = 0.f;
+
     wstring       m_strName;
     CParticle::ID m_eID;
     CObj*         m_pOwner;

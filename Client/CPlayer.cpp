@@ -105,7 +105,6 @@ void CPlayer::Ready()
 		GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::DEFAULT);
 
 	
-
 	// 무기 생성
 	m_pWeapon = make_unique<CWeapon>();
 	m_pWeapon->Ready();
@@ -354,6 +353,7 @@ void CPlayer::CheckKeyState(void)
 			m_tInfo.vPos.y + m_tInfo.vDir.y * 50.f, m_tInfo.vDir, 20.f, m_fShootingDegree, m_fShootingDist, true);
 		pGrenade->Ready();
 		GET_SINGLE(CObjManager)->GetGrenades().emplace_back(pGrenade);
+
 	}
 
 	// 연사

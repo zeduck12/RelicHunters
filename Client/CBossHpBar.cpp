@@ -173,4 +173,23 @@ void CBossHpBar::Render_HpBar(void)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
+	if(m_pOwner->IsInvicible() == true)
+		DrawSuperArmor();
+}
+
+void CBossHpBar::DrawSuperArmor(void)
+{
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"SuperArmor");
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 2.f, 1.3f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 330.f, 460.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 }

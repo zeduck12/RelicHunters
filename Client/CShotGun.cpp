@@ -178,8 +178,14 @@ void CShotGun::Render(const HDC& _hdc)
 
 void CShotGun::CheckValidTime(void)
 {
+	float fCoolTime = 0.f;
+	if (m_eObjID == OBJ::MONSTER)
+		fCoolTime = 1.f;
+	else
+		fCoolTime = 0.25f;
+
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
-	if (m_fStackTime >= 0.25f)
+	if (m_fStackTime >= fCoolTime)
 	{
 		m_fStackTime = 0.f;
 		this->SetIsValid(false);

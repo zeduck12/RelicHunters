@@ -31,6 +31,7 @@ public:
 
 private:
     bool m_bIsPlayingSFX = false;
+    bool m_bIsAttack = false;
 
     float m_fAddValue;
     float m_fAddAngle;

@@ -7,6 +7,8 @@
 #include "CShadow.h"
 #include "CPlayerManager.h"
 #include "CObjManager.h"
+#include "CParticle.h"
+#include "CCameraManager.h"
 
 CBossState* EggIdleState::Update(CBoss* _pBoss)
 {
@@ -310,6 +312,21 @@ CBossState* BossAttackedState::Update(CBoss* _pBoss)
 	{
 		_pBoss->SetHp(0.f);
 		_pBoss->SetIsDead(true);
+		GET_SINGLE(CCameraManager)->SetIsBossDeath(true);
+
+		// 죽을 때 파티클
+		shared_ptr<CObj> pParticle = nullptr;
+		pParticle = make_shared<CParticle>(_pBoss->GetX(), _pBoss->GetY(), CParticle::DEATH, 6, L"Death");
+		pParticle->Ready();
+		GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
+		for (int i = 0; i < 100; i++)
+		{
+			pParticle = make_shared<CParticle>(_pBoss->GetX(), _pBoss->GetY(), CParticle::FINISH, 1, L"Finish");
+			pParticle->Ready();
+			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+		}
+
 		return new BossDeathState;
 	}
 
@@ -767,7 +784,7 @@ CBossState* BossRandomAttackState::Update(CBoss* _pBoss)
 		m_iCount++;
 		m_fStackTime = 0.f;
 		_pBoss->Shoot();
-		_pBoss->Shoot();
+		//_pBoss->Shoot();
 	}
 
 	return nullptr;
@@ -826,6 +843,12 @@ CBossState* BossFullRangeAttack::Update(CBoss* _pBoss)
 	{
 		m_fStackTime = 0.f;
 		_pBoss->FullRangeAttack();
+	}
+
+	if (_pBoss->IsPhase2() == true)
+	{
+		if (m_fStackTime >= 0.2f && m_fStackTime <= 0.21f)
+			_pBoss->FullRangeAttack();
 	}
 
 	return  nullptr;

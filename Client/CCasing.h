@@ -63,6 +63,7 @@ private:
     float m_fAddAngle;
     float m_fRotDegree;
     float m_fReflectValue;
+    float m_fScale = 0.f;
 
     wstring m_strName;
 };

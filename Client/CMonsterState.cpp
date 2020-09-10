@@ -12,6 +12,8 @@
 #include "CItem.h"
 #include "CInteractionManager.h"
 #include "CKamikazeCage.h"
+#include "CCasing.h"
+#include "CParticle.h"
 
 
 CMonsterState* IdleState::Update(CMonster* _pMonster)
@@ -314,6 +316,22 @@ CMonsterState* AttackedState::Update(CMonster* _pMonster)
 			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_kami_death.wav", CSoundManager::EFFECT);
 		}
 
+		// 피격 파티클로 바꾸면됨
+		float fRandNum = 0.f; 
+		for (int i = 0; i < 10; i++)
+		{
+			fRandNum = GetNumberMinBetweenMax(0.f, 360.f);
+			shared_ptr<CCasing> pCasing = make_shared<CCasing>(_pMonster->GetX(),
+				_pMonster->GetY(), _pMonster->GetDirectionVector(), 1.f, fRandNum, L"AttackedParticle");
+			pCasing->Ready();
+			GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
+		}
+
+		// 죽을 때 파티클
+		shared_ptr<CObj> pParticle = make_shared<CParticle>(_pMonster->GetX(), _pMonster->GetY(), CParticle::DEATH, 6, L"Death");
+		pParticle->Ready();
+		GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
 		return new DeathState;
 	}
 
@@ -536,6 +554,97 @@ CMonsterState* DeathState::Update(CMonster* _pMonster)
 	{
 		m_fStackTime = 0.f;
 		_pMonster->SetIsValid(false);
+	}
+
+	if (m_fStackTime >= 0.2f && m_fStackTime <= 0.21f)
+	{
+		float fRandNum = 0.f;
+		for (int i = 0; i < 5; i++)
+		{
+			fRandNum = GetNumberMinBetweenMax(0.f, 360.f);
+			shared_ptr<CCasing> pCasing = make_shared<CCasing>(_pMonster->GetX(),
+				_pMonster->GetY(), _pMonster->GetDirectionVector(), 1.f, fRandNum, L"AttackedParticle");
+			pCasing->Ready();
+			GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
+		}
+	}
+
+	if (m_fStackTime >= 0.3f && m_fStackTime <= 0.31f)
+	{
+		float fRandNum = 0.f;
+		for (int i = 0; i < 2; i++)
+		{
+			fRandNum = GetNumberMinBetweenMax(0.f, 360.f);
+			shared_ptr<CCasing> pCasing = make_shared<CCasing>(_pMonster->GetX(),
+				_pMonster->GetY(), _pMonster->GetDirectionVector(), 1.f, fRandNum, L"AttackedParticle");
+			pCasing->Ready();
+			GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
+		}
+	}
+
+	if (m_fStackTime >= 0.4f && m_fStackTime <= 0.41f)
+	{
+		float fRandNum = 0.f;
+		for (int i = 0; i < 4; i++)
+		{
+			fRandNum = GetNumberMinBetweenMax(0.f, 360.f);
+			shared_ptr<CCasing> pCasing = make_shared<CCasing>(_pMonster->GetX(),
+				_pMonster->GetY(), _pMonster->GetDirectionVector(), 1.f, fRandNum, L"AttackedParticle");
+			pCasing->Ready();
+			GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
+		}
+	}
+
+	if (m_fStackTime >= 0.5f && m_fStackTime <= 0.51f)
+	{
+		float fRandNum = 0.f;
+		for (int i = 0; i < 2; i++)
+		{
+			fRandNum = GetNumberMinBetweenMax(0.f, 360.f);
+			shared_ptr<CCasing> pCasing = make_shared<CCasing>(_pMonster->GetX(),
+				_pMonster->GetY(), _pMonster->GetDirectionVector(), 1.f, fRandNum, L"AttackedParticle");
+			pCasing->Ready();
+			GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
+		}
+	}
+
+	if (m_fStackTime >= 0.6f && m_fStackTime <= 0.61f)
+	{
+		float fRandNum = 0.f;
+		for (int i = 0; i < 4; i++)
+		{
+			fRandNum = GetNumberMinBetweenMax(0.f, 360.f);
+			shared_ptr<CCasing> pCasing = make_shared<CCasing>(_pMonster->GetX(),
+				_pMonster->GetY(), _pMonster->GetDirectionVector(), 1.f, fRandNum, L"AttackedParticle");
+			pCasing->Ready();
+			GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
+		}
+	}
+
+	if (m_fStackTime >= 0.8f && m_fStackTime <= 0.81f)
+	{
+		float fRandNum = 0.f;
+		for (int i = 0; i < 2; i++)
+		{
+			fRandNum = GetNumberMinBetweenMax(0.f, 360.f);
+			shared_ptr<CCasing> pCasing = make_shared<CCasing>(_pMonster->GetX(),
+				_pMonster->GetY(), _pMonster->GetDirectionVector(), 1.f, fRandNum, L"AttackedParticle");
+			pCasing->Ready();
+			GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
+		}
+	}
+
+	if (m_fStackTime >= 1.f && m_fStackTime <= 1.01f)
+	{
+		float fRandNum = 0.f;
+		for (int i = 0; i < 3; i++)
+		{
+			fRandNum = GetNumberMinBetweenMax(0.f, 360.f);
+			shared_ptr<CCasing> pCasing = make_shared<CCasing>(_pMonster->GetX(),
+				_pMonster->GetY(), _pMonster->GetDirectionVector(), 1.f, fRandNum, L"AttackedParticle");
+			pCasing->Ready();
+			GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
+		}
 	}
 
 	return nullptr;

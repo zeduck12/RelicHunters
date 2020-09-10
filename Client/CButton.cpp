@@ -48,6 +48,7 @@ int CButton::Update(float _fDeltaTime)
 		// 시작버튼
 		if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_LBUTTON))
 		{
+			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::BUTTON);
 			GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_click.wav", CSoundManager::BUTTON);
 			if(m_eID == BUTTON::START)
 				GET_SINGLE(CSceneManager)->SetIsChangeScene(true);

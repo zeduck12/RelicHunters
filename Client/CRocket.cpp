@@ -16,9 +16,10 @@
 
 CRocket::CRocket(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID)
 {
+	m_fDamage = 50.f;
+	m_fSpeed = _fSpeed;
 	m_fStackTime = 0.f;
 	m_fDegree = _fShootingDegree;
-	m_fSpeed = _fSpeed;
 
 	m_tInfo.vPos = { _fX , _fY , 0.f };
 	m_tInfo.vDir = { 1.f, 0.f, 0.f };

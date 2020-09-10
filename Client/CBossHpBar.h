@@ -23,6 +23,7 @@ public:
 public:
     void StartDrawHpBar();
     void Render_HpBar(void);
+    void DrawSuperArmor(void);
 
 private:
     // º¸½º

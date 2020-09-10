@@ -117,8 +117,13 @@ void CCasing::LateUpdate(void)
 	for(int i = 0; i < 2; i++)
 		D3DXVec3TransformCoord(&m_vRealVertex[i], &m_vRotVertex[i], &matWorld);
 
-	for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
-		CCollisionManager::CollideTileCasing(pTile, this);
+
+	if (m_strName != L"AttackedParticle")
+	{
+		for (auto& pTile : GET_SINGLE(CMapManager)->GetWalls())
+			CCollisionManager::CollideTileCasing(pTile, this);
+	}
+
 }
 
 void CCasing::Release(void)
@@ -144,8 +149,10 @@ void CCasing::Render(const HDC& _hdc)
 	matWorld = matScale * matRotZ * matTrans;
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
-
+	if(m_strName == L"AttackedParticle")
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 0, 0));
+	else
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 	CShadow::RenderCasing(this);
 }
 

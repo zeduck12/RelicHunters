@@ -18,11 +18,13 @@ public:
 	float GetCameraDeltaX(void) const { return m_fDeltaX; }
 	float GetCameraDeltaY(void) const { return m_fDeltaY; }
 
+	bool IsBossDeath(void) const { return m_bIsBossDeath; }
 	bool IsPressing(void) const { return m_bIsPressing; }
 	bool IsReduceScale(void) const { return m_bIsReduceScale; }
 	bool IsEnlargeScale(void) const { return m_bIsEnlargeScale; }
 	bool IsShooting(void) const { return m_bIsShooting; }
 	
+	void SetIsBossDeath(bool _bIsBossDeath) { m_bIsBossDeath = _bIsBossDeath; }
 	void SetIsPressing(bool _bIsPressing) { m_bIsPressing = _bIsPressing; }
 	void SetIsReduceScale(bool _bIsReduce) { m_bIsReduceScale = _bIsReduce; }
 	void SetIsEnlargeScale(bool _bIsEnLarge) { m_bIsEnlargeScale = _bIsEnLarge; }
@@ -49,6 +51,7 @@ public:
 
 	void MoveCameraToFreeSpace(void);  // 조금더 카메라 움직이게
 	void EarthquakeCamera(void);	   // 카메라 진동
+	void EarthquakeCamera2(void);
 
 private:
 	CCameraManager();
@@ -61,6 +64,9 @@ private:
 
 	// 카메라 진동 관련 변수
 	int m_iCount;
+	int m_iStack = 0;
+	float m_fOldDelta = 0.f;
+	float m_fStackTime = 0.f;
 
 	float m_fDeltaX;
 	float m_fDeltaY;
@@ -71,7 +77,7 @@ private:
 	bool m_bIsEnlargeScale;
 	bool m_bIsReduceScale;
 	bool m_bIsPressing;
-
+	bool m_bIsBossDeath = false;
 
 	bool m_bIsEnlargeScaleDash;
 	bool m_bIsReduceScaleDash;

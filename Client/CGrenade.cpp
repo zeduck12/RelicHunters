@@ -12,6 +12,8 @@
 #include "CStructure.h"
 #include "CMapManager.h"
 #include "CShadow.h"
+#include "CBoss.h"
+#include "CBossState.h"
 
 CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, float _fShootingDist, bool _bIsReverse /*= false*/)
 	:
@@ -40,7 +42,7 @@ CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float
 
 	m_fGravity = 0.f;
 	m_fJumpPower = 0.f;
-	m_fJumpPowerOrigin = 3.5f;
+	m_fJumpPowerOrigin = 4.f;
 
 	m_eDir = DIRECTION::END;
 
@@ -114,7 +116,13 @@ void CGrenade::LateUpdate(void)
 		m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 		m_fBombStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 		if (m_fBombStackTime > 0.6f)
-			TakeDamageToObejcts();
+		{
+			if (m_bIsAttack == false)
+			{
+				TakeDamageToObejcts();
+				m_bIsAttack = true;
+			}
+		}
 
 		if (m_fStackTime > 0.1f)
 		{
@@ -133,13 +141,6 @@ void CGrenade::Release(void)
 
 void CGrenade::Render(const HDC& _hdc)
 {
-	Ellipse(_hdc, GetLeft(), GetTop(), GetRight(), GetBottom());
-
-	// 폭발 범위 그리기
-	Rectangle(_hdc, int(m_tInfo.vPos.x - m_fBombX), int(m_tInfo.vPos.y - m_fBombY),
-		int(m_tInfo.vPos.x + m_fBombX), int(m_tInfo.vPos.y + m_fBombY));
-
-
 	if (m_iCollideCount >= 3)
 	{
 		DrawBombParticle();
@@ -181,11 +182,23 @@ void CGrenade::TakeDamageToObejcts(void)
 		if (pMonster->GetX() < this->GetX() + (fWidth * 0.5f) && this->GetX() - (fWidth * 0.5f) < pMonster->GetX() &&
 			pMonster->GetY() < this->GetY() + (fHeight * 0.5f) && this->GetY() - (fHeight * 0.5f) < pMonster->GetY())
 		{
-			CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
-			if (pMonst->IsDead() == false)
+			if (pMonster->GetImageID() == IMAGE::BOSS)
 			{
-				pMonst->SetState(new AttackedState());
-				pMonst->SetHp(pMonst->GetHp() - 200.f);
+				CBoss* pBoss = dynamic_cast<CBoss*>(pMonster.get());
+				if (pBoss->IsDead() == false && pBoss->IsCrack() == true && pBoss->IsInvicible() == false)
+				{
+					pBoss->SetState(new BossAttackedState);
+					pBoss->SetHp(pBoss->GetHp() - 50.f);
+				}
+			}
+			else
+			{
+				CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
+				if (pMonst->IsDead() == false)
+				{
+					pMonst->SetState(new AttackedState());
+					pMonst->SetHp(pMonst->GetHp() - 50.f);
+				}
 			}
 		}
 	}

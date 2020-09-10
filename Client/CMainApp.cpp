@@ -46,7 +46,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_MENU);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
 }
 
 void CMainApp::Update()
@@ -87,6 +87,8 @@ void CMainApp::Release()
 
 void CMainApp::SetImages(void)
 {
+
+
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/Tile%d.png", L"Terrain", L"Tile", 3))
 		return;
 
@@ -386,6 +388,14 @@ void CMainApp::SetImages(void)
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Particle/Dash/spr_sprint_%d.png", L"Particle", L"Dash", 6)))
 		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Particle/Death/spr_death_generic0_%d.png", L"Particle", L"Death", 6)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Particle/Finish/finish_%d.png", L"Particle", L"Finish", 1)))
+		return;
+	// Attacked Particle
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Particle/Attacked/spr_crate_particles_1.png", L"AttackedParticle"))
+		return;
+
 
 	// Teleporter
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Teleporter/Idle/Idle_%d.png", L"Teleporter", L"Idle", 1)))
@@ -448,6 +458,12 @@ void CMainApp::SetImages(void)
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Hologram/Altar/spr_altar_players_0.png", L"Altar")))
 		return;
+
+	// SuperArmor
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Particle/SuperArmor/spr_boss_collisionMask_0.png", L"SuperArmor")))
+		return;
+
+
 }
 
 

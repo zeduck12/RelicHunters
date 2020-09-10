@@ -2,6 +2,7 @@
 #include "CCameraManager.h"
 #include "CObjManager.h"
 #include "CPlayerManager.h"
+#include "CTimeManager.h"
 #include "CPlayer.h"
 #include "CObj.h"
 
@@ -86,6 +87,18 @@ void CCameraManager::LateUpdate(void)
 	// 총알을 쐈다면 true >> 카메라 진동. But 조준 중에는 이 함수 안들어오게 !
 	if (m_bIsShooting)
 		EarthquakeCamera();
+
+	if (m_bIsBossDeath)
+	{
+		m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+		if (m_fStackTime >= 2.f)
+		{
+			m_fStackTime = 0.f;
+			m_bIsBossDeath = false;
+		}
+
+		EarthquakeCamera2();
+	}
 
 }
 
@@ -192,6 +205,26 @@ void CCameraManager::EarthquakeCamera(void)
 	{
 		pPlayer->SetX(pPlayer->GetX() + vDir.x * 10.f);
 		pPlayer->SetY(pPlayer->GetY() + vDir.y * 10.f);
+	}
+}
+
+void CCameraManager::EarthquakeCamera2(void)
+{
+	float fDelta = GetNumberMinBetweenMax(-30.f, 30.f);
+	m_iStack++;
+
+	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	if (m_iStack == 1)
+	{
+		m_fOldDelta = fDelta;
+		pPlayer->SetX(pPlayer->GetX() + fDelta);
+		pPlayer->SetY(pPlayer->GetY() + fDelta);
+	}
+	else if (m_iStack == 2)
+	{
+		m_iStack = 0;
+		pPlayer->SetX(pPlayer->GetX() - m_fOldDelta);
+		pPlayer->SetY(pPlayer->GetY() - m_fOldDelta);
 	}
 }
 

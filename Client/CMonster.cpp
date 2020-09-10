@@ -122,7 +122,7 @@ void CMonster::LateUpdate(void)
 				pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
 				pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
 
-				if (pRealPlayer->IsDead() == false)
+				if (pRealPlayer->IsDead() == false && m_bIsDead == false)
 				{
 					pRealPlayer->SetState(GET_SINGLE(PlayerAttacked));
 					pRealPlayer->SetIsAttacked(true);
@@ -383,7 +383,7 @@ void CMonster::Shoot(void)
 		{
 			shared_ptr<CObj> pBullet = make_shared<CBullet>(
 				this->GetX() + m_tInfo.vDir.x * 50.f -25.f, this->GetY() + m_tInfo.vDir.y * 50.f + 25.f,
-				m_tInfo.vDir, 5.f, D3DXToDegree(fRadian),
+				m_tInfo.vDir, 10.f, D3DXToDegree(fRadian),
 				OBJ::MONSTER, L"Default");
 			pBullet->Ready();
 			GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);
@@ -392,7 +392,7 @@ void CMonster::Shoot(void)
 		{
 			shared_ptr<CObj> pBullet = make_shared<CBullet>(
 				this->GetX() + m_tInfo.vDir.x * 50.f + 25.f, this->GetY() + m_tInfo.vDir.y * 50.f + 25.f,
-				m_tInfo.vDir, 5.f, D3DXToDegree(fRadian),
+				m_tInfo.vDir, 10.f, D3DXToDegree(fRadian),
 				OBJ::MONSTER, L"Default");
 			pBullet->Ready();
 			GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);

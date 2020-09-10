@@ -16,6 +16,7 @@
 #include "UICameraManager.h"
 #include "CBossHpBar.h"
 #include "CGenerator.h"
+#include "CTimeManager.h"
 
 CBoss::CBoss(float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed, float _fHp, IMAGE::ID _eID)
 	:
@@ -96,6 +97,9 @@ int CBoss::Update(float _fDeltaTime)
 	// 몬스터 방향 플레이어 기준으로 설정. 나중에 이미지 넣으면 그때는 좌우만
 	UpdateMonsterDirection();
 
+	if (m_bIsCrack == true)
+		CheckGeneratorsCount();
+
 	if (m_bIsDash == true)
 		Dash();
 
@@ -112,6 +116,7 @@ void CBoss::LateUpdate(void)
 
 	// 플레이어 출동 선과 선 충돌
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+	CPlayer* pRealPlayer = dynamic_cast<CPlayer*>(pPlayer);
 	LINEINFO* pPlayerLineArray = dynamic_cast<CPlayer*>(pPlayer)->GetLinesInfo();
 	LINEINFO* pMonsterLineArray = GetLinesInfo();
 
@@ -124,7 +129,13 @@ void CBoss::LateUpdate(void)
 				// 충돌이 일어났다면 방향벡터 쪽으로 밀기
 				pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
 				pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
-				dynamic_cast<CPlayer*>(pPlayer)->SetState(GET_SINGLE(PlayerAttacked));
+
+				if (pRealPlayer->IsDead() == false && m_bIsDead == false && m_bIsCrack == true)
+				{
+					pRealPlayer->SetState(GET_SINGLE(PlayerAttacked));
+					pRealPlayer->SetIsAttacked(true);
+					pRealPlayer->TakeDamage(1.5f);
+				}
 			}
 		}
 	}
@@ -154,17 +165,9 @@ void CBoss::Render(const HDC& _hdc)
 	if(m_bIsCrack == true)
 		EquipWeapon(); // 총 장착
 
-	//// 삼각형 그리기
-	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-	//for (int i = 1; i < 3; i++)
-	//	LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	//LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
+	if(m_bIsInvicible == true)
+		DrawSuperArmor();
 
-
-	//// 뷰 포인트
-	//RECT rcEllipse = { LONG(m_vRealVertex[0].x - 10), LONG(m_vRealVertex[0].y - 10),
-	//	LONG(m_vRealVertex[0].x + 10) , LONG(m_vRealVertex[0].y + 10) };
-	//Ellipse(_hdc, rcEllipse.left, rcEllipse.top, rcEllipse.right, rcEllipse.bottom);
 }
 
 void CBoss::Release(void)
@@ -451,6 +454,39 @@ void CBoss::InstallGenerators(void)
 		50.f, 50.f);
 	pMonster->Ready();
 	GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
+
+}
+
+void CBoss::DrawSuperArmor(void)
+{
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"SuperArmor");
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 2.4f, 2.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+}
+
+void CBoss::CheckGeneratorsCount(void)
+{
+	if (GET_SINGLE(CObjManager)->GetMonsters().size() <= 1)
+	{
+		m_bIsInvicible = false;
+		m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+		if (m_fStackTime >= 7.f)
+		{
+			m_fStackTime = 0.f;
+			m_bIsInvicible = true;
+			InstallGenerators();
+		}
+	}
 
 }
 
