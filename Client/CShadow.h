@@ -20,7 +20,7 @@ public:
 	static void RenderSheetProjectile(CObj* _pOwner, const TEXINFO*& _pTexInfo, const float& _fDegree);
 	// ÅºÇÇ ±×¸²ÀÚ
 	static void RenderCasing(CObj* _pOwner);
-
+	static void RenderParticle(CObj* _pOwner);
 	static void RenderShadowPlayer(CObj* _pOwner);
 private:
 	static D3DXVECTOR3 vOldPos;

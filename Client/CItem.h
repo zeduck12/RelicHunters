@@ -391,3 +391,22 @@ public:
 private:
     GUN::ID m_eGunID;
 };
+
+class BossGun : public CItem
+{
+public:
+    explicit BossGun() = default;
+    BossGun(float _fX, float _fY, float _fWidth, float _fHeight, GUN::ID _eID);
+    virtual ~BossGun();
+
+public:
+    // CItem을(를) 통해 상속됨
+    virtual void Ready(void) {}
+    virtual int  Update(float _fDeltaTime = 0.f) override;
+    virtual void LateUpdate(void) {}
+    virtual void Release(void) {}
+    virtual void Render(const HDC & _hdc) override;
+
+private:
+    GUN::ID m_eGunID;
+};

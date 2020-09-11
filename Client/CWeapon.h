@@ -36,6 +36,7 @@ public:
     void ShootPistolHeavy(void);
     void ShootKeytar(void);
     void ShootPlasma(void);
+    void ShootBoss(void);
 
 public:
     void DrawCurGun(void);

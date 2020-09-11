@@ -65,6 +65,7 @@ void CShield::Render(const HDC& _hdc)
 	if (m_fShieldCurHp <= 0.f && m_bIsExplosion != true)
 	{
 		DrawShieldExplosion();
+		return;
 	}
 
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer());
@@ -82,7 +83,9 @@ void CShield::Render(const HDC& _hdc)
 void CShield::DrawShieldActive(void)
 {
 	if (m_fShieldCurHp <= 0.f)
+	{
 		return;
+	}
 
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStackTime >= 0.1f)
@@ -92,7 +95,7 @@ void CShield::DrawShieldActive(void)
 	}
 
 	if (m_iDrawID >= 6)
-		m_iDrawID = 5;
+		m_iDrawID = 0;
 
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Shield", L"Active", m_iDrawID);
 	if (nullptr == pTexInfo)

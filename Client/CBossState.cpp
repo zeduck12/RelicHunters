@@ -9,6 +9,7 @@
 #include "CObjManager.h"
 #include "CParticle.h"
 #include "CCameraManager.h"
+#include "CItem.h"
 
 CBossState* EggIdleState::Update(CBoss* _pBoss)
 {
@@ -326,6 +327,10 @@ CBossState* BossAttackedState::Update(CBoss* _pBoss)
 			pParticle->Ready();
 			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 		}
+
+		shared_ptr<CObj> pGun = make_shared<BossGun>(_pBoss->GetX(), _pBoss->GetY(), 50.f, 50.f, GUN::BOSS);
+		pGun->Ready();
+		GET_SINGLE(CObjManager)->GetItems().emplace_back(pGun);
 
 		return new BossDeathState;
 	}

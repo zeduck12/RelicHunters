@@ -177,8 +177,8 @@ void CGrenade::TakeDamageToObejcts(void)
 	// 일단 몬스터
 	for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
 	{
-		float fWidth = 260.f;
-		float fHeight = 250.f;
+		float fWidth = 360.f;
+		float fHeight = 350.f;
 		if (pMonster->GetX() < this->GetX() + (fWidth * 0.5f) && this->GetX() - (fWidth * 0.5f) < pMonster->GetX() &&
 			pMonster->GetY() < this->GetY() + (fHeight * 0.5f) && this->GetY() - (fHeight * 0.5f) < pMonster->GetY())
 		{
@@ -197,7 +197,7 @@ void CGrenade::TakeDamageToObejcts(void)
 				if (pMonst->IsDead() == false)
 				{
 					pMonst->SetState(new AttackedState());
-					pMonst->SetHp(pMonst->GetHp() - 50.f);
+					pMonst->SetHp(pMonst->GetHp() - 100.f);
 				}
 			}
 		}

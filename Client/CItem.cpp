@@ -1599,3 +1599,85 @@ void CPickUpGrenade::Render(const HDC& _hdc)
         CInteractionManager::Render(this);
     }
 }
+
+BossGun::BossGun(float _fX, float _fY, float _fWidth, float _fHeight, GUN::ID _eID)
+{
+    m_iDrawID = 0;
+    m_pAnimation = nullptr;
+    m_pNextState = nullptr;
+    m_pImageSetting = nullptr;
+
+    m_tInfo.vPos = { _fX, _fY, 0.f };
+    m_tInfo.vSize = { _fWidth, _fHeight, 0.f };
+    m_tInfo.vDir = { 1.0f, 0.f, 0.f };
+    m_tInfo.vLook = { 1.f, 0.f, 0.f };
+
+    m_eImageID = IMAGE::END;
+    m_eGunID = _eID;
+}
+
+BossGun::~BossGun()
+{
+    Release();
+}
+
+int BossGun::Update(float _fDeltaTime)
+{
+    if (m_bIsDrop == true)
+    {
+        if (m_fAddY >= 5.f)
+        {
+            m_bIsDrop = false;
+            return 0;
+        }
+
+        m_fAddY += 25.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+        m_tInfo.vPos.y += m_fAddY;
+    }
+
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        // 상호작용 상태라면 만약에 E를 눌렀을때 총이 샷건으로 바뀌게
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        {
+            this->SetIsValid(false);
+            GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::BOSS);
+            GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+            GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);
+        }
+    }
+
+    return 0;
+}
+
+void BossGun::Render(const HDC& _hdc)
+{
+    const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Boss", 0);
+    if (nullptr == pTexInfo)
+        return;
+
+    float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+    float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+    D3DXMATRIX matScale, matTrans, matWorld;
+    D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+    D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x, m_tInfo.vPos.y, 0.f);
+    matWorld = matScale * matTrans;
+
+    CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+    CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+    // 상호작용
+    CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
+    if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
+    {
+        m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+        if (m_fStackTime >= m_fCoolTime)
+        {
+            m_fStackTime = 0.f;
+            this->SetDrawID(this->GetDrawID() + 1);
+        }
+        CInteractionManager::Render(this);
+    }
+}

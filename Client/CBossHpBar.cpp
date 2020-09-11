@@ -153,6 +153,13 @@ void CBossHpBar::Render_HpBar(void)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 0, 70));
 
+	TCHAR szBuf[MAX_PATH] = L"";
+	wsprintf(szBuf, L"ZEDUCK BOSS");
+
+	D3DXMatrixTranslation(&matTrans, 440.f, 460.f, 0.f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
 	int iDrawID = 0;
 	if (fCurHp < m_pOwner->GetMaxHp() * 0.5f)
 		iDrawID = 1;

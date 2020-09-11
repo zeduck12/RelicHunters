@@ -46,6 +46,7 @@ namespace GUN
 		PLASMA,				// 플라즈마 볼 총
 		SHOTGUN,			// 샷건 
 		SNIPER,				// 스나이퍼 총 단발 원샷총
+		BOSS,
 		END
 	};
 }

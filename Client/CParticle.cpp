@@ -127,5 +127,10 @@ void CParticle::MoveToPlayer()
 	this->SetPosVector(this->GetPosVector() + vDist * m_fAddSpeed);
 
 	// 플레이어와 부딫히면 사라지게
-	CCollisionManager::CollideBullet(pPlayer, this);
+	if (CCollisionManager::CollideBullet(pPlayer, this) == true)
+	{
+		int iCurCoins = GET_SINGLE(CPlayerManager)->GetInventory()->GetCoins();
+		GET_SINGLE(CPlayerManager)->GetInventory()->SetCoins(iCurCoins + 10);
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_coin1.wav", CSoundManager::UI);
+	}
 }

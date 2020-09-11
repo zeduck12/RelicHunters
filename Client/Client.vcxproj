@@ -169,6 +169,7 @@
     <ClInclude Include="CGenerator.h" />
     <ClInclude Include="CGraphicDevice.h" />
     <ClInclude Include="CGrenade.h" />
+    <ClInclude Include="CHitParticle.h" />
     <ClInclude Include="CHologram.h" />
     <ClInclude Include="CImageSetting.h" />
     <ClInclude Include="CInteractionManager.h" />
@@ -243,6 +244,7 @@
     <ClCompile Include="CGenerator.cpp" />
     <ClCompile Include="CGraphicDevice.cpp" />
     <ClCompile Include="CGrenade.cpp" />
+    <ClCompile Include="CHitParticle.cpp" />
     <ClCompile Include="CHologram.cpp" />
     <ClCompile Include="CImageSetting.cpp" />
     <ClCompile Include="CInteractionManager.cpp" />

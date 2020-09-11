@@ -39,7 +39,8 @@ int CSmoke::Update(float _fDeltaTime)
 		m_fStackTime = 0.f;
 	}
 
-	if (m_iDelta <= 0)
+
+	if (m_iDelta <= 0 || m_fScale <= -3.f)
 		this->SetIsValid(false);
 
 	return 0;
@@ -62,7 +63,7 @@ void CSmoke::Render(const HDC& _hdc)
 
 	D3DXMATRIX matScale, matRotZ, matTrans, matWorld;
 
-	D3DXMatrixScaling(&matScale, 3.f + m_fScale, 3.f + m_fScale, 0.f);
+	D3DXMatrixScaling(&matScale, 2.5f + m_fScale, 2.5f + m_fScale, 0.f);
 	D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(m_fDegree));
 	D3DXMatrixTranslation(&matTrans, this->GetInfo()->vPos.x, this->GetInfo()->vPos.y, 0.f);
 	matWorld = matScale * matRotZ * matTrans;

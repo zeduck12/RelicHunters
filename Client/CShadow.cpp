@@ -6,6 +6,7 @@
 #include "CMonster.h"
 #include "CCasing.h"
 #include "CPlayer.h"
+#include "CHitParticle.h"
 
 D3DXVECTOR3 CShadow::vOldPos = { 0.f, 0.f, 0.f };
 float CShadow::fAddY = 0.f;
@@ -239,6 +240,29 @@ void CShadow::RenderCasing(CObj* _pOwner)
 		D3DXMatrixTranslation(&matTrans, fX, fY + 60.f , 0.f);
 	else
 		D3DXMatrixTranslation(&matTrans, fX, fY + 60.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(120, 100, 100, 100));
+
+}
+
+void CShadow::RenderParticle(CObj* _pOwner)
+{
+	CHitParticle* pParticle = dynamic_cast<CHitParticle*>(_pOwner);
+
+	float fX = pParticle->GetInfo()->vPos.x;
+	float fY = pParticle->GetShadowPos().y;
+
+	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"AttackedParticle");
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+
+	D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.f);
+	D3DXMatrixTranslation(&matTrans, fX, fY + 3.f, 0.f);
 	matWorld = matScale * matTrans;
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);

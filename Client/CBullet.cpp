@@ -19,6 +19,7 @@
 #include "CShield.h"
 #include "CParticle.h"
 #include "CTimeManager.h"
+#include "CHitParticle.h"
 
 CBullet::CBullet(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree,
 	OBJ::ID _eID, const wstring& _strBulletName /*= L"Small"*/,float _fDamage/* = 10.f*/)
@@ -130,6 +131,7 @@ void CBullet::LateUpdate()
 					{
 						pMonst->SetState(new AttackedState());
 						pMonst->SetHp(pMonst->GetHp() - m_fDamage);
+
 					}
 				}
 
@@ -137,6 +139,14 @@ void CBullet::LateUpdate()
 				pParticle->Ready();
 				GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 
+
+				int iRandNum = int(GetNumberMinBetweenMax(5.f, 10.f));
+				for (int i = 0; i < iRandNum; i++)
+				{
+					shared_ptr<CObj> pParticle = make_shared<CHitParticle>(pMonster->GetX(), pMonster->GetY() + 10.f);
+					pParticle->Ready();
+					GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+				}
 			}
 		}
 

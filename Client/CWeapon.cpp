@@ -201,6 +201,9 @@ void CWeapon::Shoot(void)
 	case GUN::MACHINEGUN:
 		ShootDefault();
 		break;
+	case GUN::BOSS:
+		ShootBoss();
+		break;
 	}
 }
 
@@ -462,6 +465,31 @@ void CWeapon::ShootPlasma(void)
 	GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
 }
 
+void CWeapon::ShootBoss(void)
+{
+	GET_SINGLE(CSoundManager)->StopSound(CSoundManager::GUN_DEFAULT);
+	GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_sniper.wav", CSoundManager::GUN_DEFAULT);
+
+	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
+	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+
+	// Bullet 발사
+	shared_ptr<CBullet> pBullet
+		= make_shared<CBullet>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 10.f,
+			pPlayer->GetY() + pPlayer->GetDirectionVector().y * 10.f,
+			pPlayer->GetDirectionVector(), 100.f, pPlayer->GetShootingDegree(), OBJ::PLAYER, L"Blue", 9999.f);
+	pBullet->Ready();
+	GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);
+	GET_SINGLE(CCameraManager)->SetIsShooting(true);
+
+	// 탄피 생성
+	shared_ptr<CCasing> pCasing = make_shared<CCasing>(pPlayer->GetX(),
+		pPlayer->GetY(), pPlayer->GetDirectionVector(), cfCasingSpeed, pPlayer->GetShootingDegree(), L"CasingHeavy");
+	pCasing->Ready();
+	GET_SINGLE(CObjManager)->GetCasings().emplace_back(pCasing);
+}
+
 void CWeapon::DrawCurGun(void)
 {
 	// 총 그림 회전
@@ -638,6 +666,23 @@ void CWeapon::DrawCurGun(void)
 	if (m_eCurWeaponID == GUN::PLASMA)
 	{
 		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Plasma", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld;
+		D3DXMatrixIdentity(&matWorld);
+		if (!GetWorldMatrix(&matWorld))
+			return;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (m_eCurWeaponID == GUN::BOSS)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Boss", 0);
 		if (nullptr == pTexInfo)
 			return;
 		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
@@ -941,6 +986,34 @@ void CWeapon::DrawSubGun(void)
 	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::PLASMA)
 	{
 		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Plasma", 0);
+		if (nullptr == pTexInfo)
+			return;
+		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+		float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+		D3DXMATRIX matWorld, matScale, matRotZ, matTrans;
+
+		if (pObj->GetDirection() == DIRECTION::LEFT)
+		{
+			D3DXMatrixScaling(&matScale, -1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(130.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() + 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+		else
+		{
+			D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+			D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(230.f));
+			D3DXMatrixTranslation(&matTrans, pObj->GetX() - 20.f, pObj->GetY() - 20.f, 0.f);
+		}
+
+		matWorld = matScale * matRotZ * matTrans;
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
+
+	if (GET_SINGLE(CPlayerManager)->GetInventory()->GetSubWeapon() == GUN::BOSS)
+	{
+		const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", L"Boss", 0);
 		if (nullptr == pTexInfo)
 			return;
 		float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);

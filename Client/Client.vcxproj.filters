@@ -220,6 +220,9 @@
     <Filter Include="01.CObj\018.Particle\RocketSmoke">
       <UniqueIdentifier>{bec25f4e-97da-4e02-8841-cb9ec1f9845b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\018.Particle\HitParticle">
+      <UniqueIdentifier>{f7d29b17-5720-496e-9bd1-01740cbb2927}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -441,6 +444,9 @@
     <ClInclude Include="CSmoke.h">
       <Filter>01.CObj\018.Particle\RocketSmoke</Filter>
     </ClInclude>
+    <ClInclude Include="CHitParticle.h">
+      <Filter>01.CObj\018.Particle\HitParticle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -637,6 +643,9 @@
     </ClCompile>
     <ClCompile Include="CSmoke.cpp">
       <Filter>01.CObj\018.Particle\RocketSmoke</Filter>
+    </ClCompile>
+    <ClCompile Include="CHitParticle.cpp">
+      <Filter>01.CObj\018.Particle\HitParticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
