@@ -67,7 +67,6 @@ void CPlayerInfo::DrawCharacterShieldBar(void)
 	if (GET_SINGLE(CPlayerManager)->GetPlayer() != nullptr)
 	{
 		fCurShieldHp = pPlayer->GetShield()->GetCurShieldHp();
-		
 	}
 
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"HpBar");
@@ -83,8 +82,40 @@ void CPlayerInfo::DrawCharacterShieldBar(void)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(100, 0, 0, 0));
+	////////////
+	if (pPlayer->IsAttacked() == true)
+	{ 
+		if(m_bIsTracking == false)
+			m_fSaveShieldHp = pPlayer->GetSaveShieldHp();
+		m_bIsTracking = true;
+	}
 
+	if (m_bIsTracking)
+	{
+		m_fSaveShieldHp -= 0.3f;
+		if (m_fSaveShieldHp <= fCurShieldHp)
+		{
+			m_bIsTracking = false;
+			m_fSaveShieldHp = fCurShieldHp;
+		}
+	}
 
+	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"White");
+	if (nullptr == pTexInfo)
+		return;
+	fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.2f, 1.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 170.f, 50.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	RECT rc = { 0, 0, LONG(114.f * (m_fSaveShieldHp / 100.f)), 30 };
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(200, 255, 255,255));
+	///////////////
 	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"HpBar");
 	if (nullptr == pTexInfo)
 		return;
@@ -96,7 +127,7 @@ void CPlayerInfo::DrawCharacterShieldBar(void)
 	D3DXMatrixTranslation(&matTrans, 170.f, 50.f, 0.f);
 	matWorld = matScale * matTrans;
 
-	RECT rc = { 0, 0, LONG(114.f * (fCurShieldHp / 100.f)), 30 };
+	rc = { 0, 0, LONG(114.f * (fCurShieldHp / 100.f)), 30 };
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
@@ -133,7 +164,23 @@ void CPlayerInfo::DrawCharacterHpBar(void)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(100, 0, 0, 0));
+/////////////
+	if (pPlayer->IsAttacked() == true)
+	{
+		if (m_bIsTrackingHp == false)
+			m_fSaveHp = pPlayer->GetSaveHp();
+		m_bIsTrackingHp = true;
+	}
 
+	if (m_bIsTrackingHp)
+	{
+		m_fSaveHp -= 0.6f;
+		if (m_fSaveHp <= fCurHp)
+		{
+			m_bIsTrackingHp = false;
+			m_fSaveHp = fCurHp;
+		}
+	}
 
 	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"DashBar", L"DashBar", 0);
 	if (nullptr == pTexInfo)
@@ -146,7 +193,24 @@ void CPlayerInfo::DrawCharacterHpBar(void)
 	D3DXMatrixTranslation(&matTrans, 183.f, 30.f, 0.f);
 	matWorld = matScale * matTrans;
 
-	RECT rc = { 0, 0, LONG(81 * (fCurHp / 200.f)), 18};
+	RECT rc = { 0, 0, LONG(81 * (m_fSaveHp / 200.f)), 18 };
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(200, 255, 255, 255));
+/////////////
+
+	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"DashBar", L"DashBar", 0);
+	if (nullptr == pTexInfo)
+		return;
+	fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 2.f, 2.3f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 183.f, 30.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	rc = { 0, 0, LONG(81 * (fCurHp / 200.f)), 18};
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 0, 70));

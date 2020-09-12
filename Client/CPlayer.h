@@ -25,16 +25,24 @@ public:
 	CWeapon* GetCurWeapon(void) { return m_pWeapon.get(); }
 	void  SetCurDashHp(float _fHp) { m_fDashCurHp = _fHp; if (m_fDashCurHp <= 0.f) { m_fDashCurHp = 0.f; } }
 	float GetCurDashHp(void) const { return m_fDashCurHp; }
+	float GetSaveShieldHp(void) const { return m_fSaveShieldHp; }
+	float GetSaveHp(void) const { return m_fSaveHp; }
 	void  TakeDamage(float _fHp) 
 	{
 		if (m_pShield->GetCurShieldHp() <= 0.f)
 		{
+			// 저장
+			m_fSaveHp = m_fCurHp;
+			//
 			m_fCurHp -= _fHp; 
 			if (m_fCurHp <= 0.f) 
 				m_fCurHp = 0.f; 
 		}
 		else
 		{
+			// 저장
+			m_fSaveShieldHp = m_pShield->GetCurShieldHp();
+			//
 			float fCurHp = m_pShield->GetCurShieldHp();
 			m_pShield->SetCurShieldHp(fCurHp - _fHp);
 			GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
@@ -128,6 +136,10 @@ private:
 	bool m_bIsReloading;
 	bool m_bIsAttacked;
 	bool m_bIsAttack = false;
+
+	// 공격받았을 시 저장 Shield HP
+	float m_fSaveShieldHp = 0.f;
+	float m_fSaveHp = 0.f;
 
 	float m_fCurHp;
 	float m_fMaxHp;

@@ -167,9 +167,6 @@ void CBullet::LateUpdate()
 				pPlayer->TakeDamage(m_fDamage);
 			}
 		}
-
-		/*for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
-			CCollisionManager::CollideBullet(pObj.get(), this);*/
 		
 	}
 

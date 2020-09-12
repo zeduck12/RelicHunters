@@ -315,6 +315,9 @@ CBossState* BossAttackedState::Update(CBoss* _pBoss)
 		_pBoss->SetIsDead(true);
 		GET_SINGLE(CCameraManager)->SetIsBossDeath(true);
 
+		GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+		GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_boss_death.wav", CSoundManager::EFFECT);
+
 		// 죽을 때 파티클
 		shared_ptr<CObj> pParticle = nullptr;
 		pParticle = make_shared<CParticle>(_pBoss->GetX(), _pBoss->GetY(), CParticle::DEATH, 6, L"Death");

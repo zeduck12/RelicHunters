@@ -122,7 +122,7 @@ void CMonster::LateUpdate(void)
 				pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
 				pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
 
-				if (pRealPlayer->IsDead() == false && m_bIsDead == false)
+				if (pRealPlayer->IsDead() == false && m_bIsDead == false && m_bIsFlying == false)
 				{
 					pRealPlayer->SetState(GET_SINGLE(PlayerAttacked));
 					pRealPlayer->SetIsAttacked(true);
@@ -154,18 +154,6 @@ void CMonster::Render(const HDC& _hdc)
 	// 몬스터 아이디에 따라 총장착 여부 달라짐.
 	if(m_eImageID != IMAGE::KAMIKAZE && m_eImageID != IMAGE::KAMIKAZE_FLY && m_bIsDead == false)
 		EquipWeapon(); // 총 장착
-
-	//// 삼각형 그리기
-	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-	//for (int i = 1; i < 3; i++)
-	//	LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	//LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
-	//
-
-	//// 뷰 포인트
-	//RECT rcEllipse = { LONG(m_vRealVertex[0].x - 10), LONG(m_vRealVertex[0].y - 10),
-	//	LONG(m_vRealVertex[0].x + 10) , LONG(m_vRealVertex[0].y + 10 )};
-	//Ellipse(_hdc, rcEllipse.left, rcEllipse.top, rcEllipse.right, rcEllipse.bottom);
 }
 
 bool CMonster::IsInAttackRangePlayer(void)

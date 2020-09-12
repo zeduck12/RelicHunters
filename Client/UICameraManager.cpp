@@ -152,7 +152,7 @@ void UICameraManager::DrawPlayer(void)
 	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
 
 	D3DXMATRIX matScale, matTrans, matWorld;
-	D3DXMatrixScaling(&matScale, 1.5f, 1.5f, 0.f);
+	D3DXMatrixScaling(&matScale, 2.f, 2.f, 0.f);
 	D3DXMatrixTranslation(&matTrans,16000.f + pPlayer->GetX(), 1500.f + pPlayer->GetY(), 0.f);
 	matWorld = matScale * matTrans;
 
