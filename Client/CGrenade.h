@@ -38,6 +38,7 @@ private:
     int m_iDrawID;
     float m_fStackTime;
     float m_fBombStackTime;
+    float m_fCoolTime = 0.f;
 
     bool m_bIsReverse;
     int m_iCollideCount;

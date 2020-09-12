@@ -325,6 +325,9 @@ void CPlayerInfo::DrawWeapon(void)
 	case GUN::SNIPER:
 		strName = L"Sniper";
 		break;
+	case GUN::BOSS:
+		strName = L"Boss";
+		break;
 	}
 
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", strName, 2);
@@ -334,7 +337,10 @@ void CPlayerInfo::DrawWeapon(void)
 	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
 
 	D3DXMATRIX matScale, matTrans, matWorld;
-	D3DXMatrixScaling(&matScale, 2.f, 2.f, 0.f);
+	if (eCurWeaponID == GUN::BOSS)
+		D3DXMatrixScaling(&matScale, 1.2f, 1.2f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 2.f, 2.f, 0.f);
 	D3DXMatrixTranslation(&matTrans, 80.f, 550.f, 0.f);
 	matWorld = matScale * matTrans;
 
@@ -384,6 +390,9 @@ void CPlayerInfo::DrawSubWeapon(void)
 	case GUN::SNIPER:
 		strName = L"Sniper";
 		break;
+	case GUN::BOSS:
+		strName = L"Boss";
+		break;
 	}
 
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Weapon", strName, 2);
@@ -393,7 +402,10 @@ void CPlayerInfo::DrawSubWeapon(void)
 	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
 
 	D3DXMATRIX matScale, matTrans, matWorld;
-	D3DXMatrixScaling(&matScale, 1.7f, 1.7f, 0.f);
+	if(eSubWeaponID == GUN::BOSS)
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.7f, 1.7f, 0.f);
 	D3DXMatrixTranslation(&matTrans, 120.f, 520.f, 0.f);
 	matWorld = matScale * matTrans;
 

@@ -2,6 +2,7 @@
 #include "CCameraManager.h"
 #include "CObjManager.h"
 #include "CPlayerManager.h"
+#include "CSceneManager.h"
 #include "CTimeManager.h"
 #include "CPlayer.h"
 #include "CObj.h"
@@ -10,6 +11,24 @@ DEFINITION_SINGLETON(CCameraManager)
 
 bool CCameraManager::Ready(void)
 {
+	// 스테이지가 GAME4일 때 처음 카메라 포커스를 보스로 잡아준다.
+	if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_GAME4)
+	{
+		m_bIsFocusPlayer = false;
+		for (auto& pObj : GET_SINGLE(CObjManager)->GetMonsters())
+		{
+			if (pObj->GetImageID() == IMAGE::BOSS)
+			{
+				m_vFocusPos.x = pObj->GetX();
+				m_vFocusPos.y = pObj->GetY();
+			}
+		}
+	}
+	else
+	{
+		m_bIsFocusPlayer = true;
+	}
+
 	return true;
 }
 
@@ -54,8 +73,35 @@ D3DXMATRIX CCameraManager::GetWorldD3DMatrix(void)
 	// 카메라 확대
 	// 확대한 만큼 dx, dy 확대 해주기.
 	D3DXMATRIX matWorld, matScale, matMove;
-	D3DXMatrixTranslation(&matMove, -pPlayer->GetX() + (iCX / 2) / m_fScale + m_fDeltaX, -pPlayer->GetY() + (iCY / 2) / m_fScale + m_fDeltaY, 0.f);
-	D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
+
+	if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME4 && m_bIsFocusPlayer == false)
+	{
+		D3DXVECTOR3 vDist = pPlayer->GetInfo()->vPos - m_vFocusPos;
+		D3DXVec3Normalize(&vDist, &vDist);
+
+		m_fFocusTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+		m_fFocusStartTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+
+		if (m_fFocusStartTime >= 1.f)
+		{
+			if (m_fFocusTime >= 0.03f)
+			{
+				m_fFocusTime = 0.f;
+				m_vFocusPos += vDist * 40.f;
+			}
+		}
+
+		if (pPlayer->GetInfo()->vPos.x >= m_vFocusPos.x)
+			m_bIsFocusPlayer = true;
+
+		D3DXMatrixTranslation(&matMove, -m_vFocusPos.x + (iCX / 2), -m_vFocusPos.y + (iCY / 2), 0.f);
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+	}
+	else
+	{
+		D3DXMatrixTranslation(&matMove, -pPlayer->GetX() + (iCX / 2) / m_fScale + m_fDeltaX, -pPlayer->GetY() + (iCY / 2) / m_fScale + m_fDeltaY, 0.f);
+		D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
+	}
 
 
 	matWorld = matMove * matScale;
@@ -240,6 +286,6 @@ CCameraManager::CCameraManager()
 	m_bIsReduceScale{ false },
 	m_bIsPressing{ false }
 {
-
+	m_vFocusPos = {0.f, 0.f, 0.f};
 }
 

@@ -23,6 +23,7 @@ CSmoke::CSmoke(float _fX, float _fY, CObj* _pOwner)
 
 	m_fDegree = 0.f;
 	m_fSpeed = 0.f;
+	m_iDelta = int(GetNumberMinBetweenMax(120.f, 200.f));
 }
 
 void CSmoke::Ready(void)
@@ -40,7 +41,7 @@ int CSmoke::Update(float _fDeltaTime)
 	}
 
 
-	if (m_iDelta <= 0 || m_fScale <= -3.f)
+	if (m_iDelta <= 0 || m_fScale <= -2.f)
 		this->SetIsValid(false);
 
 	return 0;
@@ -56,14 +57,14 @@ void CSmoke::Release(void)
 
 void CSmoke::Render(const HDC& _hdc)
 {
-	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"AttackedParticle");
+	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"WhiteParticle");
 
 	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
 	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
 
 	D3DXMATRIX matScale, matRotZ, matTrans, matWorld;
 
-	D3DXMatrixScaling(&matScale, 2.5f + m_fScale, 2.5f + m_fScale, 0.f);
+	D3DXMatrixScaling(&matScale, 1.4f + m_fScale, 1.4f + m_fScale, 0.f);
 	D3DXMatrixRotationZ(&matRotZ, D3DXToRadian(m_fDegree));
 	D3DXMatrixTranslation(&matTrans, this->GetInfo()->vPos.x, this->GetInfo()->vPos.y, 0.f);
 	matWorld = matScale * matRotZ * matTrans;

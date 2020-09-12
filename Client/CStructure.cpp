@@ -103,7 +103,7 @@ void CStructure::LateUpdate(void)
 		return;
 	}
 
-	if (m_iCurHp >= m_iMaxHp * 0.8f && m_iMaxHp * 0.85f >= m_iCurHp)
+	if (/*m_iCurHp >= m_iMaxHp * 0.8f &&*/ m_iMaxHp * 0.85f >= m_iCurHp)
 	{
 
 		m_iCurDrawID += 1;

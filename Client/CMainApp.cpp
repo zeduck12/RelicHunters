@@ -46,7 +46,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
 }
 
 void CMainApp::Update()
@@ -395,7 +395,8 @@ void CMainApp::SetImages(void)
 	// Attacked Particle
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Particle/Attacked/spr_crate_particles_1.png", L"AttackedParticle"))
 		return;
-
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Particle/Attacked/white.png", L"WhiteParticle"))
+		return;
 
 	// Teleporter
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Teleporter/Idle/Idle_%d.png", L"Teleporter", L"Idle", 1)))

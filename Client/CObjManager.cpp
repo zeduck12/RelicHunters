@@ -36,6 +36,9 @@ CObjManager::~CObjManager()
 
 bool CObjManager::Ready(void)
 {
+	// 몬스터 생성.
+	CEnemyManager::LoadMonsterData();
+
 	if (!GET_SINGLE(CPlayerManager)->Ready())
 		return false;
 
@@ -49,8 +52,7 @@ bool CObjManager::Ready(void)
 		return false;
 	
 
-	// 몬스터 생성.
-	CEnemyManager::LoadMonsterData();
+	
 	// 플레이어가 스폰되는 장소에 텔레포트 설치
 	shared_ptr<CObj> pItem = make_shared<CTeleporter>(
 		GET_SINGLE(CPlayerManager)->GetPlayer()->GetX(),
@@ -71,14 +73,6 @@ bool CObjManager::Ready(void)
 	pHologram = make_shared<CHologram>(700.f, 400.f, 50.f, 50.f, L"Raff");
 	pHologram->Ready();
 	m_listHolograms.emplace_back(pHologram);
-
-
-	//shared_ptr<CObj> pMonster = make_shared<CKamikazeCage>(
-	//	800.f,
-	//	756.f,
-	//	50.f, 50.f);
-	//pMonster->Ready();
-	//GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
 
 	PlayBGM();
 	SpawnKamikazeCage();

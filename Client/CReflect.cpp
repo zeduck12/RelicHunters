@@ -12,6 +12,8 @@
 #include "CCameraManager.h"
 #include "CMapManager.h"
 #include "CStructure.h"
+#include "CParticle.h"
+#include "CHitParticle.h"
 
 CReflect::CReflect(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID, float _fDamage)
 {
@@ -48,6 +50,7 @@ CReflect::CReflect(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float
 
 	m_fStackTime = 0.f;
 	m_fCoolTime = 0.f;
+	m_fDamage = 200.f;
 }
 
 CReflect::~CReflect()
@@ -89,6 +92,53 @@ void CReflect::LateUpdate(void)
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 	if (m_fStackTime >= 10.f)
 		this->SetIsValid(false);
+
+	if (m_eObjID == OBJ::PLAYER)
+	{
+		for (auto& pMonster : GET_SINGLE(CObjManager)->GetMonsters())
+		{
+			// 몬스터가 하늘을 나는 중이면 충돌판정 PASS !
+			if (dynamic_cast<CMonster*>(pMonster.get())->IsFlying() == true)
+				continue;
+
+			if (CCollisionManager::CollideBullet(pMonster.get(), this) == true)
+			{
+				if (pMonster->GetImageID() == IMAGE::BOSS)
+				{
+					CBoss* pBoss = dynamic_cast<CBoss*>(pMonster.get());
+					if (pBoss->IsDead() == false && pBoss->IsCrack() == true && pBoss->IsInvicible() == false)
+					{
+						pBoss->SetState(new BossAttackedState);
+						pBoss->SetHp(pBoss->GetHp() - m_fDamage);
+					}
+				}
+				else
+				{
+					CMonster* pMonst = dynamic_cast<CMonster*>(pMonster.get());
+					if (pMonst->IsDead() == false)
+					{
+						pMonst->SetState(new AttackedState());
+						pMonst->SetHp(pMonst->GetHp() - m_fDamage);
+
+					}
+				}
+
+				shared_ptr<CObj> pParticle = make_shared<CParticle>(pMonster->GetX(), pMonster->GetY(), CParticle::HIT);
+				pParticle->Ready();
+				GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
+
+				int iRandNum = int(GetNumberMinBetweenMax(5.f, 10.f));
+				for (int i = 0; i < iRandNum; i++)
+				{
+					shared_ptr<CObj> pParticle = make_shared<CHitParticle>(pMonster->GetX(), pMonster->GetY() + 10.f);
+					pParticle->Ready();
+					GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+				}
+			}
+		}
+
+	}
 
 	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
 	{

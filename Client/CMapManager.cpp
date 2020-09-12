@@ -8,6 +8,7 @@
 #include "CCollisionManager.h"
 #include "CItem.h"
 #include "CSceneManager.h"
+#include "CCameraManager.h"
 
 DEFINITION_SINGLETON(CMapManager)
 
@@ -55,9 +56,18 @@ void CMapManager::Render(const HDC& _hdc)
 	const TEXINFO* pTexInfo = nullptr;
 	for (auto& pTile : m_vecTile)
 	{
-		if (pTile->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pTile->vPos.x ||
-			pTile->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pTile->vPos.y)
-			continue;
+		if (GET_SINGLE(CCameraManager)->IsFocusPlayer() == true)
+		{
+			if (pTile->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pTile->vPos.x ||
+				pTile->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pTile->vPos.y)
+				continue;
+		}
+		else
+		{
+			if (pTile->vPos.x < GET_SINGLE(CCameraManager)->GetFocusPos().x - ((WINCX >> 1) + 200.f) || GET_SINGLE(CCameraManager)->GetFocusPos().x + ((WINCX >> 1) + 200.f) < pTile->vPos.x ||
+				pTile->vPos.y < GET_SINGLE(CCameraManager)->GetFocusPos().y - ((WINCY >> 1) + 200.f) || GET_SINGLE(CCameraManager)->GetFocusPos().y + ((WINCY >> 1) + 200.f) < pTile->vPos.y)
+				continue;
+		}
 
 		pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tile", pTile->iDrawID);
 		if (nullptr == pTexInfo)
@@ -80,9 +90,18 @@ void CMapManager::Render(const HDC& _hdc)
 	// 货肺 积己茄 鸥老
 	for (auto& pTile : m_vecCreateTile)
 	{
-		if (pTile->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pTile->vPos.x ||
-			pTile->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pTile->vPos.y)
-			continue;
+		if (CCameraManager::Get_Instance()->IsFocusPlayer() == true)
+		{
+			if (pTile->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pTile->vPos.x ||
+				pTile->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pTile->vPos.y)
+				continue;
+		}
+		else
+		{
+			if (pTile->vPos.x < GET_SINGLE(CCameraManager)->GetFocusPos().x - ((WINCX >> 1) + 200.f) || GET_SINGLE(CCameraManager)->GetFocusPos().x + ((WINCX >> 1) + 200.f) < pTile->vPos.x ||
+				pTile->vPos.y < GET_SINGLE(CCameraManager)->GetFocusPos().y - ((WINCY >> 1) + 200.f) || GET_SINGLE(CCameraManager)->GetFocusPos().y + ((WINCY >> 1) + 200.f) < pTile->vPos.y)
+				continue;
+		}
 
 		pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tileset", pTile->iDrawID);
 		if (nullptr == pTexInfo)
@@ -108,9 +127,19 @@ void CMapManager::Render(const HDC& _hdc)
 	{
 		DO_IF_IS_VALID_OBJ(pObj)
 		{
-			if (pObj->GetInfo()->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pObj->GetInfo()->vPos.x ||
-				pObj->GetInfo()->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pObj->GetInfo()->vPos.y)
-				continue;
+			if (CCameraManager::Get_Instance()->IsFocusPlayer() == true)
+			{
+				if (pObj->GetInfo()->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pObj->GetInfo()->vPos.x ||
+					pObj->GetInfo()->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pObj->GetInfo()->vPos.y)
+					continue;
+			}
+			else
+			{
+				if (pObj->GetInfo()->vPos.x < GET_SINGLE(CCameraManager)->GetFocusPos().x - ((WINCX >> 1) + 200.f) || GET_SINGLE(CCameraManager)->GetFocusPos().x + ((WINCX >> 1) + 200.f) < pObj->GetInfo()->vPos.x ||
+					pObj->GetInfo()->vPos.y < GET_SINGLE(CCameraManager)->GetFocusPos().y - ((WINCY >> 1) + 200.f) || GET_SINGLE(CCameraManager)->GetFocusPos().y + ((WINCY >> 1) + 200.f) < pObj->GetInfo()->vPos.y)
+					continue;
+			}
+			
 
 			dynamic_cast<CStructure*>(pObj.get())->Render();
 		}

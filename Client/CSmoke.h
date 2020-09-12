@@ -16,7 +16,7 @@ public:
     virtual void Render(const HDC& _hdc) override;
 
 private:
-    int m_iDelta = 255;
+    int m_iDelta = 0;
     float m_fScale = 0.f;
 };
 

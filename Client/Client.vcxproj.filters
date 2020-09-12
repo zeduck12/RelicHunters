@@ -187,9 +187,6 @@
     <Filter Include="08.UI\085.PlayerInfo">
       <UniqueIdentifier>{17ef0c26-b507-4cf7-b4cb-c23020b67e58}</UniqueIdentifier>
     </Filter>
-    <Filter Include="01.CObj\011.Player\Shield">
-      <UniqueIdentifier>{35e5ba29-88db-4549-abc5-133f51713b37}</UniqueIdentifier>
-    </Filter>
     <Filter Include="08.UI\086.StageTitle">
       <UniqueIdentifier>{4d8ffe43-264f-4962-a5bb-ef9830194e30}</UniqueIdentifier>
     </Filter>
@@ -222,6 +219,9 @@
     </Filter>
     <Filter Include="01.CObj\018.Particle\HitParticle">
       <UniqueIdentifier>{f7d29b17-5720-496e-9bd1-01740cbb2927}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\011.Player\Inventory\Shield">
+      <UniqueIdentifier>{35e5ba29-88db-4549-abc5-133f51713b37}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -415,7 +415,7 @@
       <Filter>08.UI\085.PlayerInfo</Filter>
     </ClInclude>
     <ClInclude Include="CShield.h">
-      <Filter>01.CObj\011.Player\Shield</Filter>
+      <Filter>01.CObj\011.Player\Inventory\Shield</Filter>
     </ClInclude>
     <ClInclude Include="CParticle.h">
       <Filter>01.CObj\018.Particle</Filter>
@@ -615,7 +615,7 @@
       <Filter>08.UI\085.PlayerInfo</Filter>
     </ClCompile>
     <ClCompile Include="CShield.cpp">
-      <Filter>01.CObj\011.Player\Shield</Filter>
+      <Filter>01.CObj\011.Player\Inventory\Shield</Filter>
     </ClCompile>
     <ClCompile Include="CParticle.cpp">
       <Filter>01.CObj\018.Particle</Filter>

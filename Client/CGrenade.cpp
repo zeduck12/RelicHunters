@@ -14,6 +14,7 @@
 #include "CShadow.h"
 #include "CBoss.h"
 #include "CBossState.h"
+#include "CSmoke.h"
 
 CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, float _fShootingDist, bool _bIsReverse /*= false*/)
 	:
@@ -49,6 +50,7 @@ CGrenade::CGrenade(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float
 	m_fMiniGravity = 0.f;
 	m_fMiniJumpPower = 0.f;
 	m_fMiniJumpPowerOrigin = 1.5f;
+	m_eImageID = IMAGE::PLAYER;
 
 }
 
@@ -72,7 +74,27 @@ int CGrenade::Update(float _fDeltaTime)
 			MiniJump();
 		else
 			ShootGrenade();
+
+		if (m_bIsReverse == false)
+		{
+			m_fCoolTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+			if (m_fCoolTime >= 0.05f)
+			{
+				m_fCoolTime = 0.f;
+
+				float fRandNum = 0;
+				for (int i = 0; i < 2; i++)
+				{
+					fRandNum = GetNumberMinBetweenMax(-5.f, 5.f);
+					shared_ptr<CObj> pParticle = make_shared<CSmoke>(this->GetX() + fRandNum, this->GetY() + fRandNum);
+					pParticle->Ready();
+					GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+				}
+			}
+
+		}
 	}
+
 
 	return 0;
 }
@@ -206,16 +228,16 @@ void CGrenade::TakeDamageToObejcts(void)
 	// ±¸Á¶¹°
 	for (auto& pObj : GET_SINGLE(CMapManager)->GetStructures())
 	{
-		float fWidth = 260.f;
-		float fHeight = 250.f;
+		float fWidth = 350.f;
+		float fHeight = 350.f;
 		if (pObj->GetX() < this->GetX() + (fWidth * 0.5f) && this->GetX() - (fWidth * 0.5f) < pObj->GetX() &&
 			pObj->GetY() < this->GetY() + (fHeight * 0.5f) && this->GetY() - (fHeight * 0.5f) < pObj->GetY())
 		{
 			CStructure* pStructure = dynamic_cast<CStructure*>(pObj.get());
-			pStructure->SetCurHp(pStructure->GetCurHp() - 1);
+			pStructure->SetCurHp(pStructure->GetCurHp() - 90);
 			if (pStructure->GetCurDrawID() >= pStructure->GetMaxDrawID())
 				continue;
-			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 1);
+			pStructure->SetCurDrawID(pStructure->GetCurDrawID() + 2);
 		}
 	}
 

@@ -13,7 +13,7 @@ public:
 	D3DXMATRIX GetWorldD3DMatrix(void);
 
 public:
-
+	const D3DXVECTOR3& GetFocusPos(void) const { return m_vFocusPos; }
 	float GetCameraScale(void) const { return m_fScale; }
 	float GetCameraDeltaX(void) const { return m_fDeltaX; }
 	float GetCameraDeltaY(void) const { return m_fDeltaY; }
@@ -31,6 +31,7 @@ public:
 	void SetIsShooting(bool _bIsShooting) { m_bIsShooting = _bIsShooting; }
 
 	// 데시 전용
+	bool IsFocusPlayer(void) const { return m_bIsFocusPlayer; }
 	bool IsPressingDash(void) const { return m_bIsPressingDash; }
 	bool IsReduceScaleDash(void) const { return m_bIsReduceScaleDash; }
 	bool IsEnlargeScaleDash(void) const { return m_bIsEnlargeScaleDash; }
@@ -62,11 +63,14 @@ private:
 
 	XFORM m_fxWorld;
 
+	D3DXVECTOR3 m_vFocusPos;
 	// 카메라 진동 관련 변수
 	int m_iCount;
 	int m_iStack = 0;
 	float m_fOldDelta = 0.f;
 	float m_fStackTime = 0.f;
+	float m_fFocusTime = 0.f;
+	float m_fFocusStartTime = 0.f;
 
 	float m_fDeltaX;
 	float m_fDeltaY;
@@ -82,6 +86,8 @@ private:
 	bool m_bIsEnlargeScaleDash;
 	bool m_bIsReduceScaleDash;
 	bool m_bIsPressingDash;
+
+	bool m_bIsFocusPlayer = true;
 
 };
 
