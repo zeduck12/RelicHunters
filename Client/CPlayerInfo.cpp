@@ -165,7 +165,7 @@ void CPlayerInfo::DrawCharacterHpBar(void)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(100, 0, 0, 0));
 /////////////
-	if (pPlayer->IsAttacked() == true)
+	if (pPlayer->IsAttacked() == true && pPlayer->GetShield()->GetCurShieldHp() <= 0.f)
 	{
 		if (m_bIsTrackingHp == false)
 			m_fSaveHp = pPlayer->GetSaveHp();
@@ -174,7 +174,7 @@ void CPlayerInfo::DrawCharacterHpBar(void)
 
 	if (m_bIsTrackingHp)
 	{
-		m_fSaveHp -= 0.6f;
+		m_fSaveHp -= 0.4f;
 		if (m_fSaveHp <= fCurHp)
 		{
 			m_bIsTrackingHp = false;

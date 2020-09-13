@@ -81,7 +81,7 @@ private:
 	bool m_bIsEnlargeScale;
 	bool m_bIsReduceScale;
 	bool m_bIsPressing;
-	bool m_bIsBossDeath = false;
+	bool m_bIsBossDeath;
 
 	bool m_bIsEnlargeScaleDash;
 	bool m_bIsReduceScaleDash;

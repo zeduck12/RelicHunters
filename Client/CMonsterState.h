@@ -6,7 +6,7 @@ class CMonsterState
 {
 public:
 	CMonsterState() = default;
-	virtual ~CMonsterState() {}
+	virtual ~CMonsterState() = default;
 
 public:
 	virtual CMonsterState* Update(CMonster* _pMonster)		  = 0;

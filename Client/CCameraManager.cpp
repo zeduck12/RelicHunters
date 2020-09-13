@@ -32,6 +32,7 @@ bool CCameraManager::Ready(void)
 	return true;
 }
 
+// API용 매트릭스(XFORM) 반환
 XFORM CCameraManager::GetWorldMatrix(void)
 {
 	CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
@@ -284,7 +285,8 @@ CCameraManager::CCameraManager()
 	m_bIsShooting{ false },
 	m_bIsEnlargeScale{ false },
 	m_bIsReduceScale{ false },
-	m_bIsPressing{ false }
+	m_bIsPressing{ false },
+	m_bIsBossDeath{ false }
 {
 	m_vFocusPos = {0.f, 0.f, 0.f};
 }

@@ -22,13 +22,14 @@ CBoss::CBoss(float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed,
 	:
 	m_pBossNextState{ nullptr }
 {
+	m_pNextState = nullptr;
 	m_fAddSpeed = 0.f;
 	m_bIsDash = false;
 	m_bIsCrack = false;
 	m_bIsPhase2 = false;
 	m_fDegree = 0.f;
 	//m_fMaxHp = _fHp;
-	m_fMaxHp = 2000.f;
+	m_fMaxHp = 4000.f;
 	m_fStackTime = 0.f;
 
 	m_tInfo.vPos = { _fX, _fY, 0.f };
@@ -89,9 +90,7 @@ int CBoss::Update(float _fDeltaTime)
 	CBossState* pCurState = m_pBossNextState->Update(this);
 	if (pCurState != nullptr)
 	{
-		delete	m_pBossNextState;
-		m_pBossNextState = nullptr;
-
+		Safe_Delete(m_pBossNextState);
 		m_pBossNextState = pCurState;
 	}
 
@@ -173,7 +172,14 @@ void CBoss::Render(const HDC& _hdc)
 
 void CBoss::Release(void)
 {
-	SAFE_DELETE(m_pBossNextState);
+	Safe_Delete(m_pBossNextState);
+	//Safe_Delete(m_pNextState);
+}
+
+void CBoss::SetState(CBossState* _pState)
+{
+	Safe_Delete(m_pBossNextState);
+	m_pBossNextState = _pState;
 }
 
 void CBoss::ShootRocket(void)

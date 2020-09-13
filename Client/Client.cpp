@@ -42,7 +42,7 @@ int APIENTRY wWinMain(_In_ HINSTANCE hInstance,
 
     _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #ifdef _VC_DEBUG
-   // _CrtSetBreakAlloc(53584); //여기에 몇번째 메모리 할당이 일어나며 브레이크 포인터를 설정하게 셋팅한다.
+   // _CrtSetBreakAlloc(3521); //여기에 몇번째 메모리 할당이 일어나며 브레이크 포인터를 설정하게 셋팅한다.
 #endif
     UNREFERENCED_PARAMETER(hPrevInstance);
     UNREFERENCED_PARAMETER(lpCmdLine);

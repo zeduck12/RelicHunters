@@ -8,7 +8,7 @@ CKamikazeCage::CKamikazeCage(float _fX, float _fY, float _fWidth, float _fHeight
 {
 	m_fAddY = 0.f;
 	m_fDegree = 0.f;
-	m_fMaxHp = 200.f;
+	m_fMaxHp = 1000.f;
 	m_fCurHp = m_fMaxHp;
 	m_fSpeed = 5.f;
 	m_fAddSpeed = 0.f;

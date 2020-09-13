@@ -52,7 +52,6 @@ bool CObjManager::Ready(void)
 		return false;
 	
 
-	
 	// 플레이어가 스폰되는 장소에 텔레포트 설치
 	shared_ptr<CObj> pItem = make_shared<CTeleporter>(
 		GET_SINGLE(CPlayerManager)->GetPlayer()->GetX(),
@@ -361,11 +360,20 @@ void CObjManager::SpawnKamikazeCage(void)
 
 void CObjManager::Release(void)
 {
+	/*m_listItems.clear();
 	m_listGrenades.clear();
 	m_listCasings.clear();
 	m_listBullets.clear();
 	m_listMonsters.clear();
 	m_listParticles.clear();
+	m_listHolograms.clear();*/
+	DeleteListSafe(m_listItems);
+	DeleteListSafe(m_listGrenades);
+	DeleteListSafe(m_listCasings);
+	DeleteListSafe(m_listBullets);
+	DeleteListSafe(m_listMonsters);
+	DeleteListSafe(m_listParticles);
+	DeleteListSafe(m_listHolograms);
 
 	UICameraManager::Destroy_Instance();
 	CCameraManager::Destroy_Instance();

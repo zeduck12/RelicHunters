@@ -25,7 +25,7 @@ public:
 	bool IsPhase2(void) const { return m_bIsPhase2; }
 	void SetIsPhase2(bool _bIsPhase2) { m_bIsPhase2 = _bIsPhase2; }
 	void SetIsCrack(bool _bIsCrack) { m_bIsCrack = _bIsCrack; }
-	void SetState(CBossState* _pState) { m_pBossNextState = _pState; }
+	void SetState(CBossState* _pState);
 	void SetIsInvicible(bool _bIsInvicible) { m_bIsInvicible = _bIsInvicible; }
 	void ShootRocket(void);
 	void ShootShotgun(void);

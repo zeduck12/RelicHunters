@@ -4,7 +4,7 @@
 class CBossState
 {
 public:
-	explicit CBossState() = default;
+	CBossState() = default;
 	virtual ~CBossState() = default;
 public:
 	virtual CBossState* Update(CBoss * _pBoss)				 = 0;

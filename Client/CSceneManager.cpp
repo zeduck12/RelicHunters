@@ -59,7 +59,7 @@ void CSceneManager::ChangeScene(ID _eSceneID)
 			break;
 		case CSceneManager::SCENE_END:
 			m_pScene = new CEnd;
-			return;
+			break;
 		default:
 			break;
 		}
@@ -88,5 +88,5 @@ void CSceneManager::Render(const HDC& _hdc)
 
 void CSceneManager::Release(void)
 {
-	SAFE_DELETE(m_pScene);
+	Safe_Delete(m_pScene);
 }

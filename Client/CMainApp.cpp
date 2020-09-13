@@ -46,7 +46,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
 }
 
 void CMainApp::Update()
@@ -75,20 +75,19 @@ void CMainApp::Render()
 void CMainApp::Release()
 {
 	ReleaseDC(g_hWND, m_hDC);
-	
-	CSoundManager::Destroy_Instance();
+	m_pMouse.reset();
 	CTimeManager::Destroy_Instance();
 	CKeyManager::Destroy_Instance();
 	CCollisionManager::Destroy_Instance();
 	CSceneManager::Destroy_Instance();
+	CSoundManager::Destroy_Instance();
 	CGraphicDevice::Destroy_Instance();
 	CTextureManager::Destroy_Instance();
+	CObjManager::Destroy_Instance();
 }
 
 void CMainApp::SetImages(void)
 {
-
-
 	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Tile/Tile%d.png", L"Terrain", L"Tile", 3))
 		return;
 

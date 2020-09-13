@@ -97,6 +97,22 @@ void UICameraManager::Render(void)
 void UICameraManager::RenderMiniMap()
 {
 	const TEXINFO* pTexInfo = nullptr;
+
+	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"WhiteParticle");
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 200.f, 300.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 17200.f , 3300.f , 0.f);
+	matWorld = matScale * matTrans;
+
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(100, 50, 50, 50));
+
 	for (auto& pTile : GET_SINGLE(CMapManager)->GetTiles())
 	{
 		pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Terrain", L"Tile", pTile->iDrawID);

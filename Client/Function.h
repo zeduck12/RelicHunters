@@ -17,6 +17,13 @@ void DeleteListSafe(list<T>& _list)
 	_list.clear();
 }
 
+template<typename T>
+void DeleteListSafe(list<shared_ptr<T>>& _list)
+{
+	for (auto& pObj : _list) { pObj.reset(); }
+	_list.clear();
+}
+
 template<class T>
 void Safe_Delete_Array(T& rObj)
 {
