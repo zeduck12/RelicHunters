@@ -100,10 +100,18 @@ D3DXMATRIX CCameraManager::GetWorldD3DMatrix(void)
 	}
 	else
 	{
-		D3DXMatrixTranslation(&matMove, -pPlayer->GetX() + (iCX / 2) / m_fScale + m_fDeltaX, -pPlayer->GetY() + (iCY / 2) / m_fScale + m_fDeltaY, 0.f);
-		D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
+		
+		if (pPlayer->GetX() < (iCX / 2) && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_TEST)
+		{
+			D3DXMatrixTranslation(&matMove, m_vTempPos.x -400.f + (iCX / 2) / m_fScale + m_fDeltaX, m_vTempPos.y -pPlayer->GetY() + (iCY / 2) / m_fScale + m_fDeltaY, 0.f);
+			D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
+		}
+		else
+		{
+			D3DXMatrixTranslation(&matMove, -pPlayer->GetX() + (iCX / 2) / m_fScale + m_fDeltaX, -pPlayer->GetY() + (iCY / 2) / m_fScale + m_fDeltaY, 0.f);
+			D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
+		}
 	}
-
 
 	matWorld = matMove * matScale;
 
@@ -245,13 +253,29 @@ void CCameraManager::EarthquakeCamera(void)
 
 	if (m_iCount == 1)
 	{
-		pPlayer->SetX(pPlayer->GetX() - vDir.x * 10.f);
-		pPlayer->SetY(pPlayer->GetY() - vDir.y * 10.f);
+		if (pPlayer->GetX() < 400.f && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_TEST)
+		{
+			m_vTempPos.x -= vDir.x * 10.f;
+			m_vTempPos.y -= vDir.y * 10.f;
+		}
+		else
+		{
+			pPlayer->SetX(pPlayer->GetX() - vDir.x * 10.f);
+			pPlayer->SetY(pPlayer->GetY() - vDir.y * 10.f);
+		}
 	}
 	else if (m_iCount == 2)
 	{
-		pPlayer->SetX(pPlayer->GetX() + vDir.x * 10.f);
-		pPlayer->SetY(pPlayer->GetY() + vDir.y * 10.f);
+		if (pPlayer->GetX() < 400.f && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_TEST)
+		{
+			m_vTempPos.x += vDir.x * 10.f;
+			m_vTempPos.y += vDir.y * 10.f;
+		}
+		else
+		{
+			pPlayer->SetX(pPlayer->GetX() + vDir.x * 10.f);
+			pPlayer->SetY(pPlayer->GetY() + vDir.y * 10.f);
+		}
 	}
 }
 
@@ -289,5 +313,6 @@ CCameraManager::CCameraManager()
 	m_bIsBossDeath{ false }
 {
 	m_vFocusPos = {0.f, 0.f, 0.f};
+	m_vTempPos = { 0.f, 0.f, 0.f };
 }
 

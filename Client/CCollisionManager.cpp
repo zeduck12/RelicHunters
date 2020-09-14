@@ -1,8 +1,10 @@
 #include "pch.h"
 #include "CObj.h"
 #include "CCollisionManager.h"
+#include "CSceneManager.h"
 #include "CGrenade.h"
 #include "CCasing.h"
+
 
 DEFINITION_SINGLETON(CCollisionManager)
 
@@ -264,7 +266,7 @@ bool CCollisionManager::CollideCharacterTile(CObj* _pDstObj, TILE* _pTile)
 	DO_IF_IS_NOT_VALID_OBJ(_pDstObj)
 		return false;
 
-	if (_pTile->iOption == 0) // 0이면 지나갈 수 있게
+	if (_pTile->iOption == 0 && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_GAME2) // 0이면 지나갈 수 있게
 		return false;
 
 	RECT rcDst = _pDstObj->GetRect(); // 플레이어

@@ -4,7 +4,7 @@ class CParticle :
     public CObj
 {
 public:
-    enum ID { HIT, DASH, BOMB, DEATH, SMOKE, FINISH};
+    enum ID { HIT, DASH, BOMB, DEATH, SMOKE, NUMBER, FINISH};
    
 public:
      explicit CParticle() = default;

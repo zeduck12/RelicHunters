@@ -223,6 +223,9 @@
     <Filter Include="01.CObj\011.Player\Inventory\Shield">
       <UniqueIdentifier>{35e5ba29-88db-4549-abc5-133f51713b37}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\018.Particle\NumberParticle">
+      <UniqueIdentifier>{faede973-93e2-4ab2-acd5-540b0709dcca}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -447,6 +450,9 @@
     <ClInclude Include="CHitParticle.h">
       <Filter>01.CObj\018.Particle\HitParticle</Filter>
     </ClInclude>
+    <ClInclude Include="CNumberParticle.h">
+      <Filter>01.CObj\018.Particle\NumberParticle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -646,6 +652,9 @@
     </ClCompile>
     <ClCompile Include="CHitParticle.cpp">
       <Filter>01.CObj\018.Particle\HitParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="CNumberParticle.cpp">
+      <Filter>01.CObj\018.Particle\NumberParticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

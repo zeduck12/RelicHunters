@@ -58,8 +58,8 @@ void CMapManager::Render(const HDC& _hdc)
 	{
 		if (GET_SINGLE(CCameraManager)->IsFocusPlayer() == true)
 		{
-			if (pTile->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pTile->vPos.x ||
-				pTile->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pTile->vPos.y)
+			if (pTile->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 300.f) || pPlayer->GetX() + ((WINCX >> 1) + 300.f) < pTile->vPos.x ||
+				pTile->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 300.f) || pPlayer->GetY() + ((WINCY >> 1) + 300.f) < pTile->vPos.y)
 				continue;
 		}
 		else
@@ -92,8 +92,8 @@ void CMapManager::Render(const HDC& _hdc)
 	{
 		if (CCameraManager::Get_Instance()->IsFocusPlayer() == true)
 		{
-			if (pTile->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pTile->vPos.x ||
-				pTile->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pTile->vPos.y)
+			if (pTile->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 300.f) || pPlayer->GetX() + ((WINCX >> 1) + 300.f) < pTile->vPos.x ||
+				pTile->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 300.f) || pPlayer->GetY() + ((WINCY >> 1) + 300.f) < pTile->vPos.y)
 				continue;
 		}
 		else
@@ -129,8 +129,8 @@ void CMapManager::Render(const HDC& _hdc)
 		{
 			if (CCameraManager::Get_Instance()->IsFocusPlayer() == true)
 			{
-				if (pObj->GetInfo()->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 200.f) || pPlayer->GetX() + ((WINCX >> 1) + 200.f) < pObj->GetInfo()->vPos.x ||
-					pObj->GetInfo()->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 200.f) || pPlayer->GetY() + ((WINCY >> 1) + 200.f) < pObj->GetInfo()->vPos.y)
+				if (pObj->GetInfo()->vPos.x < pPlayer->GetX() - ((WINCX >> 1) + 300.f) || pPlayer->GetX() + ((WINCX >> 1) + 300.f) < pObj->GetInfo()->vPos.x ||
+					pObj->GetInfo()->vPos.y < pPlayer->GetY() - ((WINCY >> 1) + 300.f) || pPlayer->GetY() + ((WINCY >> 1) + 300.f) < pObj->GetInfo()->vPos.y)
 					continue;
 			}
 			else

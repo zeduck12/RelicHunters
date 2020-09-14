@@ -15,6 +15,8 @@
 #include "CStructure.h"
 #include "CParticle.h"
 #include "CTimeManager.h"
+#include "CHitParticle.h"
+#include "CNumberParticle.h"
 
 CShotGun::CShotGun(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fAddDegree, float _fSpeed, float _fShootingDegree, OBJ::ID _eID /*= OBJ::PLAYER*/, const wstring& _strBulletName /*= L"Small"*/)
 	:
@@ -109,6 +111,18 @@ void CShotGun::LateUpdate(void)
 				}
 
 				shared_ptr<CObj> pParticle = make_shared<CParticle>(pMonster->GetX(), pMonster->GetY(), CParticle::HIT);
+				pParticle->Ready();
+				GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+
+				int iRandNum = int(GetNumberMinBetweenMax(5.f, 10.f));
+				for (int i = 0; i < iRandNum; i++)
+				{
+					shared_ptr<CObj> pParticle = make_shared<CHitParticle>(pMonster->GetX(), pMonster->GetY() + 10.f);
+					pParticle->Ready();
+					GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+				}
+
+				pParticle = make_shared<CNumberParticle>(pMonster->GetX(), pMonster->GetY() - 30.f, m_fDamage);
 				pParticle->Ready();
 				GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 			}

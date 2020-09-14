@@ -14,6 +14,7 @@
 #include "CStructure.h"
 #include "CParticle.h"
 #include "CHitParticle.h"
+#include "CNumberParticle.h"
 
 CReflect::CReflect(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID, float _fDamage)
 {
@@ -135,6 +136,10 @@ void CReflect::LateUpdate(void)
 					pParticle->Ready();
 					GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 				}
+
+				pParticle = make_shared<CNumberParticle>(pMonster->GetX(), pMonster->GetY() - 30.f, m_fDamage);
+				pParticle->Ready();
+				GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 			}
 		}
 

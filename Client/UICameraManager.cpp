@@ -73,6 +73,8 @@ void UICameraManager::LateUpdate(void)
 
 void UICameraManager::Render(void)
 {
+	//RenderMiniMap();
+
 	m_pPlayerInfo->Render();
 	if (m_pBossHpBar != nullptr && m_pBossHpBar->IsValid() == true)
 	{
@@ -91,7 +93,6 @@ void UICameraManager::Render(void)
 		DrawFocusTitle();
 	}
 
-	//RenderMiniMap();
 }
 
 void UICameraManager::RenderMiniMap()

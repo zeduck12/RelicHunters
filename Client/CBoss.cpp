@@ -173,7 +173,6 @@ void CBoss::Render(const HDC& _hdc)
 void CBoss::Release(void)
 {
 	Safe_Delete(m_pBossNextState);
-	//Safe_Delete(m_pNextState);
 }
 
 void CBoss::SetState(CBossState* _pState)

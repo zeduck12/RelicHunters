@@ -193,18 +193,10 @@ void CPlayer::LateUpdate()
 		};
 	}
 
-
 }
 
 void CPlayer::Render(const HDC& _hdc)
 {
-
-	// Line으로 그리기
-	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-	//for (int i = 1; i < 4; i++)
-	//	LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	//LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
-
 	m_pWeapon->DrawSubGun();
 
 	if (m_bIsDash)

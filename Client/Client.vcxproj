@@ -189,6 +189,7 @@
     <ClInclude Include="CMonsterState.h" />
     <ClInclude Include="CMouse.h" />
     <ClInclude Include="CMultiTexture.h" />
+    <ClInclude Include="CNumberParticle.h" />
     <ClInclude Include="CObj.h" />
     <ClInclude Include="CObjManager.h" />
     <ClInclude Include="Const.h" />
@@ -264,6 +265,7 @@
     <ClCompile Include="CMonsterState.cpp" />
     <ClCompile Include="CMouse.cpp" />
     <ClCompile Include="CMultiTexture.cpp" />
+    <ClCompile Include="CNumberParticle.cpp" />
     <ClCompile Include="CObj.cpp" />
     <ClCompile Include="CObjManager.cpp" />
     <ClCompile Include="CParticle.cpp" />

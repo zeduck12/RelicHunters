@@ -64,6 +64,7 @@ private:
 	XFORM m_fxWorld;
 
 	D3DXVECTOR3 m_vFocusPos;
+	D3DXVECTOR3 m_vTempPos;
 	// 카메라 진동 관련 변수
 	int m_iCount;
 	int m_iStack = 0;
