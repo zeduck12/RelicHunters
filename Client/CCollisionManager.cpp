@@ -464,6 +464,21 @@ bool CCollisionManager::CollideReflectWall(TILE* _pTile, CObj* _SrcObj)
 	return false;
 }
 
+bool CCollisionManager::CollideObjectToObject(CObj* _pDstObj, CObj* _SrcObj)
+{
+	DO_IF_IS_NOT_VALID_OBJ(_pDstObj)
+		return false;
+
+	RECT rc = {};
+	RECT rcDst = _pDstObj->GetRect();
+	RECT rcSrc = _SrcObj->GetRect();
+
+	if (IntersectRect(&rc, &rcDst, &rcSrc) == TRUE)
+		return true;
+
+	return false;
+}
+
 
 CCollisionManager::~CCollisionManager()
 {

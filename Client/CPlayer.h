@@ -2,6 +2,7 @@
 #include "CObj.h"
 #include "CWeapon.h"
 #include "CShield.h"
+#include "CReflectBoard.h"
 
 class CImageSetting;
 class CPlayerState;
@@ -22,6 +23,7 @@ public:
 public:
 	list<TILE*>& GetCollideWalls(void) { return m_listCollideWalls; }
 	CShield* GetShield(void) { return m_pShield.get(); }
+	CReflectBoard* GetReflectBoard(void) { return m_pReflectBoard.get(); }
 	CWeapon* GetCurWeapon(void) { return m_pWeapon.get(); }
 	void  SetCurDashHp(float _fHp) { m_fDashCurHp = _fHp; if (m_fDashCurHp <= 0.f) { m_fDashCurHp = 0.f; } }
 	float GetCurDashHp(void) const { return m_fDashCurHp; }
@@ -166,6 +168,7 @@ private:
 	wstring m_strDashName;						// 캐릭터에 따른 대시이름
 	unique_ptr<CShield> m_pShield;
 	unique_ptr<CWeapon> m_pWeapon;				// 현재 보유하고 있는 무기
+	unique_ptr<CReflectBoard> m_pReflectBoard;
 	unique_ptr<CImageSetting> m_pImageSetting;	// 이미지 셋팅 객체
 private:
 	// 현재 플레이어 상태

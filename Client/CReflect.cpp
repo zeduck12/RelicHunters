@@ -15,6 +15,10 @@
 #include "CParticle.h"
 #include "CHitParticle.h"
 #include "CNumberParticle.h"
+#include "CSceneManager.h"
+#include "CPlayerManager.h"
+#include "CPlayer.h"
+#include "CPlayerState.h"
 
 CReflect::CReflect(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fSpeed, float _fShootingDegree, OBJ::ID _eID, float _fDamage)
 {
@@ -89,10 +93,24 @@ int CReflect::Update(float _fDeltaTime)
 
 void CReflect::LateUpdate(void)
 {
-
 	m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
-	if (m_fStackTime >= 10.f)
+	if (m_fStackTime >= 10.f && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_EVENT)
 		this->SetIsValid(false);
+
+	if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_EVENT)
+	{
+		if (this->GetY() > GET_SINGLE(CPlayerManager)->GetPlayer()->GetY())
+		{
+			this->SetIsValid(false);
+			CPlayer* pPlayer = dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer());
+			if (pPlayer->IsDead() == false)
+			{
+				pPlayer->SetState(GET_SINGLE(PlayerAttacked));
+				pPlayer->SetIsAttacked(true);
+				pPlayer->TakeDamage(150.f);
+			}
+		}
+	}
 
 	if (m_eObjID == OBJ::PLAYER)
 	{
@@ -164,6 +182,13 @@ void CReflect::LateUpdate(void)
 		if(CCollisionManager::CollideReflectWall(pTile, this))
 			m_bIsCollide = true;
 	}
+
+	CObj* pObj = GET_SINGLE(CPlayerManager)->GetPlayer();
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
+	CReflectBoard* pBoard = pPlayer->GetReflectBoard();
+	if (CCollisionManager::CollideReflectStructure(pBoard, this) == true)
+		m_bIsCollide = true;
+	
 }
 
 void CReflect::Render(const HDC& _hdc)
@@ -176,7 +201,10 @@ void CReflect::Render(const HDC& _hdc)
 
 	D3DXMATRIX matWorld, matScale, matRev, matParent;
 
-	D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
+	if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_EVENT)
+		D3DXMatrixScaling(&matScale, 5.f, 5.f, 5.f);
+	else
+		D3DXMatrixScaling(&matScale, 1.f, 1.f, 1.f);
 	D3DXMatrixRotationZ(&matRev, m_fDegree);
 	D3DXMatrixTranslation(&matParent, m_tInfo.vPos.x, m_tInfo.vPos.y, m_tInfo.vPos.z);
 

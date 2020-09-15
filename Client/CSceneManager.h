@@ -8,7 +8,7 @@ class CSceneManager
 
 public:
 	enum ID { SCENE_LOGO, SCENE_INTRO, SCENE_LOBBY, SCENE_MENU,
-		SCENE_GAME, SCENE_GAME2, SCENE_GAME3, SCENE_GAME4, SCENE_END, SCENE_TEST, END };
+		SCENE_GAME, SCENE_GAME2, SCENE_GAME3, SCENE_GAME4, SCENE_END, SCENE_TEST, SCENE_EVENT, END };
 public:
 	void ChangeScene(ID _eSceneID);
 	void Update(void);
@@ -24,13 +24,15 @@ public:
 	ID   GetNextSceneID(void) const { return m_eNextScene; }
 	bool IsChangeScene(void) const { return m_bIsChangeScene; }
 	void SetIsChangeScene(bool _bIsChange) { m_bIsChangeScene = _bIsChange; }
-
+	bool IsChangeMiniGame(void) const { return m_bIsChangeMiniGame; }
+	void SetIsChangeMiniGame(bool _bIsChange) { m_bIsChangeMiniGame = _bIsChange; }
 private:
 	CSceneManager();
 	~CSceneManager();
 
 private:
 	bool m_bIsChangeScene = false;
+	bool m_bIsChangeMiniGame = false;
 
 	CScene* m_pScene = nullptr;
 

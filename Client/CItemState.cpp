@@ -9,6 +9,9 @@
 #include "CCollisionManager.h"
 #include "CInteractionManager.h"
 #include "CKeyManager.h"
+#include "CCountParticle.h"
+#include "CObjManager.h"
+
 
 CItemState* CItemIdleState::Update(CItem* _pItem)
 {
@@ -41,6 +44,10 @@ CItemState* CItemIdleState::Update(CItem* _pItem)
 				GET_SINGLE(CPlayerManager)->GetInventory()->SetCoins(iCurCoins + 10);
 				GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
 				GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_coin1.wav", CSoundManager::EFFECT);
+
+				shared_ptr<CObj> pParticle = make_shared<CCountParticle>();
+				pParticle->Ready();
+				GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
 			}
 			
 		}

@@ -30,7 +30,7 @@ bool CLobby::Ready(void)
 	pButton->Ready();
 	m_listButtons.emplace_back(pButton);
 
-	pButton = make_shared<CButton>(0.f, 370.f, 600.f, 52.f, L"Button", BUTTON::SETTING);
+	pButton = make_shared<CButton>(0.f, 370.f, 600.f, 52.f, L"Button", BUTTON::MINI_GAME);
 	pButton->Ready();
 	m_listButtons.emplace_back(pButton);
 
@@ -90,7 +90,13 @@ void CLobby::Update(void)
 	if (GET_SINGLE(CSceneManager)->IsChangeScene() == true)
 	{
 		GET_SINGLE(CSceneManager)->SetIsChangeScene(false);
-		GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_MENU);
+		if (GET_SINGLE(CSceneManager)->IsChangeMiniGame() == true)
+		{
+			GET_SINGLE(CSceneManager)->SetIsChangeMiniGame(false);
+			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_EVENT);
+		}
+		else
+			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_MENU);
 	}
 }
 

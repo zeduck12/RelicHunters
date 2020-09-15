@@ -21,7 +21,6 @@ public:
 	LPD3DXSPRITE	  GetSprite(void) const { return m_pSprite; }
 	LPD3DXFONT		  GetFont(void)	  const { return m_pFont; }
 
-
 public:
 	LPDIRECT3DDEVICE9 m_pDevice;
 	LPDIRECT3D9		  m_pSDK;

@@ -19,6 +19,7 @@ public:
 	static bool CollideCharacterStructure(CObj* _pDstObj, CObj* _pSrcObj);	 // 캐릭터 구조물 충돌
 	static bool CollideReflectStructure(CObj* _pDstObj, CObj* _pSrcObj);
 	static bool CollideReflectWall(TILE* _pTile, CObj* _SrcObj);
+	static bool CollideObjectToObject(CObj* _pDstObj, CObj* _SrcObj);
 
 private:
 	CCollisionManager() = default;

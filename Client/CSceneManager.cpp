@@ -57,6 +57,9 @@ void CSceneManager::ChangeScene(ID _eSceneID)
 		case CSceneManager::SCENE_TEST:
 			m_pScene = new CGame;
 			break;
+		case CSceneManager::SCENE_EVENT:
+			m_pScene = new CGame;
+			break;
 		case CSceneManager::SCENE_END:
 			m_pScene = new CEnd;
 			break;

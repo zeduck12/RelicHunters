@@ -51,7 +51,6 @@ bool CObjManager::Ready(void)
 	if (!GET_SINGLE(CMapManager)->Ready())
 		return false;
 	
-
 	// 플레이어가 스폰되는 장소에 텔레포트 설치
 	shared_ptr<CObj> pItem = make_shared<CTeleporter>(
 		GET_SINGLE(CPlayerManager)->GetPlayer()->GetX(),
@@ -148,6 +147,10 @@ void CObjManager::Render(const HDC& _hdc)
 	GET_SINGLE(CGraphicDevice)->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
 	GET_SINGLE(UICameraManager)->Render();
 
+	// 여기서 포신 그려주기
+	//if (GET_SINGLE(CCameraManager)->IsPressing() == true)
+	//	DrawLine();
+	
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);
 }
@@ -184,6 +187,15 @@ void CObjManager::InstallTeleporter(void)
 			pItem->Ready();
 			m_listItems.emplace_back(pItem);
 		}
+		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_EVENT)
+		{
+			shared_ptr<CObj> pItem = make_shared<CTeleporter>(
+				960.f,
+				1118.f,
+				150.f, 100.f, IMAGE::TELEPORTER, TELEPORTER::SPAWN);
+			pItem->Ready();
+			m_listItems.emplace_back(pItem);
+		}
 		else
 		{
 			shared_ptr<CObj> pItem = make_shared<CTeleporter>(
@@ -212,6 +224,8 @@ void CObjManager::SceneChange(void)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
 		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME4)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_END);
+		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_EVENT)
+			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
 		else if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_TEST)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
 	}
@@ -270,6 +284,11 @@ void CObjManager::PlayBGM(void)
 		CSoundManager::Get_Instance()->StopAll();
 		CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_boss.wav");
 	}
+	else if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_EVENT)
+	{
+		CSoundManager::Get_Instance()->StopAll();
+		CSoundManager::Get_Instance()->PlayBGM((TCHAR*)L"bgm_main.wav");
+	}
 	else if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_TEST)
 	{
 		CSoundManager::Get_Instance()->StopAll();
@@ -296,7 +315,6 @@ void CObjManager::SpawnKamikazeCage(void)
 	pMonster->Ready();
 	GET_SINGLE(CObjManager)->GetMonsters().emplace_back(pMonster);
 }
-
 
 void CObjManager::Release(void)
 {

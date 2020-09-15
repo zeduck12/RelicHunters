@@ -54,6 +54,11 @@ int CButton::Update(float _fDeltaTime)
 				GET_SINGLE(CSceneManager)->SetIsChangeScene(true);
 			else if(m_eID == BUTTON::CLOSE)
 				DestroyWindow(g_hWND);
+			else if (m_eID == BUTTON::MINI_GAME)
+			{
+				GET_SINGLE(CSceneManager)->SetIsChangeScene(true);
+				GET_SINGLE(CSceneManager)->SetIsChangeMiniGame(true);
+			}
 
 			return 0;
 		}
@@ -130,9 +135,9 @@ void CButton::Render(const HDC& _hdc)
 		}
 	}
 
-	if (m_eID == BUTTON::SETTING)
+	if (m_eID == BUTTON::MINI_GAME)
 	{
-		TCHAR szBuf[MAX_PATH] = L"SETTING";
+		TCHAR szBuf[MAX_PATH] = L"MINI GAME";
 		if (m_bIsPress)
 		{
 			D3DXMatrixTranslation(&matTrans, m_tInfo.vPos.x + 60.f, m_tInfo.vPos.y - 10.f, 0.f);

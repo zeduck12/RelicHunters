@@ -47,6 +47,7 @@ HRESULT CGraphicDevice::Ready(void)
 	d3dpp.hDeviceWindow = g_hWND;
 	// 거짓이면 전체화면, 참이면  창모드을 사용하겠다. 
 	d3dpp.Windowed = TRUE;
+
 	d3dpp.EnableAutoDepthStencil	 = TRUE;
 	d3dpp.AutoDepthStencilFormat	 = D3DFMT_D24S8;
 	d3dpp.FullScreen_RefreshRateInHz = D3DPRESENT_RATE_DEFAULT;

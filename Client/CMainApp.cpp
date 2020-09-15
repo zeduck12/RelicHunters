@@ -46,7 +46,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
 }
 
 void CMainApp::Update()
@@ -54,6 +54,7 @@ void CMainApp::Update()
 	GET_SINGLE(CKeyManager)->Update();
 	GET_SINGLE(CSceneManager)->Update();
 	m_pMouse->Update();
+
 }
 
 void CMainApp::LateUpdate()
@@ -464,8 +465,9 @@ void CMainApp::SetImages(void)
 	// SuperArmor
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Particle/SuperArmor/spr_boss_collisionMask_0.png", L"SuperArmor")))
 		return;
-
-
+	//reflectBoard
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/ReflectBoard/reflectBoard.png", L"ReflectBoard")))
+		return;
 }
 
 

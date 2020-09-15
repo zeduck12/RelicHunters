@@ -162,6 +162,7 @@
     <ClInclude Include="CCameraManager.h" />
     <ClInclude Include="CCasing.h" />
     <ClInclude Include="CCollisionManager.h" />
+    <ClInclude Include="CCountParticle.h" />
     <ClInclude Include="CDecoStar.h" />
     <ClInclude Include="CEnd.h" />
     <ClInclude Include="CEnemyManager.h" />
@@ -200,6 +201,7 @@
     <ClInclude Include="CPlayerManager.h" />
     <ClInclude Include="CPlayerState.h" />
     <ClInclude Include="CReflect.h" />
+    <ClInclude Include="CReflectBoard.h" />
     <ClInclude Include="CRocket.h" />
     <ClInclude Include="CScene.h" />
     <ClInclude Include="CSceneManager.h" />
@@ -238,6 +240,7 @@
     <ClCompile Include="CCameraManager.cpp" />
     <ClCompile Include="CCasing.cpp" />
     <ClCompile Include="CCollisionManager.cpp" />
+    <ClCompile Include="CCountParticle.cpp" />
     <ClCompile Include="CDecoStar.cpp" />
     <ClCompile Include="CEnd.cpp" />
     <ClCompile Include="CEnemyManager.cpp" />
@@ -275,6 +278,7 @@
     <ClCompile Include="CPlayerManager.cpp" />
     <ClCompile Include="CPlayerState.cpp" />
     <ClCompile Include="CReflect.cpp" />
+    <ClCompile Include="CReflectBoard.cpp" />
     <ClCompile Include="CRocket.cpp" />
     <ClCompile Include="CScene.cpp" />
     <ClCompile Include="CSceneManager.cpp" />

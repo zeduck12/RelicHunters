@@ -29,6 +29,7 @@
 #include "CSmoke.h"
 #include "CHitParticle.h"
 #include "UICameraManager.h"
+#include "CReflectBoard.h"
 
 CPlayer::CPlayer()
 	:
@@ -44,6 +45,7 @@ CPlayer::CPlayer()
 	m_pCurState{ nullptr },
 	m_bIsAttacked{ false },
 	m_pImageSetting{ nullptr },
+	m_pReflectBoard{ nullptr },
 	m_bIsReloading{ false },
 	m_fCurHp{ 0.f },
 	m_fMaxHp{ 0.f },
@@ -75,6 +77,8 @@ void CPlayer::Ready()
 		m_tInfo.vPos = { 548.f, 767.f, 0.f };
 	else if (eSceneID == CSceneManager::SCENE_TEST)
 		m_tInfo.vPos = { 1000.f, 1000.f, 0.f };
+	else if (eSceneID == CSceneManager::SCENE_EVENT)
+		m_tInfo.vPos = { 1216.f, 2679.f, 0.f };
 
 	m_tInfo.vDir = {1.0f, 0.f, 0.f};
 	m_tInfo.vSize = { 50.f, 50.f, 0.f };
@@ -102,10 +106,15 @@ void CPlayer::Ready()
 	// 여기서 무기 세팅하고 셋팅
 	GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::DEFAULT);
 	PLAYER::ID ePlayerID = GET_SINGLE(CSceneManager)->GetPlayerID();
-	if(ePlayerID == PLAYER::RAFF)
-		GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::KEYTAR);
+	if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_EVENT)
+		GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::ASSAULT);
 	else
-		GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::DEFAULT);
+	{
+		if(ePlayerID == PLAYER::RAFF)
+			GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::KEYTAR);
+		else
+			GET_SINGLE(CPlayerManager)->GetInventory()->GainWeapon(GUN::DEFAULT);
+	}
 
 	
 	// 무기 생성
@@ -151,6 +160,8 @@ int CPlayer::Update(float _fDeltaTime)
 	m_pWeapon->Update();
 	m_pCurState->Update(this); // 상태 업데이트
 
+	if(m_pReflectBoard)
+		m_pReflectBoard->Update();
 
 	return 0;
 }
@@ -239,6 +250,9 @@ void CPlayer::Render(const HDC& _hdc)
 		wsprintf(str, TEXT("Debug"), int(m_fShootingDegree));
 		TextOut(_hdc, (int)m_tInfo.vPos.x - 10, (int)m_tInfo.vPos.y + 20, str, lstrlen(str));
 	}
+
+	if (m_pReflectBoard)
+		m_pReflectBoard->Render(_hdc);
 
 }
 
@@ -445,6 +459,19 @@ void CPlayer::CheckKeyState(void)
 			GET_SINGLE(UICameraManager)->SetIsShowMiniMap(true);
 		else
 			GET_SINGLE(UICameraManager)->SetIsShowMiniMap(false);
+	}
+
+
+	// Event 용
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_Y))
+	{
+		if (m_pReflectBoard == nullptr)
+		{
+			m_pReflectBoard = make_unique<CReflectBoard>(this);
+			m_pReflectBoard->Ready();
+		}
+		else if (m_pReflectBoard)
+			m_pReflectBoard.reset();
 	}
 
 }

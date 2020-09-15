@@ -212,6 +212,9 @@ void UICameraManager::DrawStageTitle(void)
 	case CSceneManager::SCENE_GAME4:
 		m_strName = L"Stage4";
 		break;
+	case CSceneManager::SCENE_EVENT:
+		m_strName = L"Stage4";
+		break;
 	}
 
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Stage", m_strName, m_iDrawID);
