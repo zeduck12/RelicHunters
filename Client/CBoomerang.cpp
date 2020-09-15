@@ -176,8 +176,6 @@ void CBoomerang::LateUpdate(void)
 
 void CBoomerang::Render(const HDC& _hdc)
 {
-	//Ellipse(_hdc, GetLeft(), GetTop(), GetRight(), GetBottom());
-
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", m_strBulletName, 5);
 	if (nullptr == pTexInfo)
 		return;

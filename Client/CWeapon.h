@@ -48,9 +48,9 @@ private:
     D3DXVECTOR3 m_vRotVertex[4];
     D3DXVECTOR3 m_vRealVertex[4];
 
-    GUN::ID m_eCurWeaponID;				 // 현재 사용중인 무기 ID
+    GUN::ID m_eCurWeaponID = GUN::END;				 // 현재 사용중인 무기 ID
 
-    int m_iCurCapacity;     // 현재 총의 탄창크기     // 50
-    int m_iReloadedBullets; // 현재 장전된 총알 갯수
+    int m_iCurCapacity = 0;     // 현재 총의 탄창크기     // 50
+    int m_iReloadedBullets = 0; // 현재 장전된 총알 갯수
 };
 

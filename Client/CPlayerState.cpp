@@ -88,7 +88,6 @@ void PlayerMoveState::Update(CPlayer* _pPlayer)
 		break;
 	}
 
-
 	SetPlayerState(_pPlayer, GET_SINGLE(PlayerIdleState));
 }
 

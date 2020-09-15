@@ -181,7 +181,7 @@ void CCameraManager::MoveCameraToFreeSpace(void)
 			m_fDeltaX = -1.f * fDeltaX;
 	}
 
-	if (pt.y < pPlayer->GetY() - 200.f && pt.y > pPlayer->GetY() - 300.f ||
+	else if (pt.y < pPlayer->GetY() - 200.f && pt.y > pPlayer->GetY() - 300.f ||
 		pt.y > pPlayer->GetY() + 200.f && pt.y < pPlayer->GetY() + 300.f)
 	{
 		float fDst = abs(pt.y - pPlayer->GetY());
@@ -190,6 +190,11 @@ void CCameraManager::MoveCameraToFreeSpace(void)
 			m_fDeltaY = fDeltaY;
 		else
 			m_fDeltaY = -1.f * fDeltaY;
+	}
+	else
+	{
+		m_fDeltaX = 0.f;
+		m_fDeltaY = 0.f;
 	}
 }
 
@@ -306,6 +311,11 @@ CCameraManager::CCameraManager()
 	m_fDeltaX{ 0.f },
 	m_fDeltaY{ 0.f },
 	m_fScale{ 1.f },
+	m_iStack{ 0 },
+	m_fOldDelta{ 0.f },
+	m_fStackTime{ 0.f },
+	m_fFocusTime{ 0.f },
+	m_fFocusStartTime{ 0.f },
 	m_bIsShooting{ false },
 	m_bIsEnlargeScale{ false },
 	m_bIsReduceScale{ false },

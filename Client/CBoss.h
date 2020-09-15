@@ -40,9 +40,9 @@ public:
 	void CheckGeneratorsCount(void);
 
 private:
-	bool m_bIsInvicible = false;
 	bool m_bIsCrack;
 	bool m_bIsPhase2;
+	bool m_bIsInvicible;
 	float m_fStackTime = 0.f;
 	CBossState* m_pBossNextState ; 
 

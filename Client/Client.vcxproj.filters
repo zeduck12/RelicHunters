@@ -124,9 +124,6 @@
     <Filter Include="06.ImageSetting">
       <UniqueIdentifier>{44d5fbf0-a4e5-4db7-b6a5-57c71de3094b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="07.Shadow">
-      <UniqueIdentifier>{31414bdc-b614-4bc9-9c0f-088360603a85}</UniqueIdentifier>
-    </Filter>
     <Filter Include="01.CObj\015.Boss">
       <UniqueIdentifier>{3f47f798-e070-47ff-8c3a-ab522d4c84f5}</UniqueIdentifier>
     </Filter>
@@ -225,6 +222,12 @@
     </Filter>
     <Filter Include="01.CObj\018.Particle\NumberParticle">
       <UniqueIdentifier>{faede973-93e2-4ab2-acd5-540b0709dcca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="97.Manager\ShadowManager">
+      <UniqueIdentifier>{31414bdc-b614-4bc9-9c0f-088360603a85}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\018.Particle\CoinCountParticle">
+      <UniqueIdentifier>{db7ba856-2800-46f4-a6d1-c37e701594e9}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -355,7 +358,7 @@
       <Filter>06.ImageSetting</Filter>
     </ClInclude>
     <ClInclude Include="CShadow.h">
-      <Filter>07.Shadow</Filter>
+      <Filter>97.Manager\ShadowManager</Filter>
     </ClInclude>
     <ClInclude Include="CBoss.h">
       <Filter>01.CObj\015.Boss</Filter>
@@ -555,7 +558,7 @@
       <Filter>06.ImageSetting</Filter>
     </ClCompile>
     <ClCompile Include="CShadow.cpp">
-      <Filter>07.Shadow</Filter>
+      <Filter>97.Manager\ShadowManager</Filter>
     </ClCompile>
     <ClCompile Include="CPlayerState.cpp">
       <Filter>01.CObj\011.Player\StatePattern</Filter>

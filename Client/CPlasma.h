@@ -17,7 +17,7 @@ public:
 	virtual void Release(void)					 override;
 
 private:
-	int m_iDrawID;
+	int   m_iDrawID;
 	float m_fStackTime;
 	float m_fCoolTime;
 };

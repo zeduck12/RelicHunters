@@ -17,12 +17,12 @@ public:
 
 
 private:
-	static float m_fX			;
-	static float m_fY			;
-	static int   m_iDrawID		;
-	static int   m_iMaxDrawID	;
-	static float m_fStackTime	;
-	static float m_fCoolTime	;
+	static float m_fX;
+	static float m_fY;
+	static int   m_iDrawID;
+	static int   m_iMaxDrawID;
+	static float m_fStackTime;
+	static float m_fCoolTime;
 	static int	 m_iActivationDrawID;
 
 };

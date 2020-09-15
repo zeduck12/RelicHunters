@@ -43,9 +43,9 @@ CShotGun::CShotGun(float _fX, float _fY, D3DXVECTOR3 _vDir, float _fAddDegree, f
 	m_vRotVertex[3].y = +(m_tInfo.vSize.y * 0.5f);
 
 	m_eObjID = _eID;
-	m_strBulletName = _strBulletName;
+	m_fDamage = 30.f;
 	m_fStackTime = 0.f;
-	m_fDamage = 10.f;
+	m_strBulletName = _strBulletName;
 }
 
 CShotGun::~CShotGun()
@@ -94,7 +94,7 @@ void CShotGun::LateUpdate(void)
 				if (pMonster->GetImageID() == IMAGE::BOSS)
 				{
 					CBoss* pBoss = dynamic_cast<CBoss*>(pMonster.get());
-					if (pBoss->IsDead() == false && pBoss->IsCrack() == true)
+					if (pBoss->IsDead() == false && pBoss->IsCrack() == true && pBoss->IsInvicible() == false)
 					{
 						pBoss->SetState(new BossAttackedState);
 						pBoss->SetHp(pBoss->GetHp() - m_fDamage);
@@ -166,12 +166,6 @@ void CShotGun::LateUpdate(void)
 
 void CShotGun::Render(const HDC& _hdc)
 {
-	//MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-
-	//for (int i = 1; i < 4; i++)
-	//	LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	//LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
-
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", m_strBulletName, 1);
 	if (nullptr == pTexInfo)
 		return;

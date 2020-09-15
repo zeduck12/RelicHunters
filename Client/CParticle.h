@@ -23,12 +23,11 @@ public:
 
 protected:
 
-    float         m_fAddSpeed = 0.f;
-
     int           m_iDrawID;
     int           m_iDrawMax;
     float         m_fStackTime;
     float         m_fCoolTime = 0.f;
+    float         m_fAddSpeed = 0.f;
     float         m_fFinishTime = 0.f;
 
     CParticle::ID m_eID;

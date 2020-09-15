@@ -82,7 +82,6 @@ HRESULT CGraphicDevice::Ready(void)
 
 void CGraphicDevice::Release(void)
 {
-
 	Safe_Release(m_pFont);
 	Safe_Release(m_pSprite);
 	Safe_Release(m_pDevice);

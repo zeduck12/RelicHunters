@@ -28,6 +28,7 @@
 #include "CParticle.h"
 #include "CSmoke.h"
 #include "CHitParticle.h"
+#include "UICameraManager.h"
 
 CPlayer::CPlayer()
 	:
@@ -438,13 +439,12 @@ void CPlayer::CheckKeyState(void)
 
 
 	// Test용
-	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_G))
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_M))
 	{
-		float fRandom = GetNumberMinBetweenMax(0.f, 360.f);
-		// 아이템 드랍되게
-		shared_ptr<CObj> pItem = make_shared<CStarCoin>(m_tInfo.vPos.x, m_tInfo.vPos.y, 30.f, 30.f, IMAGE::COIN, fRandom);
-		pItem->Ready();
-		GET_SINGLE(CObjManager)->GetItems().emplace_back(pItem);
+		if (GET_SINGLE(UICameraManager)->IsShowMiniMap() == false)
+			GET_SINGLE(UICameraManager)->SetIsShowMiniMap(true);
+		else
+			GET_SINGLE(UICameraManager)->SetIsShowMiniMap(false);
 	}
 
 }

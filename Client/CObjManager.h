@@ -26,11 +26,10 @@ private:
 	~CObjManager();
 
 private:
-	void InstallTeleporter(void);
-	void SceneChange(void);
-	void TestWeapons(void);
 	void DrawLine(void);
 	void PlayBGM(void);
+	void SceneChange(void);
+	void InstallTeleporter(void);
 	void SpawnKamikazeCage(void);
 
 private:

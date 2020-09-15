@@ -21,7 +21,7 @@ CNumberParticle::CNumberParticle(float _fX, float _fY, float _fDamage/* = 0.f*/)
 
 	m_fDegree = 0.f;
 	m_fDamage = _fDamage;
-	m_fScale = GetNumberMinBetweenMax(1.f, 1.5f);
+	m_fScale = GetNumberMinBetweenMax(1.2f, 1.7f);
 	m_fSpeed = GetNumberMinBetweenMax(150.f, 250.f);
 	m_fDeltaX = GetNumberMinBetweenMax(-20.f, 20.f);
 
@@ -87,7 +87,7 @@ void CNumberParticle::Render(const HDC& _hdc)
 	if(m_iRandNum == 1)
 		CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(m_iAlpha, 255, 255, 255));
 	else if(m_iRandNum == 2)
-		CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(m_iAlpha, 255, 0, 0));
+		CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(m_iAlpha, 255, 127, 0));
 	else if(m_iRandNum == 3)
 		CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(m_iAlpha, 255, 255, 0));
 }

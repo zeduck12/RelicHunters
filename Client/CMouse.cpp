@@ -60,8 +60,8 @@ int CMouse::Update(float _fDeltaTime)
 
 	}
 
-	m_tInfo.vPos.x = float(pt.x); //+ fPlayerX;
-	m_tInfo.vPos.y = float(pt.y); //+ fPlayerY;
+	m_tInfo.vPos.x = float(pt.x);
+	m_tInfo.vPos.y = float(pt.y);
 
 	float fX = m_tInfo.vPos.x;
 	float fY = m_tInfo.vPos.y;

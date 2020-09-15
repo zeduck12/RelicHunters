@@ -24,9 +24,9 @@ public:
 	bool IsCollide(void) const { return m_bIsCollide; }
 
 private:
-	int m_iDrawID;
+	int   m_iDrawID;
 	float m_fStackTime;
 	float m_fCoolTime;
-	bool m_bIsCollide = false;
+	bool  m_bIsCollide = false;
 };
 

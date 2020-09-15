@@ -31,7 +31,7 @@ public:
 	void ChangeWeapon(void);			// 무기 바꾸기
 
 private:
-	int m_iCapacity;					 // 인벤토리 크기
+	int  m_iCapacity;					 // 인벤토리 크기
 	GUN::ID m_eCurWeaponID;				 // 현재 사용중인 무기 ID
 	std::vector<GUN::ID> m_vecInventory; // 무기 담는 인벤토리
 

@@ -29,11 +29,11 @@ private:
 	// 캐릭터 이름에 따라 사진 다르게 띄워주기 위해
 	float m_fAddValue = 0.f;
 
+	float m_fSaveHp = 0.f;
+	float m_fStackTime = 0.f;
+	float m_fSaveShieldHp = 0.f;
 	bool m_bIsRecover = false;
 	bool m_bIsTracking = false;
 	bool m_bIsTrackingHp = false;
-	float m_fStackTime = 0.f;
-	float m_fSaveShieldHp = 0.f;
-	float m_fSaveHp = 0.f;
 };
 

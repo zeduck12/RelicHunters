@@ -73,7 +73,8 @@ void UICameraManager::LateUpdate(void)
 
 void UICameraManager::Render(void)
 {
-	//RenderMiniMap();
+	if(m_bIsShowMiniMap)
+		RenderMiniMap();
 
 	m_pPlayerInfo->Render();
 	if (m_pBossHpBar != nullptr && m_pBossHpBar->IsValid() == true)

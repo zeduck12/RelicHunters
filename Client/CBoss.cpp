@@ -22,11 +22,13 @@ CBoss::CBoss(float _fX, float _fY, float _fWidth, float _fHeight, float _fSpeed,
 	:
 	m_pBossNextState{ nullptr }
 {
-	m_pNextState = nullptr;
 	m_fAddSpeed = 0.f;
 	m_bIsDash = false;
 	m_bIsCrack = false;
 	m_bIsPhase2 = false;
+	m_bIsInvicible = false;
+	m_pNextState = nullptr;
+
 	m_fDegree = 0.f;
 	//m_fMaxHp = _fHp;
 	m_fMaxHp = 4000.f;

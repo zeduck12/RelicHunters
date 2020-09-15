@@ -66,8 +66,8 @@ private:
 	D3DXVECTOR3 m_vFocusPos;
 	D3DXVECTOR3 m_vTempPos;
 	// 카메라 진동 관련 변수
-	int m_iCount;
-	int m_iStack = 0;
+	int   m_iCount;
+	int   m_iStack = 0;
 	float m_fOldDelta = 0.f;
 	float m_fStackTime = 0.f;
 	float m_fFocusTime = 0.f;

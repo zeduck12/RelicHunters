@@ -148,10 +148,6 @@ void CObjManager::Render(const HDC& _hdc)
 	GET_SINGLE(CGraphicDevice)->GetSprite()->Begin(D3DXSPRITE_ALPHABLEND);
 	GET_SINGLE(UICameraManager)->Render();
 
-	// 여기서 포신 그려주기
-	//if (GET_SINGLE(CCameraManager)->IsPressing() == true)
-	//	DrawLine();
-	
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);
 }
@@ -219,62 +215,6 @@ void CObjManager::SceneChange(void)
 		else if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_TEST)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
 	}
-}
-
-void CObjManager::TestWeapons(void)
-{
-	//Test 아이템 
-	//shared_ptr<CObj> pItem = make_shared<CPickUpLight>(900.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_LIGHT);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<CPickUpLight>(1000.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_MEDIUM);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<CPickUpLight>(1100.f, 600.f, 50.f, 50.f, IMAGE::PICKUP_HEAVY);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<ShotGun>(700.f, 600.f, 50.f, 50.f, GUN::SHOTGUN);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<HighMagGun>(600.f, 600.f, 50.f, 50.f, GUN::HIGH_MAG);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<SniperGun>(500.f, 600.f, 50.f, 50.f, GUN::SNIPER);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<MachineGun>(500.f, 700.f, 50.f, 50.f, GUN::MACHINEGUN);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<FlameGun>(600.f, 700.f, 50.f, 50.f, GUN::FLAME);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<AssaultGun>(700.f, 700.f, 50.f, 50.f, GUN::ASSAULT);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<KeytarGun>(800.f, 700.f, 50.f, 50.f, GUN::KEYTAR);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<PistolAssualtGun>(900.f, 700.f, 50.f, 50.f, GUN::PISTOL_ASSUALT);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<PistolHeavyGun>(1000.f, 700.f, 50.f, 50.f, GUN::PISTOL_HEAVY);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
-
-	//pItem = make_shared<PlasmaGun>(1100.f, 700.f, 50.f, 50.f, GUN::PLASMA);
-	//pItem->Ready();
-	//m_listBullets.emplace_back(pItem);
 }
 
 void CObjManager::DrawLine(void)
@@ -360,13 +300,6 @@ void CObjManager::SpawnKamikazeCage(void)
 
 void CObjManager::Release(void)
 {
-	/*m_listItems.clear();
-	m_listGrenades.clear();
-	m_listCasings.clear();
-	m_listBullets.clear();
-	m_listMonsters.clear();
-	m_listParticles.clear();
-	m_listHolograms.clear();*/
 	DeleteListSafe(m_listItems);
 	DeleteListSafe(m_listGrenades);
 	DeleteListSafe(m_listCasings);
