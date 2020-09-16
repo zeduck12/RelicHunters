@@ -21,6 +21,10 @@ public:
 	virtual void Release()						override;
 
 public:
+	int  GetSpecialCount(void) const { return m_iSpecialCount; }
+	void SetSpecialCount(int _iCount) { m_iSpecialCount = _iCount; }
+	bool IsSpecialMode(void) const { return m_bIsSpecialMode; }
+	void SetIsSpecialMode(bool _bIsSpecialMode) { m_bIsSpecialMode = _bIsSpecialMode; }
 	list<TILE*>& GetCollideWalls(void) { return m_listCollideWalls; }
 	CShield* GetShield(void) { return m_pShield.get(); }
 	CReflectBoard* GetReflectBoard(void) { return m_pReflectBoard.get(); }
@@ -131,6 +135,12 @@ public:
 	void UpdateDashName(void);
 	void CheckDelaySniper(void);
 
+	// 궁극기용 함수들
+public:
+	void DrawSpecialParticle(void);
+	void CheckSpecialMode(void);
+
+
 private:
 	RECT m_rcShadowRect;
 	list<TILE*> m_listCollideWalls;
@@ -170,6 +180,14 @@ private:
 	unique_ptr<CWeapon> m_pWeapon;				// 현재 보유하고 있는 무기
 	unique_ptr<CReflectBoard> m_pReflectBoard;
 	unique_ptr<CImageSetting> m_pImageSetting;	// 이미지 셋팅 객체
+
+private:
+	bool m_bIsSpecialMode = false;
+	int  m_iSpecialCount = 4; // 궁극기 카운트 갯수 - 1 해야함
+	int  m_iDrawArmorID = 0;
+	float m_fSpecialCheckTime = 0.f;
+	float m_fDrawCheckTime = 0.f;
+
 private:
 	// 현재 플레이어 상태
 	CPlayerState* m_pCurState = nullptr;

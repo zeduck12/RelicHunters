@@ -105,6 +105,7 @@ void CObjManager::LateUpdate(void)
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->LateUpdate(); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->LateUpdate(); } }
 	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->LateUpdate(); } }
+	for (auto& pParticle : m_listParticles) { DO_IF_IS_VALID_OBJ(pParticle) { pParticle->LateUpdate(); } }
 	for (auto& pHologram : m_listHolograms) { DO_IF_IS_VALID_OBJ(pHologram) { pHologram->LateUpdate(); } }
 
 	// 만약에 오브젝트들이 무효하면 없애주기.
@@ -132,10 +133,10 @@ void CObjManager::Render(const HDC& _hdc)
 	for (auto& pItem : m_listItems) { DO_IF_IS_VALID_OBJ(pItem) { pItem->Render(_hdc); } }
 	GET_SINGLE(CPlayerManager)->Render(_hdc);
 	
-	for (auto& pMonster : m_listMonsters) { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Render(_hdc); } }
-	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Render(_hdc); } }
-	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Render(_hdc); } }
-	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }
+	for (auto& pMonster : m_listMonsters)   { DO_IF_IS_VALID_OBJ(pMonster) { pMonster->Render(_hdc); } }
+	for (auto& pBullet : m_listBullets)     { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->Render(_hdc); } }
+	for (auto& pGrenade : m_listGrenades)   { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->Render(_hdc); } }
+	for (auto& pCasing : m_listCasings)     { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->Render(_hdc); } }
 	for (auto& pParticle : m_listParticles) { DO_IF_IS_VALID_OBJ(pParticle) { pParticle->Render(_hdc); } }
 	for (auto& pHologram : m_listHolograms) { DO_IF_IS_VALID_OBJ(pHologram) { pHologram->Render(_hdc); } }
 
@@ -148,8 +149,8 @@ void CObjManager::Render(const HDC& _hdc)
 	GET_SINGLE(UICameraManager)->Render();
 
 	// 여기서 포신 그려주기
-	//if (GET_SINGLE(CCameraManager)->IsPressing() == true)
-	//	DrawLine();
+	if (GET_SINGLE(CCameraManager)->IsPressing() == true)
+		DrawLine();
 	
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);

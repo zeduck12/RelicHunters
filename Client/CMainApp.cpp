@@ -46,7 +46,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
 }
 
 void CMainApp::Update()
@@ -467,6 +467,16 @@ void CMainApp::SetImages(void)
 		return;
 	//reflectBoard
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/ReflectBoard/reflectBoard.png", L"ReflectBoard")))
+		return;
+
+	// ±Ã±Ø±â ½ºÇÁ¶óÀÌÆ®
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Special/Armor/armor_%d.png", L"Special", L"Armor", 2)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Special/Particle/spr_fire_%d.png", L"Special", L"Particle", 8)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Special/Explosion/spr_grenade_exp1_%d.png", L"Special", L"Explosion", 11)))
+		return;
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Special/Icon/icon_%d.png", L"Special", L"SpecialIcon", 3)))
 		return;
 }
 

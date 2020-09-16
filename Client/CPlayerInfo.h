@@ -23,6 +23,7 @@ private:
 	void DrawBulletCount(void);
 	void DrawBombsCount(void);
 	void DrawDashBar(void);
+	void DrawSpecialCount(void);
 
 private:
 	wstring m_strCharacterName;

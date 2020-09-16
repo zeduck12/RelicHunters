@@ -153,6 +153,7 @@
   <ItemGroup>
     <ClInclude Include="CAbstractFactory.h" />
     <ClInclude Include="CAnimation.h" />
+    <ClInclude Include="CBombParticle.h" />
     <ClInclude Include="CBoomerang.h" />
     <ClInclude Include="CBoss.h" />
     <ClInclude Include="CBossHpBar.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="CDecoStar.h" />
     <ClInclude Include="CEnd.h" />
     <ClInclude Include="CEnemyManager.h" />
+    <ClInclude Include="CFireParticle.h" />
     <ClInclude Include="CGame.h" />
     <ClInclude Include="CGenerator.h" />
     <ClInclude Include="CGraphicDevice.h" />
@@ -231,6 +233,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CAnimation.cpp" />
+    <ClCompile Include="CBombParticle.cpp" />
     <ClCompile Include="CBoomerang.cpp" />
     <ClCompile Include="CBoss.cpp" />
     <ClCompile Include="CBossHpBar.cpp" />
@@ -244,6 +247,7 @@
     <ClCompile Include="CDecoStar.cpp" />
     <ClCompile Include="CEnd.cpp" />
     <ClCompile Include="CEnemyManager.cpp" />
+    <ClCompile Include="CFireParticle.cpp" />
     <ClCompile Include="CGame.cpp" />
     <ClCompile Include="CGenerator.cpp" />
     <ClCompile Include="CGraphicDevice.cpp" />

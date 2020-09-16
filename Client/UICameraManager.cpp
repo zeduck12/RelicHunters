@@ -94,6 +94,43 @@ void UICameraManager::Render(void)
 		DrawFocusTitle();
 	}
 
+	CPlayer* pPlayer = dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer());
+	if (pPlayer->IsSpecialMode() == true)
+	{
+		// 캐릭터 카드 지나가게
+		DrawSpecialFocus();
+		DrawSpecialCard();
+		DrawSpecialMidCard();
+		DrawSpecialText();
+
+		m_fSpecialCheckTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+		m_fSpecialCoolTime  += GET_SINGLE(CTimeManager)->GetElapsedTime();
+
+		if (m_fSpecialCoolTime >= 0.5f && m_fSpecialCoolTime <= 0.9f)
+		{
+			if (m_fSpecialCheckTime > 0.01f)
+			{
+				m_fSpecialCheckTime = 0.f;
+				m_fDeltaX -= 350.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+			}
+		}
+		else
+		{
+			if (m_fSpecialCheckTime > 0.01f)
+			{
+				m_fSpecialCheckTime = 0.f;
+				m_fDeltaX -= 1050.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+			}
+		}
+
+	}
+	else
+	{
+		m_fDeltaX = 0.f;
+		m_fSpecialCheckTime = 0.f;
+		m_fSpecialCoolTime  = 0.f;
+	}
+
 }
 
 void UICameraManager::RenderMiniMap()
@@ -264,4 +301,117 @@ void UICameraManager::DrawFocusTitle(void)
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 0, 0, 0));
 
+}
+
+void UICameraManager::DrawSpecialFocus(void)
+{
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"DashBar", L"DashBar", 0);
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, float(WINCX >> 1), float(WINCY >> 1) - 260.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 0, 0, 0));
+
+
+	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"DashBar", L"DashBar", 0);
+	if (nullptr == pTexInfo)
+		return;
+	fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, float(WINCX >> 1), float(WINCY >> 1) + 260.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 0, 0, 0));
+
+}
+
+void UICameraManager::DrawSpecialCard(void)
+{
+	int iDrawID = 0;
+	PLAYER::ID ePlayerID = GET_SINGLE(CSceneManager)->GetPlayerID();
+	switch (ePlayerID)
+	{
+	case PLAYER::JIMMY:
+		iDrawID = 2;
+		break;
+	case PLAYER::PINKY:
+		iDrawID = 3;
+		break;
+	case PLAYER::RAFF:
+		iDrawID = 5;
+		break;
+	}
+
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Menu", L"CharacterCard", iDrawID);
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.2f, 1.2f, 0.f);
+	D3DXMatrixTranslation(&matTrans, float(WINCX >> 1) + 240.f, float(WINCY >> 1) + 160.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+}
+
+void UICameraManager::DrawSpecialMidCard(void)
+{
+	wstring strName = L"";
+	PLAYER::ID ePlayerID = GET_SINGLE(CSceneManager)->GetPlayerID();
+	switch (ePlayerID)
+	{
+	case PLAYER::JIMMY:
+		strName = L"JimmySel";
+		break;
+	case PLAYER::PINKY:
+		strName = L"PinkySel";
+		break;
+	case PLAYER::RAFF:
+		strName = L"RaffSel";
+		break;
+	}
+
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Menu", strName, 0);
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.2f, 1.2f, 0.f);
+	D3DXMatrixTranslation(&matTrans, float(WINCX >> 1) + 500.f +  m_fDeltaX, float(WINCY >> 1), 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+}
+
+void UICameraManager::DrawSpecialText(void)
+{
+	TCHAR szBuf[MAX_PATH] = L"";
+	wsprintf(szBuf, L"SPECIAL TIME");
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.6f, 1.6f, 1.6f);
+	D3DXMatrixTranslation(&matTrans, float(WINCX >> 1) - 200.f, float(WINCY >> 1) + 200.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
 }

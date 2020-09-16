@@ -227,8 +227,12 @@ CBossState* BossMoveState::Update(CBoss* _pBoss)
 	pAnimation->ChangeClip("Move");
 
 	// 만약에 플레이어가 감지 범위를 벗어나면 다시 Idle 상태로
-	if (_pBoss->IsDetectPlayerBossVersion() == false)
-		return new BossIdleState;
+	// Phase2 단계라면 플레이어가 기존의 보스 레이더에서 벗어나도 계속해서 추적 AND 패턴구사
+	if (_pBoss->IsPhase2() == false)
+	{
+		if (_pBoss->IsDetectPlayerBossVersion() == false)
+			return new BossIdleState;
+	}
 
 	// 만약에 공격범위 안에 들어온다면 AttackState로
 	if (_pBoss->IsInAttackRangePlayerBossVersion() == true)

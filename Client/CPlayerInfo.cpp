@@ -34,6 +34,8 @@ void CPlayerInfo::Render(void)
 	DrawWeapon();
 	DrawBulletCount();
 	DrawBombsCount();
+
+	DrawSpecialCount();
 }
 
 void CPlayerInfo::DrawCharacterEmoticon(void)
@@ -514,4 +516,36 @@ void CPlayerInfo::DrawDashBar(void)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, &rc, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+}
+
+void CPlayerInfo::DrawSpecialCount(void)
+{
+	//SpecialIcon
+	int iSpecialCount = 0;
+	iSpecialCount = dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer())->GetSpecialCount();
+
+	int iDrawID = 0;
+	if (m_strCharacterName == L"Jimmy")
+		iDrawID = 0;
+	else if (m_strCharacterName == L"Pinky")
+		iDrawID = 1;
+	else if (m_strCharacterName == L"Raff")
+		iDrawID = 2;
+
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Special", L"SpecialIcon", iDrawID);
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	for (int i = 0; i < iSpecialCount - 1; i++)
+	{
+		D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.f);
+		D3DXMatrixTranslation(&matTrans, 600.f + (i * 70.f), 45.f, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+	}
 }

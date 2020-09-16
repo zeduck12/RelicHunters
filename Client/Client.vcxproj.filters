@@ -229,6 +229,12 @@
     <Filter Include="01.CObj\022.ReflectBoard">
       <UniqueIdentifier>{f715b879-cd40-4501-9bf2-ef5607ab5748}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\018.Particle\FireParticle">
+      <UniqueIdentifier>{5ecae41e-8e98-459c-b9fa-765c7c17c62e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="01.CObj\018.Particle\BombParticle">
+      <UniqueIdentifier>{ec3f9b3e-ec4d-43be-9bae-9eca84e12461}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -462,6 +468,12 @@
     <ClInclude Include="CReflectBoard.h">
       <Filter>01.CObj\022.ReflectBoard</Filter>
     </ClInclude>
+    <ClInclude Include="CFireParticle.h">
+      <Filter>01.CObj\018.Particle\FireParticle</Filter>
+    </ClInclude>
+    <ClInclude Include="CBombParticle.h">
+      <Filter>01.CObj\018.Particle\BombParticle</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -670,6 +682,12 @@
     </ClCompile>
     <ClCompile Include="CReflectBoard.cpp">
       <Filter>01.CObj\022.ReflectBoard</Filter>
+    </ClCompile>
+    <ClCompile Include="CFireParticle.cpp">
+      <Filter>01.CObj\018.Particle\FireParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="CBombParticle.cpp">
+      <Filter>01.CObj\018.Particle\BombParticle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -30,6 +30,8 @@
 #include "CHitParticle.h"
 #include "UICameraManager.h"
 #include "CReflectBoard.h"
+#include "CFireParticle.h"
+#include "CBombParticle.h"
 
 CPlayer::CPlayer()
 	:
@@ -205,6 +207,10 @@ void CPlayer::LateUpdate()
 		};
 	}
 
+	// 궁극기 사용시 시간을 세서 나중에 꺼주기
+	if (m_bIsSpecialMode)
+		CheckSpecialMode();
+
 }
 
 void CPlayer::Render(const HDC& _hdc)
@@ -253,6 +259,11 @@ void CPlayer::Render(const HDC& _hdc)
 
 	if (m_pReflectBoard)
 		m_pReflectBoard->Render(_hdc);
+
+
+	// 궁극기 사용상태라면 Draw
+	if (m_bIsSpecialMode)
+		DrawSpecialParticle();
 
 }
 
@@ -474,6 +485,24 @@ void CPlayer::CheckKeyState(void)
 			m_pReflectBoard.reset();
 	}
 
+
+	// 필살기 용
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_G))
+	{
+		// 궁극기가 진행중이면 return ;
+		if (m_bIsSpecialMode == true)
+			return;
+
+		m_iSpecialCount--;
+		if (m_iSpecialCount <= 0)
+		{
+			m_iSpecialCount = 0;
+			return;
+		}
+
+		m_bIsSpecialMode = true;
+	}
+
 }
 
 void CPlayer::DetectDirection(void)
@@ -661,6 +690,66 @@ void CPlayer::CheckDelaySniper(void)
 		m_fStackTime = 0.f;
 		m_bIsAttack = false;
 	}
+}
+
+void CPlayer::DrawSpecialParticle(void)
+{
+	// Armor 부터 Draw
+	const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Special", L"Armor", m_iDrawArmorID);
+
+	float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+	float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, this->GetX(), this->GetY(), 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(200, 255, 255, 255));
+
+	// FireParticle
+
+}
+
+void CPlayer::CheckSpecialMode(void)
+{
+	m_fSpecialCheckTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	m_fDrawCheckTime    += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fSpecialCheckTime > 5.f)
+	{
+		m_bIsSpecialMode = false;
+		m_iDrawArmorID = 0;
+		m_fDrawCheckTime = 0.f;
+		m_fSpecialCheckTime = 0.f;
+		return;
+	}
+
+	if (m_fDrawCheckTime >= 0.1f)
+	{
+		m_iDrawArmorID++;
+		m_fDrawCheckTime = 0.f;
+
+		shared_ptr<CObj> pParticle = nullptr;
+		int iRandNum = rand() % 3 + 1;
+		for (int i = 0; i < iRandNum; i++)
+		{
+			pParticle = make_shared<CFireParticle>(this->GetX(), this->GetY());
+			pParticle->Ready();
+			GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+		}
+
+		
+		pParticle = make_shared<CBombParticle>(this->GetX(), this->GetY());
+		pParticle->Ready();
+		GET_SINGLE(CObjManager)->GetParticles().emplace_back(pParticle);
+		
+
+	}
+
+	if (m_iDrawArmorID >= 2)
+		m_iDrawArmorID = 0;
+
 }
 
 

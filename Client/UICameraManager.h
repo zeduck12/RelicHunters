@@ -33,12 +33,20 @@ private:
 private:
 	void DrawStageTitle(void);
 	void DrawFocusTitle(void);
+	/// ±Ã±Ø±â Àü¿ë
+	void DrawSpecialFocus(void);
+	void DrawSpecialCard(void);
+	void DrawSpecialMidCard(void);
+	void DrawSpecialText(void);
 
 private:
 	int   m_iDrawID = 0;
 	float m_fDeltaY = 0.f;
+	float m_fDeltaX = 0.f;
 	float m_fStackTime = 0.f;
 	float m_fStartTime = 0.f;
+	float m_fSpecialCheckTime = 0.f;
+	float m_fSpecialCoolTime = 0.f;
 	bool m_bIsFinish      = false;
 	bool m_bIsShowMiniMap = false;
 

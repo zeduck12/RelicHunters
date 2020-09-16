@@ -65,10 +65,18 @@ void CCountParticle::Render(const HDC& _hdc)
 	D3DXMATRIX matScale, matTrans, matWorld;
 	TCHAR szBuf[MAX_PATH] = L"";
 	wsprintf(szBuf, L"+%d", 10);
+	D3DXMatrixScaling(&matScale, 1.35f, 1.35f, 1.f);
+	D3DXMatrixTranslation(&matTrans, fX - 25.f, fY - 70.f + m_fDeltaY, 0.f);
+	matWorld = matScale * matTrans;
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(m_iAlpha, 0, 0, 0));
+
+	wsprintf(szBuf, L"+%d", 10);
 	D3DXMatrixScaling(&matScale, 1.3f, 1.3f, 1.f);
 	D3DXMatrixTranslation(&matTrans, fX - 25.f, fY - 70.f + m_fDeltaY, 0.f);
 	matWorld = matScale * matTrans;
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(m_iAlpha, 255, 255, 255));
+
 
 }

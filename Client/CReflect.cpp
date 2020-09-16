@@ -99,7 +99,7 @@ void CReflect::LateUpdate(void)
 
 	if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_EVENT)
 	{
-		if (this->GetY() > GET_SINGLE(CPlayerManager)->GetPlayer()->GetY())
+		if (cfReflectBallDeadLine <= this->GetY())
 		{
 			this->SetIsValid(false);
 			CPlayer* pPlayer = dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer());

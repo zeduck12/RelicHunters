@@ -13,3 +13,6 @@ constexpr float cfMosterDefaultHp    = 100.f;
 constexpr float cfMosterDefaultSpeed = 5.f;
 constexpr float cfMonsterDetectRange = 400.f;
 constexpr float cfMonsterAttackRange = 200.f;
+
+// 공튀기기 데드라인
+constexpr float cfReflectBallDeadLine = 2740.f;
