@@ -29,6 +29,7 @@
 #define		KEY_T			0x00080000
 #define		KEY_M			0x00100000
 #define		KEY_Y			0x00200000
+#define		KEY_Q			0x00400000
 
 #define WINCX 800
 #define WINCY 600

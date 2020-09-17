@@ -46,7 +46,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
 }
 
 void CMainApp::Update()
@@ -477,6 +477,15 @@ void CMainApp::SetImages(void)
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Special/Explosion/spr_grenade_exp1_%d.png", L"Special", L"Explosion", 11)))
 		return;
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Special/Icon/icon_%d.png", L"Special", L"SpecialIcon", 3)))
+		return;
+
+	// DebugMode 
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Debug/spr_char_inputJoy1_%d.png", L"Debug", L"Debug", 7)))
+		return;
+
+
+	// Cards
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Card/card_%d.png", L"Card", L"Card", 7)))
 		return;
 }
 

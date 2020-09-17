@@ -233,6 +233,11 @@ CBossState* BossMoveState::Update(CBoss* _pBoss)
 		if (_pBoss->IsDetectPlayerBossVersion() == false)
 			return new BossIdleState;
 	}
+	else
+	{
+		if (_pBoss->IsDetectPlayerBossVersion() == false)
+			return new BossDashAttack;
+	}
 
 	// 만약에 공격범위 안에 들어온다면 AttackState로
 	if (_pBoss->IsInAttackRangePlayerBossVersion() == true)

@@ -153,6 +153,8 @@ void CMouse::Render(const HDC& _hdc)
 		float fDelta = 0.f;
 		if (fPlayerX <= 400.f && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_TEST)
 			fDelta = 400.f - fPlayerX;
+		else if (fPlayerX >= 2100.f && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_TEST)
+			fDelta = fPlayerX - 2100.f;
 
 		pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Mouse", L"ReloadChar", m_iReloadID);
 		if (nullptr == pTexInfo)

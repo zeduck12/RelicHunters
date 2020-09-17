@@ -119,11 +119,12 @@ void CMonster::LateUpdate(void)
 			if (CCollisionManager::CollideLineToLine( pPlayerLineArray[i], pMonsterLineArray[j]))
 			{
 				// 충돌이 일어났다면 방향벡터 쪽으로 밀기
-				pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
-				pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
 
 				if (pRealPlayer->IsDead() == false && m_bIsDead == false && m_bIsFlying == false)
 				{
+					pPlayer->SetX(pPlayer->GetX() + m_tInfo.vDir.x);
+					pPlayer->SetY(pPlayer->GetY() + m_tInfo.vDir.y);
+
 					pRealPlayer->SetState(GET_SINGLE(PlayerAttacked));
 					pRealPlayer->SetIsAttacked(true);
 					pRealPlayer->TakeDamage(1.5f);

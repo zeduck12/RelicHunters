@@ -60,7 +60,6 @@ private:
 
 
 private:
-
 	XFORM m_fxWorld;
 
 	D3DXVECTOR3 m_vFocusPos;

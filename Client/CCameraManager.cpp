@@ -106,6 +106,11 @@ D3DXMATRIX CCameraManager::GetWorldD3DMatrix(void)
 			D3DXMatrixTranslation(&matMove, m_vTempPos.x -400.f + (iCX / 2) / m_fScale + m_fDeltaX, m_vTempPos.y -pPlayer->GetY() + (iCY / 2) / m_fScale + m_fDeltaY, 0.f);
 			D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
 		}
+		else if (pPlayer->GetX() > 2100.f && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_TEST)
+		{
+			D3DXMatrixTranslation(&matMove, m_vTempPos.x - 2100.f + (iCX / 2) / m_fScale + m_fDeltaX, m_vTempPos.y - pPlayer->GetY() + (iCY / 2) / m_fScale + m_fDeltaY, 0.f);
+			D3DXMatrixScaling(&matScale, 1.f * m_fScale, 1.f * m_fScale, 0.f);
+		}
 		else
 		{
 			D3DXMatrixTranslation(&matMove, -pPlayer->GetX() + (iCX / 2) / m_fScale + m_fDeltaX, -pPlayer->GetY() + (iCY / 2) / m_fScale + m_fDeltaY, 0.f);
@@ -170,32 +175,40 @@ void CCameraManager::MoveCameraToFreeSpace(void)
 	// 최대 마우스 범위 400.f
 	// 최소 마우스 범위 300.f 
 	// 카메라 움직이는 범위
-	if (pt.x < pPlayer->GetX() - 300.f && pt.x > pPlayer->GetX() - 400.f ||
-		pt.x > pPlayer->GetX() + 300.f && pt.x < pPlayer->GetX() + 400.f)
+	if (pt.x < pPlayer->GetX() - 300.f && pt.x > pPlayer->GetX() - 450.f ||
+		pt.x > pPlayer->GetX() + 300.f && pt.x < pPlayer->GetX() + 450.f)
 	{
 		float fDst = abs(pt.x - pPlayer->GetX());
 		float fDeltaX = fDst - 300.f;
-		if (pt.x < pPlayer->GetX() - 300.f && pt.x > pPlayer->GetX() - 400.f)
+		if (fDeltaX > 50.f)
+			fDeltaX = 50.f;
+
+		if (pt.x < pPlayer->GetX() - 300.f && pt.x > pPlayer->GetX() - 450.f)
 			m_fDeltaX = fDeltaX;
 		else
 			m_fDeltaX = -1.f * fDeltaX;
+		
+	}
+	else
+	{
+		m_fDeltaX = 0.f;
 	}
 
-	else if (pt.y < pPlayer->GetY() - 200.f && pt.y > pPlayer->GetY() - 300.f ||
-		pt.y > pPlayer->GetY() + 200.f && pt.y < pPlayer->GetY() + 300.f)
+	if (pt.y < pPlayer->GetY() - 200.f && pt.y > pPlayer->GetY() - 350.f||
+		pt.y > pPlayer->GetY() + 200.f && pt.y < pPlayer->GetY() + 350.f)
 	{
 		float fDst = abs(pt.y - pPlayer->GetY());
 		float fDeltaY = fDst - 200.f;
-		if (pt.y < pPlayer->GetY() - 200.f && pt.y > pPlayer->GetY() - 300.f)
+		if (pt.y < pPlayer->GetY() - 200.f && pt.y > pPlayer->GetY() - 350.f)
 			m_fDeltaY = fDeltaY;
 		else
 			m_fDeltaY = -1.f * fDeltaY;
 	}
 	else
-	{
-		m_fDeltaX = 0.f;
 		m_fDeltaY = 0.f;
-	}
+
+	
+		
 }
 
 void CCameraManager::ToEnlargeScale(void)
@@ -263,6 +276,11 @@ void CCameraManager::EarthquakeCamera(void)
 			m_vTempPos.x -= vDir.x * 10.f;
 			m_vTempPos.y -= vDir.y * 10.f;
 		}
+		else if (pPlayer->GetX() > 2100.f && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_TEST)
+		{
+			m_vTempPos.x -= vDir.x * 10.f;
+			m_vTempPos.y -= vDir.y * 10.f;
+		}
 		else
 		{
 			pPlayer->SetX(pPlayer->GetX() - vDir.x * 10.f);
@@ -272,6 +290,11 @@ void CCameraManager::EarthquakeCamera(void)
 	else if (m_iCount == 2)
 	{
 		if (pPlayer->GetX() < 400.f && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_TEST)
+		{
+			m_vTempPos.x += vDir.x * 10.f;
+			m_vTempPos.y += vDir.y * 10.f;
+		}
+		else if (pPlayer->GetX() > 2100.f && GET_SINGLE(CSceneManager)->GetCurSceneID() != CSceneManager::SCENE_TEST)
 		{
 			m_vTempPos.x += vDir.x * 10.f;
 			m_vTempPos.y += vDir.y * 10.f;

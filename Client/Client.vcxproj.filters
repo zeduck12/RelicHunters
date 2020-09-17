@@ -235,6 +235,9 @@
     <Filter Include="01.CObj\018.Particle\BombParticle">
       <UniqueIdentifier>{ec3f9b3e-ec4d-43be-9bae-9eca84e12461}</UniqueIdentifier>
     </Filter>
+    <Filter Include="01.CObj\023.MiniGame">
+      <UniqueIdentifier>{78d56286-3197-4c32-981a-4ac1c2a4c8b8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -474,6 +477,9 @@
     <ClInclude Include="CBombParticle.h">
       <Filter>01.CObj\018.Particle\BombParticle</Filter>
     </ClInclude>
+    <ClInclude Include="CCard.h">
+      <Filter>01.CObj\023.MiniGame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -688,6 +694,9 @@
     </ClCompile>
     <ClCompile Include="CBombParticle.cpp">
       <Filter>01.CObj\018.Particle\BombParticle</Filter>
+    </ClCompile>
+    <ClCompile Include="CCard.cpp">
+      <Filter>01.CObj\023.MiniGame</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

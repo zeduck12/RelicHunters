@@ -187,6 +187,8 @@ private:
 	int  m_iDrawArmorID = 0;
 	float m_fSpecialCheckTime = 0.f;
 	float m_fDrawCheckTime = 0.f;
+	float m_fDebugCheckTime = 0.f;
+	int   m_iDrawDebugID = 0;
 
 private:
 	// 현재 플레이어 상태

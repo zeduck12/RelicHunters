@@ -215,7 +215,8 @@ void CPlayer::LateUpdate()
 
 void CPlayer::Render(const HDC& _hdc)
 {
-	m_pWeapon->DrawSubGun();
+	if (m_bIsDead == false)
+		m_pWeapon->DrawSubGun();
 
 	if (m_bIsDash)
 		ShowSpectrum(_hdc);
@@ -223,7 +224,8 @@ void CPlayer::Render(const HDC& _hdc)
 		m_pCurState->Render(this); // 상태 Render
 
 	// 무기 그리기
-	m_pWeapon->Render(_hdc);
+	if(m_bIsDead == false)
+		m_pWeapon->Render(_hdc);
 	m_pShield->Render(_hdc);
 
 	if (GET_SINGLE(CCameraManager)->IsPressing() == true)
@@ -252,9 +254,33 @@ void CPlayer::Render(const HDC& _hdc)
 
 	if (m_bIsInvicible == true)
 	{
-		TCHAR str[10] = {};
-		wsprintf(str, TEXT("Debug"), int(m_fShootingDegree));
-		TextOut(_hdc, (int)m_tInfo.vPos.x - 10, (int)m_tInfo.vPos.y + 20, str, lstrlen(str));
+		m_fDebugCheckTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+		if (m_fDebugCheckTime >= 0.2f)
+		{
+			m_iDrawDebugID++;
+			m_fDebugCheckTime = 0.f;
+		}
+
+		if (m_iDrawDebugID >= 7)
+			m_iDrawDebugID = 0;
+
+		const TEXINFO* pTexInfo = GET_SINGLE(CTextureManager)->GetTextureInfo(L"Debug", L"Debug", m_iDrawDebugID);
+
+		float fCenterX = float(pTexInfo->tImageInfo.Width * 0.5f);
+		float fCenterY = float(pTexInfo->tImageInfo.Height * 0.5f);
+
+		D3DXMATRIX matScale, matTrans, matWorld;
+		D3DXMatrixScaling(&matScale, 0.5f, 0.5f, 0.f);
+		D3DXMatrixTranslation(&matTrans, this->GetX(), this->GetY() + 40.f, 0.f);
+		matWorld = matScale * matTrans;
+
+		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+		CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(200, 255, 255, 255));
+	}
+	else
+	{
+		m_iDrawDebugID = 0;
+		m_fDebugCheckTime = 0.f;
 	}
 
 	if (m_pReflectBoard)
@@ -377,7 +403,8 @@ void CPlayer::CheckKeyState(void)
 	}
 
 	// 연사
-	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_LBUTTON) && m_pWeapon->GetCurWeaponID() == GUN::MACHINEGUN)
+	if (GET_SINGLE(CKeyManager)->Key_Pressing(KEY_LBUTTON) && m_pWeapon->GetCurWeaponID() == GUN::MACHINEGUN
+		&& GET_SINGLE(UICameraManager)->IsCardGameClear() == true)
 	{
 		m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 		if (m_fStackTime >= 0.15f)
@@ -389,8 +416,12 @@ void CPlayer::CheckKeyState(void)
 	}
 
 	// 단발
-	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_LBUTTON))
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_LBUTTON)
+		&& GET_SINGLE(UICameraManager)->IsCardGameClear() == true)
 	{
+		if (m_bIsReloading)
+			return;
+
 		if (m_pWeapon->GetCurWeaponID() == GUN::SNIPER)
 		{
 			if (m_bIsAttack == true)
@@ -501,8 +532,34 @@ void CPlayer::CheckKeyState(void)
 		}
 
 		m_bIsSpecialMode = true;
+		CSoundManager::Get_Instance()->PlaySound((TCHAR*)L"sfx_relic_on.wav", CSoundManager::UI);
 	}
 
+
+	if (GetAsyncKeyState('N') & 0x8000)
+		DestroyWindow(g_hWND);
+
+	if (GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+	{
+		GET_SINGLE(CSceneManager)->SetIsChangeScene(true);
+		GET_SINGLE(CObjManager)->SetIsGoToLobby(true);
+	}
+
+	if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_Q))
+	{
+		if(GET_SINGLE(UICameraManager)->IsShowKeyGuide() == true)
+			GET_SINGLE(UICameraManager)->SetIsShowKeyGuide(false);
+		else
+			GET_SINGLE(UICameraManager)->SetIsShowKeyGuide(true);
+	}
+
+	if (GET_SINGLE(CKeyManager)->Key_UP(KEY_Q))
+	{
+		if (GET_SINGLE(UICameraManager)->IsShowKeyGuide() == true)
+			GET_SINGLE(UICameraManager)->SetIsShowKeyGuide(false);
+		else
+			GET_SINGLE(UICameraManager)->SetIsShowKeyGuide(true);
+	}
 }
 
 void CPlayer::DetectDirection(void)
@@ -707,9 +764,6 @@ void CPlayer::DrawSpecialParticle(void)
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(200, 255, 255, 255));
-
-	// FireParticle
-
 }
 
 void CPlayer::CheckSpecialMode(void)

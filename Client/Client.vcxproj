@@ -161,6 +161,7 @@
     <ClInclude Include="CBullet.h" />
     <ClInclude Include="CButton.h" />
     <ClInclude Include="CCameraManager.h" />
+    <ClInclude Include="CCard.h" />
     <ClInclude Include="CCasing.h" />
     <ClInclude Include="CCollisionManager.h" />
     <ClInclude Include="CCountParticle.h" />
@@ -241,6 +242,7 @@
     <ClCompile Include="CBullet.cpp" />
     <ClCompile Include="CButton.cpp" />
     <ClCompile Include="CCameraManager.cpp" />
+    <ClCompile Include="CCard.cpp" />
     <ClCompile Include="CCasing.cpp" />
     <ClCompile Include="CCollisionManager.cpp" />
     <ClCompile Include="CCountParticle.cpp" />

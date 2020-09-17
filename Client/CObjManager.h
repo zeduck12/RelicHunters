@@ -32,6 +32,10 @@ private:
 	void InstallTeleporter(void);
 	void SpawnKamikazeCage(void);
 
+public:
+	bool IsGoToLobby(void) const { return m_bIsGoToLobby; }
+	void SetIsGoToLobby(bool _bIsValue) { m_bIsGoToLobby = _bIsValue; }
+
 private:
 	list<shared_ptr<CObj>> m_listBullets;
 	list<shared_ptr<CObj>> m_listGrenades;
@@ -43,5 +47,6 @@ private:
 
 private:
 	bool m_bIsInstall;
+	bool m_bIsGoToLobby;
 };
 

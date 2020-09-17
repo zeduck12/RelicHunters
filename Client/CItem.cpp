@@ -47,8 +47,9 @@ int CPickUpLight::Update(float _fDeltaTime)
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
-        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E) && m_bIsGet == false)
         {
+            m_bIsGet = true;
             int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetOwnBullets();
             GET_SINGLE(CPlayerManager)->GetInventory()->SetOwnBellets(iCount + 30);
             GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
@@ -136,8 +137,9 @@ int CPickUpMedium::Update(float _fDeltaTime)
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
-        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E) && m_bIsGet == false)
         {
+            m_bIsGet = true;
             int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetOwnBullets();
             GET_SINGLE(CPlayerManager)->GetInventory()->SetOwnBellets(iCount + 50);
             GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
@@ -223,8 +225,9 @@ int CPickUpHeavy::Update(float _fDeltaTime)
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
-        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E) && m_bIsGet == false)
         {
+            m_bIsGet = true;
             int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetOwnBullets();
             GET_SINGLE(CPlayerManager)->GetInventory()->SetOwnBellets(iCount + 100);
             GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
@@ -1558,7 +1561,7 @@ int CPickUpGrenade::Update(float _fDeltaTime)
     CObj* pPlayer = GET_SINGLE(CPlayerManager)->GetPlayer();
     if (CInteractionManager::InteractPlayerItem(pPlayer, this) == true)
     {
-        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E))
+        if (GET_SINGLE(CKeyManager)->Key_DOWN(KEY_E) && m_bIsGet == false)
         {
             int iCount = GET_SINGLE(CPlayerManager)->GetInventory()->GetBombsCount();
             if (iCount >= 5)
@@ -1568,6 +1571,7 @@ int CPickUpGrenade::Update(float _fDeltaTime)
                 return 0 ;
             }
 
+            m_bIsGet = true;
             GET_SINGLE(CPlayerManager)->GetInventory()->SetBombsCount(iCount + 1);
             GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
             GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_pickup_weapon.wav", CSoundManager::EFFECT);

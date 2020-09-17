@@ -46,6 +46,19 @@ int CBombParticle::Update(float _fDeltaTime)
 		m_iDrawID++;
 		m_fStackTime = 0.f;
 	}
+	if (m_iDrawID == 5)
+	{
+		if (m_bIsPlayingSFX == false)
+		{
+			m_bIsPlayingSFX = true;
+			int iRandNum = rand() % 2 + 1;
+			if (iRandNum == 1)
+			{
+				GET_SINGLE(CSoundManager)->StopSound(CSoundManager::EFFECT);
+				GET_SINGLE(CSoundManager)->PlaySound((TCHAR*)L"sfx_grenade_explosion.wav", CSoundManager::EFFECT);
+			}
+		}
+	}
 
 	if (m_iDrawID >= 11)
 		this->SetIsValid(false);

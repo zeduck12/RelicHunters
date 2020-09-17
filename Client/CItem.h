@@ -21,6 +21,7 @@ protected:
     float m_fStackTime = 0.f;
     float m_fCoolTime  = 0.2f;
 
+    bool m_bIsGet = false;
     bool m_bIsDrop = false;
     float m_fAddY = 0.f;
 

@@ -218,7 +218,7 @@ CMonsterState* AttackState::Update(CMonster* _pMonster)
 			if (_pMonster->GetImageID() == IMAGE::KAMIKAZE_FLY)
 			{
 				int iRandNum = rand() % 100 + 1;
-				if (iRandNum > 98)
+				if (iRandNum > 90)
 				{
 					dynamic_cast<CMonster*>(_pMonster)->SetOldPos(_pMonster->GetInfo()->vPos);
 					return new FlyState;
@@ -503,6 +503,7 @@ CMonsterState* PatrolState::Update(CMonster* _pMonster)
 
 	//ÂøÁöÇÏ±â
 	_pMonster->Patrol();
+	_pMonster->SetIsFlying(true);
 
 	return nullptr;
 }

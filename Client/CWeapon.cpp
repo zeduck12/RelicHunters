@@ -216,11 +216,17 @@ void CWeapon::ShootDefault(void)
 	DO_IF_IS_NOT_VALID_OBJ(pObj) { return; }
 	CPlayer* pPlayer = dynamic_cast<CPlayer*>(pObj);
 
+	float fDamage = 0.f;
+	if (pPlayer->IsInvicible() == true)
+		fDamage = 200.f;
+	else
+		fDamage = 50.f;
+
 	// Bullet น฿ป็
 	shared_ptr<CBullet> pBullet 
 		= make_shared<CBullet>(pPlayer->GetX() + pPlayer->GetDirectionVector().x * 10.f,
 		pPlayer->GetY() + pPlayer->GetDirectionVector().y * 10.f,
-		pPlayer->GetDirectionVector(), cfDefaultBulletSpeed, pPlayer->GetShootingDegree(), OBJ::PLAYER, L"Small", /*50.f*/ 200.f);
+		pPlayer->GetDirectionVector(), cfDefaultBulletSpeed, pPlayer->GetShootingDegree(), OBJ::PLAYER, L"Small", fDamage);
 	pBullet->Ready();
 	GET_SINGLE(CObjManager)->GetBullets().emplace_back(pBullet);
 	GET_SINGLE(CCameraManager)->SetIsShooting(true);

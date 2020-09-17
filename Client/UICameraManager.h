@@ -1,6 +1,7 @@
 #pragma once
 #include "CPlayerInfo.h"
 #include "CBossHpBar.h"
+#include "CCard.h"
 
 class UICameraManager
 {
@@ -25,6 +26,10 @@ public:
 	void Set_Ratio(D3DXMATRIX& matWorld, const float& fRatioX, const float& fRatioY);
 	bool IsShowMiniMap(void) const { return m_bIsShowMiniMap; }
 	void SetIsShowMiniMap(bool _bIsShowMiniMap) { m_bIsShowMiniMap = _bIsShowMiniMap; }
+	bool IsShowKeyGuide(void) const { return m_bIsShowKeyGuide; }
+	void SetIsShowKeyGuide(bool _bIsValue) { m_bIsShowKeyGuide = _bIsValue; }
+	bool IsCardGameClear(void) const { return m_bIsCardGameClear; }
+	void SetIsCardGameClear(bool _bIsValue) { m_bIsCardGameClear = _bIsValue; }
 
 private:
 	UICameraManager() = default;
@@ -38,6 +43,17 @@ private:
 	void DrawSpecialCard(void);
 	void DrawSpecialMidCard(void);
 	void DrawSpecialText(void);
+	void DrawDescBoard(void);
+
+public:
+	void DrawCardGameBoard(void);
+	void DrawCards(void);
+	void DrawCardGameText(void);
+	void DrawClearText(void);
+
+public:
+	// 카드뭉치 넘기기
+	list<shared_ptr<CCard>>& GetCards(void) { return m_listCards; }
 
 private:
 	int   m_iDrawID = 0;
@@ -47,11 +63,19 @@ private:
 	float m_fStartTime = 0.f;
 	float m_fSpecialCheckTime = 0.f;
 	float m_fSpecialCoolTime = 0.f;
-	bool m_bIsFinish      = false;
-	bool m_bIsShowMiniMap = false;
+	float m_fCardCheckTime = 0.f;
+	float m_fScale = 0.f;
+	bool  m_bIsFinish      = false;
+	bool  m_bIsShowMiniMap = false;
+	bool  m_bIsShowKeyGuide = false;
+	bool  m_bIsCardGameClear;
+	bool  m_bIsPlayingSFX = false;
 
 	wstring m_strName = L"";
 	shared_ptr<CBossHpBar> m_pBossHpBar;
 	unique_ptr<CPlayerInfo> m_pPlayerInfo;
+
+private:
+	list<shared_ptr<CCard>> m_listCards;
 };
 

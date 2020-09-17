@@ -18,5 +18,6 @@ private:
     int   m_iAlpha = 0;
     float m_fDeltaY = 0.f;
     float m_fDeltaX = 0.f;
+    bool  m_bIsPlayingSFX = false;
 };
 

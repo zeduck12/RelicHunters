@@ -12,6 +12,11 @@ namespace PLAYER
 	enum ID { JIMMY, PINKY, RAFF,};
 }
 
+namespace CARD
+{
+	enum ID { JIMMY, PINKY, RAFF, BIU, ASS, PUNNY, END };
+}
+
 namespace IMAGE
 {
 	enum ID 

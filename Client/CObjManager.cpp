@@ -25,7 +25,8 @@ CObjManager::CObjManager()
 	m_listCasings{ },
 	m_listMonsters{ },
 	m_listItems{ },
-	m_bIsInstall{ false }
+	m_bIsInstall{ false },
+	m_bIsGoToLobby{ false }
 {
 }
 
@@ -101,6 +102,7 @@ void CObjManager::LateUpdate(void)
 	GET_SINGLE(CMapManager)->LateUpdate();
 	GET_SINGLE(CPlayerManager)->LateUpdate();
 	GET_SINGLE(CCameraManager)->LateUpdate();
+	GET_SINGLE(UICameraManager)->LateUpdate();
 	for (auto& pBullet : m_listBullets) { DO_IF_IS_VALID_OBJ(pBullet) { pBullet->LateUpdate(); } }
 	for (auto& pGrenade : m_listGrenades) { DO_IF_IS_VALID_OBJ(pGrenade) { pGrenade->LateUpdate(); } }
 	for (auto& pCasing : m_listCasings) { DO_IF_IS_VALID_OBJ(pCasing) { pCasing->LateUpdate(); } }
@@ -217,18 +219,43 @@ void CObjManager::SceneChange(void)
 
 		if (dynamic_cast<CPlayer*>(GET_SINGLE(CPlayerManager)->GetPlayer())->IsDead() == true)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
-		else if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME)
-			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME2);
-		else if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME2)
-			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME3);
+		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME)
+		{
+			if (m_bIsGoToLobby == true)
+				GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
+			else
+				GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME2);
+		}
+		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME2)
+		{
+			if (m_bIsGoToLobby == true)
+				GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
+			else
+				GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME3);
+		}
 		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME3)
-			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
+		{
+			if (m_bIsGoToLobby == true)
+				GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
+			else
+				GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME4);
+		}
 		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_GAME4)
-			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_END);
+		{
+			if(m_bIsGoToLobby == true)
+				GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
+			else
+				GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_END);
+		}
 		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_EVENT)
 			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
-		else if(GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_TEST)
-			GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
+		else if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_TEST)
+		{
+			if(m_bIsGoToLobby == true)
+				GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
+			else
+				GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_GAME);
+		}
 	}
 }
 

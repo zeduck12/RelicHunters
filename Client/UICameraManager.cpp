@@ -9,6 +9,7 @@
 #include "CMapManager.h"
 #include "CPlayerManager.h"
 #include "CPlayer.h"
+#include "CCard.h"
 
 DEFINITION_SINGLETON(UICameraManager)
 
@@ -35,6 +36,49 @@ bool UICameraManager::Ready(void)
 	m_fStartTime = 0.f;
 	m_fStackTime = 0.f;
 	m_fDeltaY = 0.f;
+
+
+	// Test 카드
+	if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_EVENT)
+	{
+		m_bIsCardGameClear = false;
+		shared_ptr<CCard> pCard = make_shared<CCard>(170.f, 150.f, CARD::JIMMY);
+		pCard->Ready();
+		m_listCards.emplace_back(pCard);
+
+		pCard = make_shared<CCard>(320.f, 150.f, CARD::PINKY);
+		pCard->Ready();
+		m_listCards.emplace_back(pCard);
+
+		pCard = make_shared<CCard>(470.f, 150.f, CARD::PUNNY);
+		pCard->Ready();
+		m_listCards.emplace_back(pCard);
+
+		pCard = make_shared<CCard>(620.f, 150.f, CARD::RAFF);
+		pCard->Ready();
+		m_listCards.emplace_back(pCard);
+
+		pCard = make_shared<CCard>(170.f, 350.f, CARD::PUNNY);
+		pCard->Ready();
+		m_listCards.emplace_back(pCard);
+
+		pCard = make_shared<CCard>(320.f, 350.f, CARD::RAFF);
+		pCard->Ready();
+		m_listCards.emplace_back(pCard);
+
+		pCard = make_shared<CCard>(470.f, 350.f, CARD::JIMMY);
+		pCard->Ready();
+		m_listCards.emplace_back(pCard);
+
+		pCard = make_shared<CCard>(620.f, 350.f, CARD::PINKY);
+		pCard->Ready();
+		m_listCards.emplace_back(pCard);
+
+	}
+	else
+	{
+		m_bIsCardGameClear = true;
+	}
 
 	return true;
 }
@@ -64,11 +108,27 @@ void UICameraManager::Update(void)
 		}
 	}
 
-	
+	if(m_bIsCardGameClear == false)
+		for (auto& pCard : m_listCards) { DO_IF_IS_VALID_OBJ(pCard) { pCard->Update(); } }
 }
 
 void UICameraManager::LateUpdate(void)
 {
+	if (m_bIsCardGameClear == false)
+	{
+		for (auto& pCard : m_listCards) { DO_IF_IS_VALID_OBJ(pCard) { pCard->LateUpdate(); } }
+
+		int iCount = 0;
+		for (auto& pCard : m_listCards)
+		{
+			if (pCard->IsActive() == true)
+				iCount++;
+
+			if (iCount == 8)
+				m_bIsCardGameClear = true;
+		}
+	}
+
 }
 
 void UICameraManager::Render(void)
@@ -106,7 +166,7 @@ void UICameraManager::Render(void)
 		m_fSpecialCheckTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
 		m_fSpecialCoolTime  += GET_SINGLE(CTimeManager)->GetElapsedTime();
 
-		if (m_fSpecialCoolTime >= 0.5f && m_fSpecialCoolTime <= 0.9f)
+		if (m_fSpecialCoolTime >= 0.2f && m_fSpecialCoolTime <= 0.8f)
 		{
 			if (m_fSpecialCheckTime > 0.01f)
 			{
@@ -119,7 +179,7 @@ void UICameraManager::Render(void)
 			if (m_fSpecialCheckTime > 0.01f)
 			{
 				m_fSpecialCheckTime = 0.f;
-				m_fDeltaX -= 1050.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+				m_fDeltaX -= 1850.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
 			}
 		}
 
@@ -131,6 +191,37 @@ void UICameraManager::Render(void)
 		m_fSpecialCoolTime  = 0.f;
 	}
 
+	if(m_bIsShowKeyGuide == true)
+		DrawDescBoard();
+
+
+	if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_EVENT)
+	{
+		if (m_bIsCardGameClear == false)
+		{
+			DrawCardGameBoard();
+			DrawCards();
+			DrawCardGameText();
+		}
+		else
+		{
+			m_fCardCheckTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+			if (m_fCardCheckTime >= 0.01f)
+			{
+				m_fScale += 0.1;
+				m_fCardCheckTime = 0.f;
+			}
+
+			if (m_fScale <= 5.f)
+				DrawClearText();
+
+			if (m_bIsPlayingSFX == false)
+			{
+				m_bIsPlayingSFX = true; 
+				CSoundManager::Get_Instance()->PlaySound((TCHAR*)L"sfx_relic_on.wav", CSoundManager::UI);
+			}
+		}
+	}
 }
 
 void UICameraManager::RenderMiniMap()
@@ -145,7 +236,7 @@ void UICameraManager::RenderMiniMap()
 
 	D3DXMATRIX matScale, matTrans, matWorld;
 	D3DXMatrixScaling(&matScale, 200.f, 300.f, 0.f);
-	D3DXMatrixTranslation(&matTrans, 17200.f , 3300.f , 0.f);
+	D3DXMatrixTranslation(&matTrans, 17200.f , 5000.f , 0.f);
 	matWorld = matScale * matTrans;
 
 	Set_Ratio(matWorld, 0.04f, 0.03f);
@@ -164,7 +255,7 @@ void UICameraManager::RenderMiniMap()
 		D3DXMATRIX matScale, matTrans, matWorld;
 		// 크 자 이 공 부
 		D3DXMatrixScaling(&matScale, pTile->vSize.x, pTile->vSize.y, 0.f);
-		D3DXMatrixTranslation(&matTrans, pTile->vPos.x + 16000.f, pTile->vPos.y + 1500.f, 0.f);
+		D3DXMatrixTranslation(&matTrans, pTile->vPos.x + 16000.f, pTile->vPos.y + 3100.f, 0.f);
 		matWorld = matScale * matTrans;
 
 		Set_Ratio(matWorld, 0.04f, 0.03f);
@@ -184,7 +275,7 @@ void UICameraManager::RenderMiniMap()
 
 		D3DXMATRIX matScale, matTrans, matWorld;
 		D3DXMatrixScaling(&matScale, pTile->vSize.x, pTile->vSize.y, 0.f);
-		D3DXMatrixTranslation(&matTrans, pTile->vPos.x + 16000.f, pTile->vPos.y + 1500.f, 0.f);
+		D3DXMatrixTranslation(&matTrans, pTile->vPos.x + 16000.f, pTile->vPos.y + 3100.f, 0.f);
 		matWorld = matScale * matTrans;
 
 		Set_Ratio(matWorld, 0.04f, 0.03f);
@@ -208,7 +299,7 @@ void UICameraManager::DrawPlayer(void)
 
 	D3DXMATRIX matScale, matTrans, matWorld;
 	D3DXMatrixScaling(&matScale, 2.f, 2.f, 0.f);
-	D3DXMatrixTranslation(&matTrans,16000.f + pPlayer->GetX(), 1500.f + pPlayer->GetY(), 0.f);
+	D3DXMatrixTranslation(&matTrans,16000.f + pPlayer->GetX(), 3100.f + pPlayer->GetY(), 0.f);
 	matWorld = matScale * matTrans;
 
 	Set_Ratio(matWorld, 0.04f, 0.03f);
@@ -414,4 +505,169 @@ void UICameraManager::DrawSpecialText(void)
 	matWorld = matScale * matTrans;
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+}
+
+void UICameraManager::DrawDescBoard(void)
+{
+	const TEXINFO* pTexInfo = nullptr;
+
+	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"WhiteParticle");
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 200.f, 300.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 17200.f, 10000.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(100, 50, 50, 50));
+
+	TCHAR szBuf[MAX_PATH] = L"";
+	wsprintf(szBuf, L"ESC : 로비씬이동");
+
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 1.f);
+	D3DXMatrixTranslation(&matTrans, 15900.f, 7800.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+	
+	wsprintf(szBuf, L"TAB : 총교체");
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 1.f);
+	D3DXMatrixTranslation(&matTrans, 15900.f, 8300.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	wsprintf(szBuf, L"R버튼 : 장전");
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 1.f);
+	D3DXMatrixTranslation(&matTrans, 15900.f, 8800.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	wsprintf(szBuf, L"SHIFT : 대쉬");
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 1.f);
+	D3DXMatrixTranslation(&matTrans, 15900.f, 9300.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	wsprintf(szBuf, L"F버튼 : 수류탄");
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 1.f);
+	D3DXMatrixTranslation(&matTrans, 15900.f, 9800.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	wsprintf(szBuf, L"G버튼 : 궁극기");
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 1.f);
+	D3DXMatrixTranslation(&matTrans, 15900.f, 10300.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	wsprintf(szBuf, L"M버튼 : 미니맵");
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 1.f);
+	D3DXMatrixTranslation(&matTrans, 15900.f, 10800.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	wsprintf(szBuf, L"N버튼 : 게임종료");
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 1.f);
+	D3DXMatrixTranslation(&matTrans, 15900.f, 11300.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+	wsprintf(szBuf, L"T버튼 : 디버그 모드");
+	matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 10.f, 10.f, 1.f);
+	D3DXMatrixTranslation(&matTrans, 15900.f, 11800.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	Set_Ratio(matWorld, 0.04f, 0.03f);
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+}
+
+void UICameraManager::DrawCardGameBoard(void)
+{
+	const TEXINFO* pTexInfo = nullptr;
+
+	pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"WhiteParticle");
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 40.f, 30.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 400.f, 300.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(100, 255, 255, 255));
+}
+
+void UICameraManager::DrawCardGameText(void)
+{
+	TCHAR szBuf[MAX_PATH] = L"";
+	wsprintf(szBuf, L"CARD GAME");
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.5f, 1.5f, 1.5f);
+	D3DXMatrixTranslation(&matTrans, float(WINCX >> 1) - 100.f, float(WINCY >> 1) + 200.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+}
+
+void UICameraManager::DrawClearText(void)
+{
+	TCHAR szBuf[MAX_PATH] = L"";
+	wsprintf(szBuf, L"CLEAR !!");
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, m_fScale, m_fScale, 1.5f);
+	D3DXMatrixTranslation(&matTrans, float(WINCX >> 1) - 300.f, float(WINCY >> 1) - 100.f, 0.f);
+
+	matWorld = matScale * matTrans;
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+}
+
+void UICameraManager::DrawCards(void)
+{
+	for (auto& pCard : m_listCards) { DO_IF_IS_VALID_OBJ(pCard) { pCard->Render_Card(); } }
 }

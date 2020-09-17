@@ -168,7 +168,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 {
     switch (message)
     {
-    case WM_KEYDOWN:
+    /*case WM_KEYDOWN:
     {
         switch (wParam)
         {
@@ -179,7 +179,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
             break;
         }
     }
-    break;
+    break;*/
     case WM_DESTROY:
         PostQuitMessage(0);
         break;
