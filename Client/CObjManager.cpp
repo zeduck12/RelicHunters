@@ -151,8 +151,8 @@ void CObjManager::Render(const HDC& _hdc)
 	GET_SINGLE(UICameraManager)->Render();
 
 	// 여기서 포신 그려주기
-	if (GET_SINGLE(CCameraManager)->IsPressing() == true)
-		DrawLine();
+	//if (GET_SINGLE(CCameraManager)->IsPressing() == true)
+	//	DrawLine();
 	
 	XFORM xf2 = { 1,0,0,1,0,0 };
 	SetWorldTransform(_hdc, &xf2);

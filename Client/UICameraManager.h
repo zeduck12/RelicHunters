@@ -50,6 +50,9 @@ public:
 	void DrawCards(void);
 	void DrawCardGameText(void);
 	void DrawClearText(void);
+	void ReadyCards(void);
+	void ReadyCards2(void);
+	void ReadyCards3(void);
 
 public:
 	// 카드뭉치 넘기기
@@ -64,12 +67,15 @@ private:
 	float m_fSpecialCheckTime = 0.f;
 	float m_fSpecialCoolTime = 0.f;
 	float m_fCardCheckTime = 0.f;
-	float m_fScale = 0.f;
-	bool  m_bIsFinish      = false;
-	bool  m_bIsShowMiniMap = false;
+	bool  m_bIsFinish       = false;
+	bool  m_bIsShowMiniMap  = false;
 	bool  m_bIsShowKeyGuide = false;
 	bool  m_bIsCardGameClear;
-	bool  m_bIsPlayingSFX = false;
+	bool  m_bIsPlayingSFX   = false;
+
+	float m_fMoveX = 0.f;
+	float m_fClearCoolTime = 0.f;
+	float m_fClearCheckTime = 0.f;
 
 	wstring m_strName = L"";
 	shared_ptr<CBossHpBar> m_pBossHpBar;

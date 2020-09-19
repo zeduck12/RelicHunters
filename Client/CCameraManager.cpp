@@ -151,7 +151,7 @@ void CCameraManager::LateUpdate(void)
 	if (m_bIsBossDeath)
 	{
 		m_fStackTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
-		if (m_fStackTime >= 2.f)
+		if (m_fStackTime >= 3.f)
 		{
 			m_fStackTime = 0.f;
 			m_bIsBossDeath = false;

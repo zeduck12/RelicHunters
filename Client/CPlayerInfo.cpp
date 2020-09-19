@@ -345,8 +345,8 @@ void CPlayerInfo::DrawWeapon(void)
 		D3DXMatrixScaling(&matScale, 1.2f, 1.2f, 0.f);
 	else
 		D3DXMatrixScaling(&matScale, 2.f, 2.f, 0.f);
-	//D3DXMatrixTranslation(&matTrans, 80.f, 550.f, 0.f);
-	D3DXMatrixTranslation(&matTrans, 80.f, 190.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 80.f, 550.f, 0.f);
+	//D3DXMatrixTranslation(&matTrans, 80.f, 190.f, 0.f);
 	matWorld = matScale * matTrans;
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
@@ -411,8 +411,8 @@ void CPlayerInfo::DrawSubWeapon(void)
 		D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
 	else
 		D3DXMatrixScaling(&matScale, 1.7f, 1.7f, 0.f);
-	//D3DXMatrixTranslation(&matTrans, 120.f, 520.f, 0.f);
-	D3DXMatrixTranslation(&matTrans, 120.f, 160.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 120.f, 520.f, 0.f);
+	//D3DXMatrixTranslation(&matTrans, 120.f, 160.f, 0.f);
 	matWorld = matScale * matTrans;
 
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
@@ -435,8 +435,8 @@ void CPlayerInfo::DrawBulletCount(void)
 	TCHAR szBuf[MAX_PATH] = L"";
 	wsprintf(szBuf, L"%d", int(iCapacity));
 	D3DXMatrixScaling(&matScale, 1.2f, 1.2f, 1.f);
-	//D3DXMatrixTranslation(&matTrans, 240.f, 530.f , 0.f);
-	D3DXMatrixTranslation(&matTrans, 240.f, 140.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 240.f, 530.f , 0.f);
+	//D3DXMatrixTranslation(&matTrans, 240.f, 140.f, 0.f);
 	matWorld = matScale * matTrans;
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
@@ -444,8 +444,8 @@ void CPlayerInfo::DrawBulletCount(void)
 
 	wsprintf(szBuf, L"%d /", int(iReloaded));
 	D3DXMatrixScaling(&matScale, 0.9f, 0.9f, 1.f);
-	//D3DXMatrixTranslation(&matTrans, 180.f , 515.f , 0.f);
-	D3DXMatrixTranslation(&matTrans, 180.f, 125.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 180.f , 515.f , 0.f);
+	//D3DXMatrixTranslation(&matTrans, 180.f, 125.f, 0.f);
 	matWorld = matScale * matTrans;
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
 	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
@@ -467,8 +467,8 @@ void CPlayerInfo::DrawBombsCount(void)
 	for (int i = 0; i < iBombsCount; i++)
 	{
 		D3DXMatrixScaling(&matScale, 0.8f, 0.8f, 0.f);
-		//D3DXMatrixTranslation(&matTrans, 50.f + (i * 20.f), 485.f, 0.f);
-		D3DXMatrixTranslation(&matTrans, 50.f + (i * 20.f), 125.f, 0.f);
+		D3DXMatrixTranslation(&matTrans, 50.f + (i * 20.f), 485.f, 0.f);
+		//D3DXMatrixTranslation(&matTrans, 50.f + (i * 20.f), 125.f, 0.f);
 		matWorld = matScale * matTrans;
 
 		CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);

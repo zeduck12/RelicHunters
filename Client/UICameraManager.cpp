@@ -42,38 +42,13 @@ bool UICameraManager::Ready(void)
 	if (GET_SINGLE(CSceneManager)->GetNextSceneID() == CSceneManager::SCENE_EVENT)
 	{
 		m_bIsCardGameClear = false;
-		shared_ptr<CCard> pCard = make_shared<CCard>(170.f, 150.f, CARD::JIMMY);
-		pCard->Ready();
-		m_listCards.emplace_back(pCard);
-
-		pCard = make_shared<CCard>(320.f, 150.f, CARD::PINKY);
-		pCard->Ready();
-		m_listCards.emplace_back(pCard);
-
-		pCard = make_shared<CCard>(470.f, 150.f, CARD::PUNNY);
-		pCard->Ready();
-		m_listCards.emplace_back(pCard);
-
-		pCard = make_shared<CCard>(620.f, 150.f, CARD::RAFF);
-		pCard->Ready();
-		m_listCards.emplace_back(pCard);
-
-		pCard = make_shared<CCard>(170.f, 350.f, CARD::PUNNY);
-		pCard->Ready();
-		m_listCards.emplace_back(pCard);
-
-		pCard = make_shared<CCard>(320.f, 350.f, CARD::RAFF);
-		pCard->Ready();
-		m_listCards.emplace_back(pCard);
-
-		pCard = make_shared<CCard>(470.f, 350.f, CARD::JIMMY);
-		pCard->Ready();
-		m_listCards.emplace_back(pCard);
-
-		pCard = make_shared<CCard>(620.f, 350.f, CARD::PINKY);
-		pCard->Ready();
-		m_listCards.emplace_back(pCard);
-
+		int iRandNum = rand() % 3 + 1;
+		if (iRandNum == 1)
+			ReadyCards();
+		else if (iRandNum == 2)
+			ReadyCards2();
+		else
+			ReadyCards3();
 	}
 	else
 	{
@@ -108,13 +83,13 @@ void UICameraManager::Update(void)
 		}
 	}
 
-	if(m_bIsCardGameClear == false)
+	if(m_fStartTime >= 2.f && m_bIsCardGameClear == false)
 		for (auto& pCard : m_listCards) { DO_IF_IS_VALID_OBJ(pCard) { pCard->Update(); } }
 }
 
 void UICameraManager::LateUpdate(void)
 {
-	if (m_bIsCardGameClear == false)
+	if (m_fStartTime >= 2.f && m_bIsCardGameClear == false)
 	{
 		for (auto& pCard : m_listCards) { DO_IF_IS_VALID_OBJ(pCard) { pCard->LateUpdate(); } }
 
@@ -195,7 +170,7 @@ void UICameraManager::Render(void)
 		DrawDescBoard();
 
 
-	if (GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_EVENT)
+	if (m_fStartTime >= 2.f && GET_SINGLE(CSceneManager)->GetCurSceneID() == CSceneManager::SCENE_EVENT)
 	{
 		if (m_bIsCardGameClear == false)
 		{
@@ -205,15 +180,27 @@ void UICameraManager::Render(void)
 		}
 		else
 		{
-			m_fCardCheckTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
-			if (m_fCardCheckTime >= 0.01f)
+			m_fClearCheckTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+			m_fClearCoolTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+
+			if (m_fClearCoolTime >= 0.2f && m_fClearCoolTime <= 0.8f)
 			{
-				m_fScale += 0.1;
-				m_fCardCheckTime = 0.f;
+				if (m_fClearCheckTime > 0.01f)
+				{
+					m_fClearCheckTime = 0.f;
+					m_fMoveX -= 350.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+				}
+			}
+			else
+			{
+				if (m_fClearCheckTime > 0.01f)
+				{
+					m_fClearCheckTime = 0.f;
+					m_fMoveX -= 1850.f * GET_SINGLE(CTimeManager)->GetElapsedTime();
+				}
 			}
 
-			if (m_fScale <= 5.f)
-				DrawClearText();
+			DrawClearText();
 
 			if (m_bIsPlayingSFX == false)
 			{
@@ -655,16 +642,124 @@ void UICameraManager::DrawCardGameText(void)
 
 void UICameraManager::DrawClearText(void)
 {
-	TCHAR szBuf[MAX_PATH] = L"";
-	wsprintf(szBuf, L"CLEAR !!");
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Clear");
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
 
 	D3DXMATRIX matScale, matTrans, matWorld;
-	D3DXMatrixScaling(&matScale, m_fScale, m_fScale, 1.5f);
-	D3DXMatrixTranslation(&matTrans, float(WINCX >> 1) - 300.f, float(WINCY >> 1) - 100.f, 0.f);
-
+	D3DXMatrixScaling(&matScale, 0.7f, 0.7f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 800.f + m_fMoveX, 300.f, 0.f);
 	matWorld = matScale * matTrans;
+
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
-	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
+}
+
+void UICameraManager::ReadyCards(void)
+{
+	shared_ptr<CCard> pCard = make_shared<CCard>(170.f, 150.f, CARD::JIMMY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(320.f, 150.f, CARD::PINKY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(470.f, 150.f, CARD::PUNNY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(620.f, 150.f, CARD::RAFF);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(170.f, 350.f, CARD::PUNNY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(320.f, 350.f, CARD::RAFF);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(470.f, 350.f, CARD::JIMMY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(620.f, 350.f, CARD::PINKY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+}
+
+void UICameraManager::ReadyCards2(void)
+{
+	shared_ptr<CCard> pCard = make_shared<CCard>(170.f, 150.f, CARD::JIMMY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(320.f, 150.f, CARD::PINKY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(470.f, 150.f, CARD::RAFF);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(620.f, 150.f, CARD::RAFF);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(170.f, 350.f, CARD::PUNNY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(320.f, 350.f, CARD::PUNNY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(470.f, 350.f, CARD::PINKY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(620.f, 350.f, CARD::JIMMY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+}
+
+void UICameraManager::ReadyCards3(void)
+{
+	shared_ptr<CCard> pCard = make_shared<CCard>(170.f, 150.f, CARD::PINKY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(320.f, 150.f, CARD::JIMMY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(470.f, 150.f, CARD::PUNNY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(620.f, 150.f, CARD::RAFF);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(170.f, 350.f, CARD::RAFF);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(320.f, 350.f, CARD::PUNNY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(470.f, 350.f, CARD::JIMMY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
+
+	pCard = make_shared<CCard>(620.f, 350.f, CARD::PINKY);
+	pCard->Ready();
+	m_listCards.emplace_back(pCard);
 }
 
 void UICameraManager::DrawCards(void)

@@ -177,12 +177,6 @@ void CRocket::LateUpdate(void)
 
 void CRocket::Render(const HDC& _hdc)
 {
-	MoveToEx(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y, nullptr);
-
-	for (int i = 1; i < 4; i++)
-		LineTo(_hdc, (int)m_vRealVertex[i].x, (int)m_vRealVertex[i].y);
-	LineTo(_hdc, (int)m_vRealVertex[0].x, (int)m_vRealVertex[0].y);
-
 	// Bullet ±×¸®±â
 	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Bullet", L"Rocket", 0);
 	if (nullptr == pTexInfo)

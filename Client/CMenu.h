@@ -22,11 +22,14 @@ public:
     void DrawBackgorund(void);
     void DrawSelBackground(void);
     void DrawSceneTitle(void);
+    void DrawOpenSource(void);
 
 
 private:
     int m_iDrawID;
+    int m_iOSDrawID = 0;
     float m_fStackTime;
+    float m_fCheckTime = 0.f;
 
     list<CObj*> m_listButtons;
     list<shared_ptr<CObj>> m_listStars; // 배경 꾸며주는 별들

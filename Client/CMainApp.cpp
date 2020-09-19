@@ -46,7 +46,7 @@ void CMainApp::Ready()
 	m_pMouse->Ready();
 
 	// ¾À ·Îµù
-	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOBBY);
+	GET_SINGLE(CSceneManager)->ChangeScene(CSceneManager::SCENE_LOGO);
 }
 
 void CMainApp::Update()
@@ -483,9 +483,15 @@ void CMainApp::SetImages(void)
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Debug/spr_char_inputJoy1_%d.png", L"Debug", L"Debug", 7)))
 		return;
 
-
 	// Cards
 	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/Card/card_%d.png", L"Card", L"Card", 7)))
+		return;
+
+	//OpenSource
+	if (FAILED(CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_MULTI, L"../Texture/UI/OpenSource/spr_opensource_menu_%d.png", L"Menu", L"OpenSource", 2)))
+		return;
+	//Clear
+	if (E_FAIL == CTextureManager::Get_Instance()->Insert(CTextureManager::TEX_SINGLE, L"../Texture/Clear/CLEAR.png", L"Clear"))
 		return;
 }
 

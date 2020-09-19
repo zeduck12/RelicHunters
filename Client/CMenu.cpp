@@ -76,6 +76,16 @@ bool CMenu::Ready(void)
 
 void CMenu::Update(void)
 {
+	m_fCheckTime += GET_SINGLE(CTimeManager)->GetElapsedTime();
+	if (m_fCheckTime >= 0.2f)
+	{
+		m_iOSDrawID++;
+		m_fCheckTime = 0.f;
+	}
+
+	if (m_iOSDrawID >= 2)
+		m_iOSDrawID = 0;
+
 	for (auto& pButton : m_listButtons) { if (pButton) { pButton->Update(); } }
 	for (auto& pStar : m_listStars) { DO_IF_IS_VALID_OBJ(pStar) { pStar->Update(); } }
 
@@ -104,6 +114,7 @@ void CMenu::Render(const HDC& _hdc)
 	for (auto& pButton : m_listButtons) { if (pButton) { pButton->Render(_hdc); } }
 
 	DrawSceneTitle();
+	DrawOpenSource();
 
 	//GET_SINGLE(CGraphicDevice)->GetSprite()->End();
 	//GET_SINGLE(CGraphicDevice)->RenderEnd();
@@ -172,5 +183,23 @@ void CMenu::DrawSceneTitle(void)
 	D3DXMatrixTranslation(&matTrans, 15.f, 40.f, 0.f);
 	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matTrans);
 	CGraphicDevice::Get_Instance()->GetFont()->DrawTextW(CGraphicDevice::Get_Instance()->GetSprite(), szBuf, lstrlen(szBuf), nullptr, DT_CENTER, D3DCOLOR_ARGB(255, 255, 255, 255));
+
+}
+
+void CMenu::DrawOpenSource(void)
+{
+	const TEXINFO* pTexInfo = CTextureManager::Get_Instance()->GetTextureInfo(L"Menu", L"OpenSource", m_iOSDrawID);
+	if (nullptr == pTexInfo)
+		return;
+	float fCenterX = float(pTexInfo->tImageInfo.Width >> 1);
+	float fCenterY = float(pTexInfo->tImageInfo.Height >> 1);
+
+	D3DXMATRIX matScale, matTrans, matWorld;
+	D3DXMatrixScaling(&matScale, 1.f, 1.f, 0.f);
+	D3DXMatrixTranslation(&matTrans, 95.f, 530.f, 0.f);
+	matWorld = matScale * matTrans;
+
+	CGraphicDevice::Get_Instance()->GetSprite()->SetTransform(&matWorld);
+	CGraphicDevice::Get_Instance()->GetSprite()->Draw(pTexInfo->pTexture, nullptr, &D3DXVECTOR3(fCenterX, fCenterY, 0.f), nullptr, D3DCOLOR_ARGB(255, 255, 255, 255));
 
 }

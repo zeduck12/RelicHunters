@@ -16,12 +16,14 @@ CEnd::~CEnd()
 
 bool CEnd::Ready(void)
 {
-
     return true;
 }
 
 void CEnd::Update(void)
 {
+	if(GetAsyncKeyState(VK_ESCAPE) & 0x8000)
+		DestroyWindow(g_hWND);
+
 	if (m_bIsPlayingBGM == false)
 	{
 		m_bIsPlayingBGM = true;
